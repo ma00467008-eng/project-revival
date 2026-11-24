@@ -8,10 +8,13 @@ import {
   User,
   Heart,
   MessageCircle,
-  Sparkles,
   Flame,
   X,
-  ExternalLink,
+  Sparkles,
+  ChevronRight,
+  TrendingUp,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -21,250 +24,348 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Welcome to Pakvip, Pakistan's leading online casino. Play Aviator, Slots, Fishing, and Live Casino with fast JazzCash and EasyPaisa withdrawals.",
+          "Official Pakvip Casino: Aviator, JILI Slots, Live Casino & Fishing. Instant JazzCash & EasyPaisa deposits & withdrawals with 24/7 VIP support.",
       },
-      { property: "og:title", content: "Pakvip - Best Online Casino in Pakistan" },
+      { property: "og:title", content: "Pakvip - Official Casino Pakistan" },
       {
         property: "og:description",
-        content: "Play online casino games with fast withdrawals and daily rewards.",
+        content: "Play Spribe Aviator, JILI Super Ace, and live games with fast payouts.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "icon", href: "/pakvip/images/favico.ico" }],
   }),
-  component: PakvipRealHome,
+  component: PakvipProApp,
 });
 
-// Category definition matching live site
+// Category tabs with authentic Pakvip styling
 const CATEGORIES = [
-  { id: "hot", labelUrdu: "Hot Slots", labelEn: "Hot Slots", icon: "🎰", bg: "from-amber-600 to-yellow-800" },
-  { id: "lottery", labelUrdu: "Lottery", labelEn: "Lottery", icon: "🎱", bg: "from-orange-600 to-red-800" },
-  { id: "original", labelUrdu: "Original", labelEn: "Original", icon: "✈️", bg: "from-red-600 to-rose-900" },
-  { id: "slots", labelUrdu: "Slots", labelEn: "Slots", icon: "👑", bg: "from-blue-600 to-indigo-900" },
-  { id: "fishing", labelUrdu: "Fishing", labelEn: "Fishing", icon: "🐉", bg: "from-teal-600 to-cyan-900" },
+  { id: "hot", labelUrdu: "Hot Slots", labelEn: "Hot Slots", badge: "HOT" },
+  { id: "lottery", labelUrdu: "Lottery", labelEn: "Lottery", badge: "WIN" },
+  { id: "original", labelUrdu: "Original", labelEn: "Original", badge: "TOP" },
+  { id: "slots", labelUrdu: "Slots", labelEn: "Slots", badge: "JACKPOT" },
+  { id: "fishing", labelUrdu: "Fishing", labelEn: "Fishing", badge: "NEW" },
+  { id: "live", labelUrdu: "Live Casino", labelEn: "Live", badge: "HD" },
 ];
 
-// Exact games from the live Pakvip interface
-const FEATURED_GAMES = [
+// High-resolution game cards with authentic casino artwork & providers
+const GAMES_LIST = [
   {
     id: 1,
     title: "Aviator",
-    type: "CRASH",
+    category: "original",
+    provider: "SPRIBE",
     winRate: "97.33%",
-    bg: "from-[#8b001a] via-[#590010] to-[#260007]",
-    iconType: "aviator1",
+    multiplier: "100.00x",
+    tag: "HOT",
+    tagColor: "bg-red-600",
+    image:
+      "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#88001b] via-[#54000f] to-[#1a0004]",
+    accent: "text-red-400",
   },
   {
     id: 2,
-    title: "AVIATOR",
-    type: "ORIGINAL",
-    winRate: "96.71%",
-    bg: "from-[#a30b2e] via-[#6e0019] to-[#38000a]",
-    iconType: "aviator2",
+    title: "Super Ace",
+    category: "slots",
+    provider: "JILI",
+    winRate: "98.15%",
+    multiplier: "1500x",
+    tag: "JACKPOT",
+    tagColor: "bg-amber-500 text-black",
+    image:
+      "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#a66200] via-[#633a00] to-[#241500]",
+    accent: "text-amber-400",
   },
   {
     id: 3,
     title: "Chicken Road 2",
-    type: "SLOT",
-    winRate: "98.15%",
-    bg: "from-[#ff6b2b] via-[#bd3c07] to-[#451200]",
-    hasBonus: true,
-    iconType: "chicken2",
+    category: "original",
+    provider: "INOUT",
+    winRate: "98.50%",
+    multiplier: "5000x",
+    tag: "POPULAR",
+    tagColor: "bg-orange-500",
+    image:
+      "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#b84500] via-[#6e2900] to-[#260f00]",
+    accent: "text-orange-400",
   },
   {
     id: 4,
-    title: "Chicken Road",
-    type: "CASUAL",
+    title: "Royal Fishing",
+    category: "fishing",
+    provider: "JDB",
     winRate: "97.80%",
-    bg: "from-[#4ade80] via-[#16a34a] to-[#14532d]",
-    iconType: "chicken1",
+    multiplier: "1000x",
+    tag: "BIG WIN",
+    tagColor: "bg-cyan-500 text-black",
+    image:
+      "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#006e88] via-[#004152] to-[#00171d]",
+    accent: "text-cyan-400",
   },
   {
     id: 5,
     title: "Jackpot Fishing",
-    type: "JILI",
+    category: "fishing",
+    provider: "JILI",
     winRate: "96.90%",
-    bg: "from-[#0284c7] via-[#0369a1] to-[#082f49]",
-    iconType: "shark",
+    multiplier: "888x",
+    tag: "TOP FISH",
+    tagColor: "bg-blue-600",
+    image:
+      "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#034078] via-[#012547] to-[#000f1c]",
+    accent: "text-blue-400",
   },
   {
     id: 6,
-    title: "Royal Fishing",
-    type: "JDB",
-    winRate: "98.40%",
-    bg: "from-[#06b6d4] via-[#0891b2] to-[#164e63]",
-    iconType: "dragon",
+    title: "Crazy Time Live",
+    category: "live",
+    provider: "EVOLUTION",
+    winRate: "96.08%",
+    multiplier: "20,000x",
+    tag: "LIVE",
+    tagColor: "bg-emerald-600",
+    image:
+      "https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#5a189a] via-[#3c096c] to-[#10002b]",
+    accent: "text-purple-400",
+  },
+  {
+    id: 7,
+    title: "Fortune Gems 2",
+    category: "slots",
+    provider: "JILI",
+    winRate: "97.45%",
+    multiplier: "1000x",
+    tag: "MEGA",
+    tagColor: "bg-teal-500 text-black",
+    image:
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#007f5f] via-[#004b38] to-[#001c15]",
+    accent: "text-emerald-400",
+  },
+  {
+    id: 8,
+    title: "Money Coming",
+    category: "slots",
+    provider: "JILI",
+    winRate: "98.20%",
+    multiplier: "10,000x",
+    tag: "HOT",
+    tagColor: "bg-rose-600",
+    image:
+      "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#9e2a2b] via-[#540b0e] to-[#220304]",
+    accent: "text-amber-300",
+  },
+  {
+    id: 9,
+    title: "Cricket Roulette",
+    category: "live",
+    provider: "EZUGI",
+    winRate: "97.30%",
+    multiplier: "36x",
+    tag: "PAKISTAN",
+    tagColor: "bg-emerald-500 text-black",
+    image:
+      "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=500&auto=format&fit=crop&q=80",
+    gradient: "from-[#1b4332] via-[#081c15] to-[#020b08]",
+    accent: "text-green-400",
   },
 ];
 
-function PakvipRealHome() {
+// Live simulated winnings feed for Pakistani players
+const LIVE_WINNERS = [
+  { phone: "0301****891", game: "Aviator", amount: "PKR 54,200", method: "JazzCash" },
+  { phone: "0345****204", game: "Super Ace", amount: "PKR 142,000", method: "EasyPaisa" },
+  { phone: "0312****519", game: "Chicken Road 2", amount: "PKR 88,500", method: "JazzCash" },
+  { phone: "0333****772", game: "Jackpot Fishing", amount: "PKR 31,400", method: "EasyPaisa" },
+];
+
+function PakvipProApp() {
   const [activeCategory, setActiveCategory] = useState("hot");
   const [activeNav, setActiveNav] = useState("games");
-  const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
+  const [authModal, setAuthModal] = useState<"login" | "register" | "deposit" | null>(null);
   const [lang, setLang] = useState<"ur" | "en">("ur");
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [chestOpen, setChestOpen] = useState(false);
+  const [balance, setBalance] = useState(10000);
+  const [currentWinnerIdx, setCurrentWinnerIdx] = useState(0);
 
-  // Marquee announcement text
-  const marqueeText =
-    lang === "ur"
-      ? "🔥 پاک وی آئی پی میں خوش آمدید! پاکستان کا نمبر 1 آن لائن کیسینو - نیا پلیئر کیش بونس اور روزانہ لکی چیسٹ ابھی حاصل کریں!"
-      : "🔥 Welcome to Pakvip! Pakistan's No. 1 Online Casino - Claim 100% First Deposit Bonus & Daily Lucky Chest Rewards!";
+  // Rotate winner ticker
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentWinnerIdx((prev) => (prev + 1) % LIVE_WINNERS.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  const winner = LIVE_WINNERS[currentWinnerIdx];
+
+  const displayedGames =
+    activeCategory === "hot"
+      ? GAMES_LIST
+      : GAMES_LIST.filter(
+          (g) => g.category === activeCategory || activeCategory === "all"
+        );
 
   return (
-    <div className="min-h-screen bg-[#0d0e17] text-white flex justify-center font-sans antialiased selection:bg-[#3ae48e] selection:text-black">
-      {/* Mobile-first centered shell */}
-      <div className="w-full max-w-[430px] min-h-screen bg-[#141624] flex flex-col pb-24 relative shadow-2xl border-x border-[#212438]">
+    <div className="min-h-screen bg-[#090b12] text-white flex justify-center font-sans antialiased selection:bg-[#3ae48e] selection:text-black">
+      {/* Centered Mobile App Container */}
+      <div className="w-full max-w-[430px] min-h-screen bg-[#111322] flex flex-col pb-24 relative shadow-2xl border-x border-[#1e2238]">
         {/* Top Header */}
-        <header className="sticky top-0 z-40 bg-[#141624]/95 backdrop-blur-md px-3 py-2.5 flex items-center justify-between border-b border-[#212438]">
+        <header className="sticky top-0 z-40 bg-[#111322]/95 backdrop-blur-md px-3 py-2 flex items-center justify-between border-b border-[#1c2035]">
           {/* Logo */}
-          <div className="flex items-center gap-1.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center shadow-lg font-black text-black text-sm">
-              RV
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <img
+                src="/pakvip/images/icon-192x192.png"
+                alt="Pakvip Logo"
+                className="w-9 h-9 rounded-xl object-contain drop-shadow"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-400 to-emerald-600 flex items-center justify-center font-black text-black text-sm shadow">
+                RV
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="font-black text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-emerald-400 to-amber-300 leading-none">
-                PAKVIP
-              </span>
-              <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">
-                Official VIP
-              </span>
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="font-black text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-emerald-400 to-amber-300 leading-none">
+                  PAKVIP
+                </span>
+                <span className="text-[9px] font-black px-1 rounded bg-red-600 text-white">
+                  PK
+                </span>
+              </div>
+              <p className="text-[9px] text-gray-400 font-bold tracking-widest">
+                OFFICIAL CASINO
+              </p>
             </div>
           </div>
 
-          {/* Language Switcher + Auth Action Buttons */}
-          <div className="flex items-center gap-2">
+          {/* Action buttons */}
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setLang((l) => (l === "ur" ? "en" : "ur"))}
-              className="px-2 py-1 rounded bg-[#202438] text-[10px] font-bold text-gray-300 hover:text-white border border-[#2d334d]"
+              className="px-2 py-1 rounded-md bg-[#1a1e33] text-[10px] font-extrabold text-teal-300 border border-[#2b3252]"
             >
-              {lang === "ur" ? "English" : "اردو"}
+              {lang === "ur" ? "EN" : "اردو"}
             </button>
 
-            {/* Login button (Bright Lime Green) */}
             <button
               onClick={() => setAuthModal("login")}
-              className="px-3 py-1.5 rounded-full bg-[#3ae48e] hover:bg-[#33d480] text-black font-extrabold text-xs shadow-md transition active:scale-95"
+              className="px-3 py-1.5 rounded-full bg-[#3ae48e] hover:bg-[#32d480] text-black font-extrabold text-xs shadow-md active:scale-95 transition"
             >
               {lang === "ur" ? "لاگ ان کریں" : "Login"}
             </button>
 
-            {/* Register button (Dark Teal Border) */}
             <button
               onClick={() => setAuthModal("register")}
-              className="px-3 py-1.5 rounded-full bg-[#162933] border border-teal-500/70 hover:border-teal-400 text-teal-300 font-extrabold text-xs transition active:scale-95"
+              className="px-3 py-1.5 rounded-full bg-[#172733] border border-teal-500/70 hover:border-teal-400 text-teal-300 font-extrabold text-xs active:scale-95 transition"
             >
               {lang === "ur" ? "رجسٹر کریں-" : "Register"}
             </button>
           </div>
         </header>
 
-        {/* Hero Banner: New Player Rewards */}
+        {/* Hero VIP Promotion Banner */}
         <div className="p-3">
-          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#1b1c3b] via-[#101229] to-[#0c0d1c] border border-indigo-500/30 p-3.5 shadow-2xl">
-            {/* Ambient glows */}
-            <div className="absolute top-0 right-0 w-36 h-36 bg-purple-600/20 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-36 h-36 bg-amber-500/20 rounded-full blur-2xl pointer-events-none" />
-
+          <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#1c1d3d] via-[#101229] to-[#0a0c1a] border border-indigo-500/40 p-4 shadow-2xl">
             <div className="relative z-10">
-              {/* Header inside banner */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <span className="w-5 h-5 rounded bg-teal-400 text-black font-black text-xs flex items-center justify-center">
-                    RV
-                  </span>
-                  <span className="font-extrabold text-xs text-teal-300 tracking-wider">
-                    PAKVIP
-                  </span>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
-                  PAKISTAN
+                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-black">
+                  NEW PLAYER REWARDS
+                </span>
+                <span className="text-[10px] font-extrabold text-teal-400 flex items-center gap-1">
+                  <Zap className="w-3 h-3 fill-teal-400" /> INSTANT WITHDRAWAL
                 </span>
               </div>
 
-              <h2 className="text-xl font-black italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-100 to-amber-300 mt-1 drop-shadow-md">
-                NEW PLAYER REWARDS
-              </h2>
-              <p className="text-[11px] font-bold text-amber-400 tracking-wider">
+              <h2 className="text-xl font-black italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-yellow-400 mt-1">
                 PLAY MORE • EARN MORE • WIN BIG
+              </h2>
+              <p className="text-[11px] text-gray-300 mt-0.5">
+                Pakistan's highest paying VIP deposit program
               </p>
 
-              {/* 3 VIP Tables matching the live screenshot */}
-              <div className="grid grid-cols-3 gap-1.5 mt-2.5 text-center">
-                {/* 1 Day */}
-                <div className="rounded-lg bg-[#192242]/90 border border-blue-500/40 p-1.5 shadow">
-                  <div className="text-[10px] font-black text-cyan-300 bg-blue-900/60 rounded py-0.5 mb-1">
+              {/* 3 VIP Tables */}
+              <div className="grid grid-cols-3 gap-1.5 mt-3 text-center">
+                <div className="rounded-xl bg-[#15203d]/90 border border-blue-500/50 p-2 shadow-inner">
+                  <span className="text-[10px] font-black text-cyan-300 block mb-0.5">
                     👤 1 DAY
-                  </div>
-                  <div className="text-[9px] text-gray-300 leading-tight">
-                    DEPOSIT <br />
+                  </span>
+                  <p className="text-[9px] text-gray-300 leading-tight">
+                    CUMULATIVE <br />
                     <strong className="text-yellow-300">≥ 1,000 PKR</strong>
-                  </div>
-                  <div className="mt-1 pt-1 border-t border-blue-500/20 text-[9px] text-teal-300 font-bold">
+                  </p>
+                  <span className="inline-block mt-1 text-[10px] font-black text-teal-300">
                     REWARD +80
-                  </div>
+                  </span>
                 </div>
 
-                {/* 7 Days */}
-                <div className="rounded-lg bg-[#2e1d42]/90 border border-amber-500/40 p-1.5 shadow">
-                  <div className="text-[10px] font-black text-amber-300 bg-amber-900/60 rounded py-0.5 mb-1">
+                <div className="rounded-xl bg-[#2d1c3a]/90 border border-amber-500/50 p-2 shadow-inner">
+                  <span className="text-[10px] font-black text-amber-300 block mb-0.5">
                     👤 7 DAYS
-                  </div>
-                  <div className="text-[9px] text-gray-300 leading-tight">
-                    DEPOSIT <br />
+                  </span>
+                  <p className="text-[9px] text-gray-300 leading-tight">
+                    CUMULATIVE <br />
                     <strong className="text-yellow-300">≥ 5,000 PKR</strong>
-                  </div>
-                  <div className="mt-1 pt-1 border-t border-amber-500/20 text-[9px] text-amber-300 font-bold">
+                  </p>
+                  <span className="inline-block mt-1 text-[10px] font-black text-amber-300">
                     REWARD +300
-                  </div>
+                  </span>
                 </div>
 
-                {/* 15 Days */}
-                <div className="rounded-lg bg-[#3b1735]/90 border border-purple-500/40 p-1.5 shadow">
-                  <div className="text-[10px] font-black text-pink-300 bg-purple-900/60 rounded py-0.5 mb-1">
+                <div className="rounded-xl bg-[#381530]/90 border border-purple-500/50 p-2 shadow-inner">
+                  <span className="text-[10px] font-black text-pink-300 block mb-0.5">
                     👤 15 DAYS
-                  </div>
-                  <div className="text-[9px] text-gray-300 leading-tight">
-                    DEPOSIT <br />
+                  </span>
+                  <p className="text-[9px] text-gray-300 leading-tight">
+                    CUMULATIVE <br />
                     <strong className="text-yellow-300">≥ 20,000 PKR</strong>
-                  </div>
-                  <div className="mt-1 pt-1 border-t border-purple-500/20 text-[9px] text-pink-300 font-bold">
+                  </p>
+                  <span className="inline-block mt-1 text-[10px] font-black text-pink-300">
                     REWARD +1,000
-                  </div>
+                  </span>
                 </div>
               </div>
 
-              {/* Bottom bar inside hero */}
-              <div className="mt-2.5 py-1 px-2 rounded-lg bg-black/60 border border-yellow-500/30 flex items-center justify-between text-[10px]">
-                <span className="font-extrabold text-yellow-300 flex items-center gap-1">
-                  🎁 COMPLETE CHALLENGES
-                </span>
-                <span className="text-white font-bold">UNLOCK BIGGER REWARDS!</span>
+              {/* Interactive Claim Button */}
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => setChestOpen(true)}
+                  className="w-full py-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-black text-xs rounded-xl shadow-lg flex items-center justify-center gap-1 active:scale-95 transition"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  {lang === "ur" ? "روزانہ لکی چیسٹ کھولیں" : "Open Lucky Chest"}
+                </button>
               </div>
-            </div>
-
-            {/* Pagination dots */}
-            <div className="flex justify-center items-center gap-1.5 mt-2.5">
-              <span className="w-4 h-1.5 rounded-full bg-cyan-400" />
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-600" />
             </div>
           </div>
         </div>
 
-        {/* Marquee Notice Bar with Lime "تفصیل" Button */}
+        {/* Live Announcement Marquee with Details Button */}
         <div className="px-3">
-          <div className="bg-[#1b1e2e] rounded-full px-3 py-1.5 flex items-center justify-between border border-[#2b3047] shadow-inner">
+          <div className="bg-[#171a2c] rounded-full px-3 py-1.5 flex items-center justify-between border border-[#272b44] shadow-inner">
             <Volume2 className="w-4 h-4 text-cyan-400 shrink-0" />
             <div className="overflow-hidden whitespace-nowrap text-[11px] text-gray-300 mx-2 w-full">
-              <span className="inline-block animate-pulse">{marqueeText}</span>
+              <span className="inline-block animate-pulse">
+                {lang === "ur"
+                  ? "🔥 پاک وی آئی پی - پاکستان کا نمبر 1 آن لائن کیسینو! ایزی پیسہ اور جاز کیش سے فوری ڈپازٹ اور 100% ویلکم بونس حاصل کریں!"
+                  : "🔥 Pakvip Pakistan No. 1 Casino! Instant JazzCash & EasyPaisa deposits with 100% Welcome Cash Bonus!"}
+              </span>
             </div>
             <button
-              onClick={() => setDetailsOpen(true)}
-              className="px-3 py-1 rounded-full bg-[#3ae48e] hover:bg-[#34d480] text-black font-extrabold text-[11px] flex items-center gap-1 shrink-0 active:scale-95 shadow transition"
+              onClick={() =>
+                alert("Pakvip Promotion: 100% Match on all First Deposits via JazzCash / EasyPaisa!")
+              }
+              className="px-3 py-0.5 rounded-full bg-[#3ae48e] text-black font-extrabold text-[11px] flex items-center gap-1 shrink-0 shadow active:scale-95 transition"
             >
               <Flame className="w-3 h-3 fill-black" />
               {lang === "ur" ? "تفصیل" : "Details"}
@@ -272,8 +373,26 @@ function PakvipRealHome() {
           </div>
         </div>
 
-        {/* Category Circular Badges */}
-        <div className="px-3 mt-3.5">
+        {/* Live Winners Real-Time Ticker */}
+        {winner && (
+          <div className="mx-3 mt-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#17203a] via-[#1c2847] to-[#17203a] border border-teal-500/30 flex items-center justify-between text-xs shadow-md">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#3ae48e] animate-ping" />
+              <span className="text-gray-300 text-[11px]">
+                {winner.phone} won in <strong className="text-white">{winner.game}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-extrabold text-amber-300">{winner.amount}</span>
+              <span className="text-[9px] px-1 py-0.5 rounded bg-black/50 text-gray-300">
+                {winner.method}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Category Circular Tabs */}
+        <div className="px-3 mt-3">
           <div className="flex items-center justify-between gap-1 overflow-x-auto pb-1 scrollbar-none">
             {CATEGORIES.map((cat) => {
               const isSelected = activeCategory === cat.id;
@@ -281,25 +400,24 @@ function PakvipRealHome() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className="flex flex-col items-center group active:scale-95 transition"
+                  className="flex flex-col items-center group active:scale-95 transition shrink-0"
                 >
-                  {/* Round badge with golden ring */}
                   <div
-                    className={`w-14 h-14 rounded-full flex items-center justify-center p-0.5 transition-all shadow-lg ${
+                    className={`w-14 h-14 rounded-full flex items-center justify-center p-0.5 transition shadow-lg ${
                       isSelected
-                        ? "bg-gradient-to-b from-yellow-300 via-amber-500 to-amber-700 ring-2 ring-cyan-400"
-                        : "bg-gradient-to-b from-[#3a4059] to-[#1c2030] group-hover:from-amber-400"
+                        ? "bg-gradient-to-b from-yellow-300 via-amber-500 to-amber-700 ring-2 ring-cyan-400 scale-105"
+                        : "bg-gradient-to-b from-[#2e344d] to-[#161a29]"
                     }`}
                   >
-                    <div
-                      className={`w-full h-full rounded-full bg-gradient-to-br ${cat.bg} flex items-center justify-center text-xl shadow-inner`}
-                    >
-                      {cat.icon}
+                    <div className="w-full h-full rounded-full bg-[#151829] flex flex-col items-center justify-center">
+                      <span className="text-[10px] font-black text-amber-300">
+                        {cat.badge}
+                      </span>
                     </div>
                   </div>
                   <span
-                    className={`text-[11px] font-bold mt-1 tracking-tight ${
-                      isSelected ? "text-amber-300" : "text-gray-300"
+                    className={`text-[11px] font-bold mt-1 ${
+                      isSelected ? "text-amber-300" : "text-gray-400"
                     }`}
                   >
                     {lang === "ur" ? cat.labelUrdu : cat.labelEn}
@@ -310,7 +428,7 @@ function PakvipRealHome() {
           </div>
         </div>
 
-        {/* Section Heading: "تجویز کردہ گیمز" (Recommended Games) */}
+        {/* Section Heading: Recommended Games */}
         <div className="px-3 mt-4 flex items-center gap-2">
           <span className="w-1 h-4 rounded-full bg-teal-400" />
           <div>
@@ -320,135 +438,76 @@ function PakvipRealHome() {
             <p className="text-[10px] text-gray-400">
               {lang === "ur"
                 ? "کھلاڑیوں کے درمیان سب سے زیادہ مقبول الیکٹرانک گیمز"
-                : "Most popular electronic games among Pakistani players"}
+                : "Top rated certified games by Spribe, JILI, JDB & Evolution"}
             </p>
           </div>
         </div>
 
-        {/* Game Cards Grid (3 Columns with Win Rates) */}
-        <div className="grid grid-cols-3 gap-2.5 px-3 mt-2.5">
-          {FEATURED_GAMES.map((game) => (
+        {/* Game Cards Grid (High Resolution Artworks) */}
+        <div className="grid grid-cols-3 gap-2 px-3 mt-2.5">
+          {displayedGames.map((game) => (
             <div
               key={game.id}
               onClick={() => setAuthModal("login")}
-              className="flex flex-col rounded-xl overflow-hidden bg-[#181b2c] border border-[#272c45] shadow-lg cursor-pointer hover:border-teal-400/60 active:scale-95 transition group"
+              className="flex flex-col rounded-xl overflow-hidden bg-[#16192a] border border-[#252a42] shadow-xl cursor-pointer hover:border-teal-400/80 active:scale-95 transition group"
             >
-              {/* Game Poster Art */}
-              <div
-                className={`relative aspect-[4/5] bg-gradient-to-br ${game.bg} p-2 flex flex-col justify-between items-center text-center overflow-hidden`}
-              >
-                {/* Floating tags */}
-                <div className="w-full flex justify-between items-center">
-                  <span className="text-[8px] font-black px-1 py-0.5 rounded bg-black/60 text-yellow-300">
-                    {game.type}
+              {/* Card Artwork Image */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-black flex flex-col justify-between p-2">
+                <img
+                  src={game.image}
+                  alt={game.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500 brightness-90 group-hover:brightness-100"
+                  loading="lazy"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${game.gradient} opacity-60 group-hover:opacity-40 transition`} />
+
+                {/* Top badges */}
+                <div className="relative z-10 flex justify-between items-start">
+                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded shadow ${game.tagColor}`}>
+                    {game.tag}
                   </span>
-                  {game.hasBonus && (
-                    <span className="text-[8px] font-black px-1 py-0.5 rounded bg-red-600 text-white animate-pulse">
-                      GIFT
-                    </span>
-                  )}
+                  <span className="text-[9px] font-black text-yellow-300 bg-black/60 px-1 py-0.5 rounded backdrop-blur-sm">
+                    {game.provider}
+                  </span>
                 </div>
 
-                {/* Central Icon / Artwork */}
-                <div className="my-auto transform group-hover:scale-110 transition duration-300">
-                  {game.iconType === "aviator1" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-3xl drop-shadow-lg">🛩️</span>
-                      <span className="font-black italic text-sm text-red-400 tracking-wider">
-                        Aviator
-                      </span>
-                    </div>
-                  )}
-
-                  {game.iconType === "aviator2" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-2xl opacity-90">✈️</span>
-                      <span className="font-extrabold text-xs text-white tracking-widest mt-1">
-                        AVIATOR
-                      </span>
-                    </div>
-                  )}
-
-                  {game.iconType === "chicken2" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-3xl drop-shadow-md">🐔</span>
-                      <span className="font-black text-[10px] text-yellow-300 leading-none mt-1">
-                        CHICKEN ROAD 2
-                      </span>
-                    </div>
-                  )}
-
-                  {game.iconType === "chicken1" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-3xl drop-shadow-md">🐣</span>
-                      <span className="font-black text-[10px] text-white leading-none mt-1">
-                        CHICKEN ROAD
-                      </span>
-                    </div>
-                  )}
-
-                  {game.iconType === "shark" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-3xl drop-shadow-md">🦈</span>
-                      <span className="font-black text-[10px] text-cyan-200 leading-none mt-1">
-                        JACKPOT FISHING
-                      </span>
-                    </div>
-                  )}
-
-                  {game.iconType === "dragon" && (
-                    <div className="flex flex-col items-center">
-                      <span className="text-3xl drop-shadow-md">🐲</span>
-                      <span className="font-black text-[10px] text-teal-200 leading-none mt-1">
-                        ROYAL FISHING
-                      </span>
-                    </div>
-                  )}
+                {/* Game Title at Bottom of Poster */}
+                <div className="relative z-10">
+                  <h4 className="text-xs font-black text-white leading-tight drop-shadow truncate group-hover:text-yellow-300 transition">
+                    {game.title}
+                  </h4>
+                  <p className="text-[9px] text-gray-200 font-bold">
+                    Max: {game.multiplier}
+                  </p>
                 </div>
-
-                {/* Subtitle / CTA */}
-                <span className="text-[9px] font-bold text-gray-200 bg-black/40 px-2 py-0.5 rounded-full">
-                  PLAY NOW
-                </span>
               </div>
 
-              {/* Exact Teal Win Rate Badge from live site */}
-              <div className="bg-[#194042] border-t border-teal-500/30 px-1.5 py-1 flex items-center justify-between text-[10px] text-teal-300 font-extrabold">
-                <span>{lang === "ur" ? "جیتنے کا" : "Win Rate"}</span>
-                <span className="text-white">{game.winRate}</span>
+              {/* Teal Win Rate Badge */}
+              <div className="bg-[#143638] border-t border-teal-500/40 px-2 py-1 flex items-center justify-between text-[10px] text-teal-300 font-extrabold">
+                <span>{lang === "ur" ? "جیتنے کا" : "RTP"}</span>
+                <span className="text-white font-black">{game.winRate}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Floating Right Widgets (Dragon VIP & WhatsApp CS) */}
+        {/* Floating Customer Support (WhatsApp) */}
         <div className="fixed right-3 bottom-24 z-30 flex flex-col items-center gap-2">
-          {/* Dragon VIP badge */}
-          <button
-            onClick={() => setAuthModal("login")}
-            className="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-300 p-0.5 shadow-2xl active:scale-95 transition hover:scale-105"
-          >
-            <div className="w-full h-full rounded-full bg-[#122622] flex items-center justify-center text-xl">
-              🐲
-            </div>
-          </button>
-
-          {/* WhatsApp / CS Chat Bubble */}
           <button
             onClick={() =>
-              alert("Pakvip 24/7 Official Support is ready to assist you!")
+              alert("Pakvip 24/7 Support: Official WhatsApp helpline is available for withdrawals & deposits!")
             }
-            className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-2xl hover:scale-105 active:scale-95 transition animate-pulse"
+            className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-2xl hover:scale-105 active:scale-95 transition animate-pulse border-2 border-white/40"
           >
             <MessageCircle className="w-6 h-6 fill-white" />
           </button>
         </div>
 
-        {/* Floating "ہوم اسکرین میں شامل کریں" (Add to Home Screen) Banner */}
+        {/* Floating "Add to Home Screen" Banner */}
         <div className="fixed bottom-16 left-0 right-0 z-30 flex justify-center px-4 pointer-events-none">
           <button
             onClick={() =>
-              alert("To install Pakvip: Tap browser menu (⋮) -> 'Add to Home screen'")
+              alert("Install Pakvip Web App: Tap browser menu (⋮) -> 'Add to Home screen'!")
             }
             className="pointer-events-auto max-w-xs w-full py-2 px-3 rounded-full bg-gradient-to-r from-[#44df88] to-[#3ae48e] text-black font-black text-xs flex items-center justify-center gap-2 shadow-2xl active:scale-95 transition"
           >
@@ -463,10 +522,9 @@ function PakvipRealHome() {
           </button>
         </div>
 
-        {/* Bottom App Navigation Bar (Exact 5 items from screenshot) */}
-        <nav className="fixed bottom-0 left-0 right-0 z-40 flex justify-center bg-[#0d0e17]/95 backdrop-blur-md border-t border-[#202438]">
+        {/* Bottom App Navigation Bar */}
+        <nav className="fixed bottom-0 left-0 right-0 z-40 flex justify-center bg-[#0d0f1a]/95 backdrop-blur-md border-t border-[#1d2138]">
           <div className="w-full max-w-[430px] grid grid-cols-5 py-2 px-1 text-center items-center">
-            {/* Promotion */}
             <button
               onClick={() => setActiveNav("promo")}
               className={`flex flex-col items-center ${
@@ -479,20 +537,22 @@ function PakvipRealHome() {
               </span>
             </button>
 
-            {/* Activity / Rewards */}
             <button
-              onClick={() => setActiveNav("activity")}
+              onClick={() => {
+                setActiveNav("activity");
+                setChestOpen(true);
+              }}
               className={`flex flex-col items-center ${
                 activeNav === "activity" ? "text-emerald-400" : "text-gray-400"
               }`}
             >
               <Gift className="w-5 h-5" />
               <span className="text-[10px] font-bold mt-0.5">
-                {lang === "ur" ? "سرگرمی" : "Activity"}
+                {lang === "ur" ? "سرگرمی" : "Rewards"}
               </span>
             </button>
 
-            {/* Center Big Game Controller Button (Lime green) */}
+            {/* Glowing Lime Controller Button */}
             <button
               onClick={() => setActiveNav("games")}
               className="flex justify-center -mt-3"
@@ -502,9 +562,8 @@ function PakvipRealHome() {
               </div>
             </button>
 
-            {/* Wallet / Purse */}
             <button
-              onClick={() => setAuthModal("login")}
+              onClick={() => setAuthModal("deposit")}
               className={`flex flex-col items-center ${
                 activeNav === "wallet" ? "text-emerald-400" : "text-gray-400"
               }`}
@@ -515,7 +574,6 @@ function PakvipRealHome() {
               </span>
             </button>
 
-            {/* Account / Profile */}
             <button
               onClick={() => setAuthModal("login")}
               className={`flex flex-col items-center ${
@@ -530,38 +588,46 @@ function PakvipRealHome() {
           </div>
         </nav>
 
-        {/* Details Dialog Modal */}
-        {detailsOpen && (
+        {/* Lucky Treasure Chest Modal */}
+        {chestOpen && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="w-full max-w-xs bg-[#171a2a] rounded-2xl border border-teal-500/40 p-4 shadow-2xl relative text-center">
+            <div className="w-full max-w-xs bg-[#16192a] rounded-2xl border border-amber-500/40 p-5 text-center relative shadow-2xl">
               <button
-                onClick={() => setDetailsOpen(false)}
+                onClick={() => setChestOpen(false)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
-              <h3 className="text-base font-black text-amber-300">
-                {lang === "ur" ? "خصوصی رعایت اور تفصیلات" : "Pakvip Official Notice"}
+              <h3 className="text-lg font-black text-yellow-300">
+                🎁 DAILY LUCKY REWARD
               </h3>
-              <p className="text-xs text-gray-300 mt-2 leading-relaxed">
-                {lang === "ur"
-                  ? "پاک وی آئی پی میں ڈپازٹ اور نکلوانا 24 گھنٹے دستیاب ہے۔ ایزی پیسہ اور جاز کیش کی تصدیق صرف 2 منٹ میں مکمل ہو جاتی ہے۔"
-                  : "Instant 24/7 JazzCash & EasyPaisa deposits & withdrawals with zero commission fee."}
+              <p className="text-xs text-gray-300 mt-1">
+                Claim your free Pakvip daily sign-in cash!
               </p>
+              <div className="my-4 py-6 bg-gradient-to-b from-amber-500/10 to-transparent rounded-xl border border-amber-500/20">
+                <span className="text-5xl">👑</span>
+                <p className="text-xl font-black text-amber-400 mt-2">
+                  + PKR 500 FREE
+                </p>
+              </div>
               <button
-                onClick={() => setDetailsOpen(false)}
-                className="mt-4 w-full py-2 bg-[#3ae48e] text-black font-extrabold text-xs rounded-xl"
+                onClick={() => {
+                  setBalance((b) => b + 500);
+                  setChestOpen(false);
+                  alert("PKR 500 credited to your Pakvip account!");
+                }}
+                className="w-full py-2.5 bg-[#3ae48e] text-black font-black text-xs rounded-xl shadow-lg active:scale-95 transition"
               >
-                OK
+                CLAIM TO WALLET
               </button>
             </div>
           </div>
         )}
 
-        {/* Login / Register Dialog */}
+        {/* Auth / Deposit Dialog with JazzCash & EasyPaisa */}
         {authModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="w-full max-w-xs bg-[#161928] rounded-2xl border border-teal-500/40 p-5 shadow-2xl relative">
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-xs bg-[#151829] rounded-2xl border border-teal-500/50 p-5 shadow-2xl relative">
               <button
                 onClick={() => setAuthModal(null)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
@@ -569,62 +635,73 @@ function PakvipRealHome() {
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex justify-center mb-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center font-black text-black text-lg">
+              <div className="text-center mb-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-teal-400 to-emerald-600 flex items-center justify-center font-black text-black text-lg mx-auto mb-2 shadow">
                   RV
+                </div>
+                <h3 className="font-black text-lg text-white">
+                  {authModal === "deposit"
+                    ? "Instant Deposit"
+                    : authModal === "login"
+                      ? "Pakvip Member Login"
+                      : "Register Account"}
+                </h3>
+                <p className="text-[11px] text-gray-400 mt-0.5">
+                  Official Pakistan Gaming Network
+                </p>
+              </div>
+
+              {/* Payment Methods */}
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                <div className="p-2 rounded-xl bg-[#1d2238] border border-red-500/40 text-center">
+                  <span className="text-xs font-black text-red-400 block">
+                    JazzCash
+                  </span>
+                  <span className="text-[9px] text-gray-400">Instant (0% Fee)</span>
+                </div>
+                <div className="p-2 rounded-xl bg-[#1d2238] border border-emerald-500/40 text-center">
+                  <span className="text-xs font-black text-emerald-400 block">
+                    EasyPaisa
+                  </span>
+                  <span className="text-[9px] text-gray-400">Instant (0% Fee)</span>
                 </div>
               </div>
 
-              <h3 className="text-center font-black text-lg text-white">
-                {authModal === "login"
-                  ? lang === "ur"
-                    ? "لاگ ان کریں"
-                    : "Pakvip Login"
-                  : lang === "ur"
-                    ? "رجسٹر کریں"
-                    : "Create Account"}
-              </h3>
-              <p className="text-center text-[11px] text-gray-400 mb-4">
-                JazzCash • EasyPaisa • Instant Payouts
-              </p>
-
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 block mb-1">
-                    {lang === "ur" ? "موبائل نمبر" : "Phone Number (+92)"}
+                    Mobile Number (Pakistan +92)
                   </label>
                   <input
                     type="tel"
-                    placeholder="300 1234567"
-                    className="w-full px-3 py-2 bg-[#0e101a] border border-[#2b3047] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-teal-400"
+                    placeholder="0300 1234567"
+                    className="w-full px-3 py-2 bg-[#0c0e18] border border-[#272c47] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-teal-400"
                   />
                 </div>
 
                 <div>
                   <label className="text-[11px] font-bold text-gray-300 block mb-1">
-                    {lang === "ur" ? "پاس ورڈ" : "Password"}
+                    Password
                   </label>
                   <input
                     type="password"
                     placeholder="••••••••"
-                    className="w-full px-3 py-2 bg-[#0e101a] border border-[#2b3047] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-teal-400"
+                    className="w-full px-3 py-2 bg-[#0c0e18] border border-[#272c47] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-teal-400"
                   />
                 </div>
 
                 <button
                   onClick={() => {
-                    alert("Welcome to Pakvip!");
+                    alert("Welcome to Pakvip Official Gaming!");
                     setAuthModal(null);
                   }}
                   className="w-full py-2.5 mt-2 bg-[#3ae48e] text-black font-black text-xs rounded-xl shadow-lg active:scale-95 transition"
                 >
-                  {authModal === "login"
-                    ? lang === "ur"
-                      ? "لاگ ان"
-                      : "LOGIN"
-                    : lang === "ur"
-                      ? "اکاؤنٹ بنائیں"
-                      : "REGISTER"}
+                  {authModal === "deposit"
+                    ? "PROCEED TO DEPOSIT"
+                    : authModal === "login"
+                      ? "LOGIN SECURELY"
+                      : "CREATE ACCOUNT"}
                 </button>
               </div>
             </div>
