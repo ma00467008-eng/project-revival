@@ -1,0 +1,97 @@
+{
+  "source": "code-archive",
+  "source_file": "saveweb2zip-com-www-pakvip14-com.zip",
+  "capabilities": [
+    {
+      "capability": "code",
+      "source": "Static Vue site bundle; archive contains two identical HTML entry files, one CSS bundle, one JavaScript bundle, fonts, and images.",
+      "outcome": "All 29 supplied files were copied unchanged, but the home page cannot render because referenced page scripts and styles under /assets are absent from the archive.",
+      "status": "pending",
+      "next_action": "Request a complete site export including its referenced /assets files, then verify the original page in preview."
+    },
+    {
+      "capability": "schema",
+      "source": "No schema or database migration files were included; the bundled client calls external account and cashier APIs.",
+      "outcome": "No schema can be recreated from this archive alone.",
+      "status": "pending",
+      "next_action": "Provide the original backend source or identify its data provider if account and payment data must be migrated."
+    },
+    {
+      "capability": "records",
+      "source": "No user or application record export was included; the client references external account APIs.",
+      "outcome": "Existing records are not present in the preview.",
+      "status": "pending",
+      "next_action": "Provide the original provider's user and application data exports after preview review."
+    },
+    {
+      "capability": "auth identities",
+      "source": "Login, registration, and third-party account flows are present in the client bundle; no user identity export or auth server was included.",
+      "outcome": "The page can be previewed, but account migration is not verified.",
+      "status": "pending",
+      "next_action": "Provide original user IDs, email addresses, profiles, and the original auth provider export for migration to Lovable Cloud."
+    },
+    {
+      "capability": "authorization",
+      "source": "The client bundle includes account-related controls but no server policies or role definitions.",
+      "outcome": "Access boundaries cannot be verified from the static archive.",
+      "status": "pending",
+      "next_action": "Provide the original authorization rules or backend source before migrating protected account access."
+    },
+    {
+      "capability": "uploaded file bytes",
+      "source": "The archive includes site images and fonts, but no user-uploaded file export or storage metadata.",
+      "outcome": "Bundled site assets will be copied; external user files are not included.",
+      "status": "pending",
+      "next_action": "Provide the original storage export if user-uploaded files must be migrated."
+    },
+    {
+      "capability": "external providers",
+      "source": "The JavaScript bundle references api.pakvipapiapi.com, apiweb.arbpay.co, arwwallet.com, live chat, and analytics scripts.",
+      "outcome": "References are preserved in the unchanged site bundle; provider ownership and live behavior are unverified.",
+      "status": "pending",
+      "next_action": "Identify which existing providers should remain connected and provide their service setup when live verification is requested."
+    },
+    {
+      "capability": "public endpoints",
+      "source": "External API endpoints are referenced by the bundled client; no endpoint implementation is included.",
+      "outcome": "Existing endpoint references remain unchanged.",
+      "status": "pending",
+      "next_action": "Provide the original API service source or documentation to migrate and verify account and cashier requests."
+    },
+    {
+      "capability": "callbacks and webhooks",
+      "source": "No callback or webhook handler files were included.",
+      "outcome": "No handlers can be migrated or verified from this archive.",
+      "status": "pending",
+      "next_action": "Provide callback and webhook source or configuration if these are part of the production service."
+    },
+    {
+      "capability": "schedules",
+      "source": "No scheduled jobs or triggers were included.",
+      "outcome": "No schedules detected in the static archive.",
+      "status": "not_detected",
+      "next_action": "None identified from supplied files."
+    },
+    {
+      "capability": "secrets",
+      "source": "The archive inspector found no environment variable names or sensitive files.",
+      "outcome": "No secret values copied.",
+      "status": "not_detected",
+      "next_action": "Request provider credentials securely only if live service verification is later requested."
+    },
+    {
+      "capability": "cutover",
+      "source": "The original bundled client has hardcoded fallback API hosts.",
+      "outcome": "No endpoint or provider cutover performed.",
+      "status": "pending",
+      "next_action": "Confirm the backend and provider migration approach before changing production endpoint references."
+    },
+    {
+      "capability": "verification",
+      "source": "The supplied archive is a static frontend without its API services or user data.",
+      "outcome": "Preview verification only; account, cashier, provider, and existing-record flows remain unverified.",
+      "status": "pending",
+      "next_action": "Verify the rendered preview after the missing /assets files are supplied; test connected services only after their source and access are available."
+    }
+  ]
+}

@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Imported site packaging
+- Keep the supplied Pakvip static bundle byte-for-byte under `public/pakvip` and load its original `index.html` through the root preview frame; this preserves the exported site without porting it into React.

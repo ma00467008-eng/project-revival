@@ -1,0 +1,4 @@
+- [x] Safely inspect the archive and copy all 29 supplied site files unchanged into `public/pakvip`.
+- [ ] Obtain the complete site export, including referenced `/assets` scripts and styles; the supplied archive omits these and the preview is blank. Waiting on the user.
+- [ ] Verify the original page once the missing files are available.
+- [ ] Resolve account, cashier, and existing-data migration; only the compiled frontend was supplied, while the referenced APIs and user records are not. Waiting on the user/provider source.
