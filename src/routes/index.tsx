@@ -1,25 +1,11 @@
+
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pakvip - Best Online Casinos in Pakistan | Free Bonus Games" },
-      {
-        name: "description",
-        content:
-          "Official Pakvip Pakistan: Win Go Lottery, Aviator, JILI Slots, Live Casino & Fishing with instant JazzCash & EasyPaisa payouts.",
-      },
-      {
-        property: "og:title",
-        content: "Pakvip - Best Online Casinos in Pakistan",
-      },
-      {
-        property: "og:description",
-        content:
-          "Official Pakvip Pakistan: Win Go Lottery, Aviator, JILI Slots, Live Casino & Fishing.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: "My Gaming Website" },
+      { name: "description", content: "Welcome to our gaming website." },
     ],
     links: [{ rel: "icon", href: "/pakvip/images/favico.ico" }],
   }),
@@ -30,10 +16,10 @@ function Index() {
   return (
     <main className="fixed inset-0 h-dvh w-full bg-[#111] overflow-hidden m-0 p-0">
       <iframe
-        className="h-full w-full border-0 block m-0 p-0"
-        src="https://www.pakvip21.com/"
-        title="Pakvip Official"
-        allow="fullscreen; payment; camera; microphone; geolocation"
+        className="h-full w-full border-0 block"
+        src="/pakvip/index.html"
+        title="My Gaming Website"
+        allow="fullscreen"
       />
     </main>
   );
