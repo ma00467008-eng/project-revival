@@ -1,5 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useMemo } from "react";
+import { createFileRoute } from '@tanstack/react-router'
 import {
   Volume2,
   Gamepad2,
@@ -34,20 +33,26 @@ import {
   RefreshCw,
   QrCode,
   DollarSign,
+  Sparkles,
+  Download,
+  Smartphone,
+  Search,
+  Crown,
+  ChevronDown,
+  Check
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Winzo Play - Pakistan's #1 Online Casino & Gaming Platform" },
+      { title: "WinZO - Pakistan's #1 Online Casino & Gaming Platform" },
       {
         name: "description",
-        content:
-          "Official Winzo Play: Recommended Games, JILI Slots, Spribe Aviator, Win Go Lottery, Activity Center, Promotion Agency, and Wallet.",
+        content: "Official WinZO: Pakistan's #1 Online Casino, Live Win Go, Lottery, Aviator, JILI Slots, JazzCash & EasyPaisa 24/7 Fast Payouts.",
       },
       {
         property: "og:title",
-        content: "Winzo Play - Pakistan's #1 Online Gaming Platform",
+        content: "WinZO - Pakistan's #1 Online Casino & Gaming Platform",
       },
       {
         property: "og:description",
@@ -58,7 +63,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [{ rel: "icon", href: "/pakvip/images/favico.ico" }],
   }),
-  component: WinzoPlayApp,
+  component: WinzoApp,
 });
 
 // Authentic pakvip21.com Theme Colors
@@ -232,7 +237,7 @@ const LOTTERY_GAMES: GameItem[] = [
   {
     id: "wingo-30s",
     title: "Win Go 30s",
-    provider: "WINZO",
+    provider: "WinZO",
     rtp: "98.90%",
     hot: true,
     img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_202608101818434tdn.png",
@@ -240,21 +245,21 @@ const LOTTERY_GAMES: GameItem[] = [
   {
     id: "k3-lottery",
     title: "K3 Lotre",
-    provider: "WINZO",
+    provider: "WinZO",
     rtp: "98.30%",
     img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260810181852r5xt.png",
   },
   {
     id: "5d-lottery",
     title: "5D Lotre",
-    provider: "WINZO",
+    provider: "WinZO",
     rtp: "98.15%",
     img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_202608101819028h63.png",
   },
   {
     id: "trx-wingo",
     title: "Trx Win Go",
-    provider: "WINZO",
+    provider: "WinZO",
     rtp: "98.70%",
     hot: true,
     img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260810181917mlmi.png",
@@ -262,7 +267,7 @@ const LOTTERY_GAMES: GameItem[] = [
   {
     id: "motorace",
     title: "MotoRace",
-    provider: "WINZO",
+    provider: "WinZO",
     rtp: "97.50%",
     img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260811123643rnhj.png",
   },
@@ -464,27 +469,41 @@ const PVC_GAMES: GameItem[] = [
 
 // Live Winning Information from pakvip21 API
 const LIVE_WINNERS = [
-  { user: "MemberNNGQNSPE", game: "Aviator", amount: "Rs 7,390,180" },
-  { user: "MemberZGHVEGRM", game: "WinGo 30 sec", amount: "Rs 24,500" },
-  { user: "MemberXTYUIOPQ", game: "Super Ace", amount: "Rs 148,000" },
-  { user: "MemberKLMNOPQR", game: "Chicken Road 2", amount: "Rs 62,400" },
-  { user: "MemberABCDWXYZ", game: "Fortune Gems 2", amount: "Rs 89,500" },
+  { user: "92300***781", game: "Aviator", amount: "Rs 1,240,500", time: "Just now" },
+  { user: "Ali_Khan***92", game: "Super Ace", amount: "Rs 48,200", time: "1m ago" },
+  { user: "92345***824", game: "Win Go 30s", amount: "Rs 350,000", time: "2m ago" },
+  { user: "Malik***110", game: "Fortune Gems 2", amount: "Rs 18,900", time: "3m ago" },
+  { user: "92312***993", game: "Space XY", amount: "Rs 92,600", time: "4m ago" },
+  { user: "Farhan***567", game: "Cai Shen Fishing", amount: "Rs 64,000", time: "5m ago" },
+  { user: "92333***812", game: "Chicken Road 2", amount: "Rs 115,000", time: "6m ago" },
+  { user: "Raja***404", game: "Boxing King", amount: "Rs 27,800", time: "7m ago" },
 ];
 
-export function WinzoPlayApp() {
+
+export function WinzoApp() {
   // Navigation Tabs: home | activity | promo | wallet | account
   const [activeTab, setActiveTab] = useState<"home" | "activity" | "promo" | "wallet" | "account">("home");
   const [activeBanner, setActiveBanner] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("popular");
+  const [slotVendor, setSlotVendor] = useState("ALL");
 
-  // User Local Storage Wallet (Decoupled from real servers)
+  // User Local Storage Wallet (with pakvip_user key & migration from winzo_play_user)
   const [user, setUser] = useState<{ phone: string; balance: number; vip: number } | null>(null);
+  
+  // Modals
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showChestModal, setShowChestModal] = useState(false);
+  const [showTurntableModal, setShowTurntableModal] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
   const [chestOpened, setChestOpened] = useState(false);
   const [chestReward, setChestReward] = useState(0);
 
   // Active Playable Game Modal
   const [activeGame, setActiveGame] = useState<GameItem | null>(null);
+
+  // Progressive Jackpot live ticker
+  const [jackpot, setJackpot] = useState(88492150.8);
 
   // Win Go State
   const [wingoTimer, setWingoTimer] = useState(30);
@@ -499,9 +518,14 @@ export function WinzoPlayApp() {
   const [aviatorCrashed, setAviatorCrashed] = useState(false);
   const [aviatorCashedOut, setAviatorCashedOut] = useState(false);
 
+  // Turntable State
+  const [turntableSpinning, setTurntableSpinning] = useState(false);
+  const [turntableAngle, setTurntableAngle] = useState(0);
+  const [turntablePrize, setTurntablePrize] = useState<string | null>(null);
+
   // Deposit Form State
   const [depositAmount, setDepositAmount] = useState(1000);
-  const [depositMethod, setDepositMethod] = useState<"jazzcash" | "easypaisa">("jazzcash");
+  const [depositMethod, setDepositMethod] = useState<"jazzcash" | "easypaisa" | "bank" | "usdt">("jazzcash");
   const [depositTid, setDepositTid] = useState("");
   const [depositSuccessMsg, setDepositSuccessMsg] = useState("");
 
@@ -514,8 +538,13 @@ export function WinzoPlayApp() {
   // Wallet Tab Sub-tabs
   const [walletSubTab, setWalletSubTab] = useState<"deposit" | "withdraw" | "records">("deposit");
   const [withdrawAmount, setWithdrawAmount] = useState(1000);
+  const [withdrawMethod, setWithdrawMethod] = useState<"jazzcash" | "easypaisa">("jazzcash");
+  const [withdrawAccountTitle, setWithdrawAccountTitle] = useState("");
   const [withdrawPhone, setWithdrawPhone] = useState("");
   const [withdrawMsg, setWithdrawMsg] = useState("");
+
+  // Toast / Copy notification
+  const [copyToast, setCopyToast] = useState("");
 
   // Transactions Log
   const [transactions, setTransactions] = useState<
@@ -525,27 +554,43 @@ export function WinzoPlayApp() {
     { id: "TX984101", type: "Win", amount: 2400, time: "2026-11-25 14:12", status: "Completed" },
   ]);
 
+  const triggerToast = (msg: string) => {
+    setCopyToast(msg);
+    setTimeout(() => setCopyToast(""), 2500);
+  };
+
   useEffect(() => {
-    const saved = localStorage.getItem("winzo_play_user");
+    // Check pakvip_user first, fallback to winzo_play_user
+    const saved = localStorage.getItem("winzo_user") || localStorage.getItem("pakvip_user") || localStorage.getItem("winzo_play_user");
     if (saved) {
       try {
-        setUser(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        setUser(parsed);
+        localStorage.setItem("winzo_user", JSON.stringify(parsed));
       } catch (e) {}
     } else {
       const defaultUser = { phone: "03001234567", balance: 5000, vip: 1 };
       setUser(defaultUser);
-      localStorage.setItem("winzo_play_user", JSON.stringify(defaultUser));
+      localStorage.setItem("winzo_user", JSON.stringify(defaultUser));
     }
   }, []);
 
   const saveUser = (updated: { phone: string; balance: number; vip: number }) => {
     setUser(updated);
-    localStorage.setItem("winzo_play_user", JSON.stringify(updated));
+    localStorage.setItem("winzo_user", JSON.stringify(updated));
   };
 
   // Carousel timer
   useEffect(() => {
     const t = setInterval(() => setActiveBanner((prev) => (prev + 1) % 2), 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Progressive Jackpot incrementer
+  useEffect(() => {
+    const t = setInterval(() => {
+      setJackpot((prev) => +(prev + (Math.random() * 0.4 + 0.1)).toFixed(2));
+    }, 1200);
     return () => clearInterval(t);
   }, []);
 
@@ -581,6 +626,33 @@ export function WinzoPlayApp() {
     }
     return () => clearInterval(anim);
   }, [aviatorRunning, aviatorCrashed, aviatorCashedOut]);
+
+  // Lucky Turntable Spin
+  const spinTurntable = () => {
+    if (turntableSpinning || !user) return;
+    setTurntableSpinning(true);
+    setTurntablePrize(null);
+    const prizes = [
+      { label: "Rs 100", amount: 100 },
+      { label: "Rs 200", amount: 200 },
+      { label: "Rs 500", amount: 500 },
+      { label: "Rs 1,000", amount: 1000 },
+      { label: "Rs 50", amount: 50 },
+      { label: "Rs 2,000", amount: 2000 },
+      { label: "Rs 300", amount: 300 },
+      { label: "Rs 5,000", amount: 5000 },
+    ];
+    const pickedIdx = Math.floor(Math.random() * prizes.length);
+    const degrees = 360 * 5 + (pickedIdx * 45) + 22.5;
+    setTurntableAngle((prev) => prev + degrees);
+
+    setTimeout(() => {
+      setTurntableSpinning(false);
+      const won = prizes[pickedIdx];
+      setTurntablePrize(won.label);
+      saveUser({ ...user, balance: user.balance + won.amount });
+    }, 3800);
+  };
 
   // Section Header Component (Pakvip21 style)
   const SectionHeader = ({
@@ -677,6 +749,14 @@ export function WinzoPlayApp() {
       style={{ backgroundColor: THEME.bgL1 }}
       dir="ltr"
     >
+      {/* Toast Notification */}
+      {copyToast && (
+        <div className="fixed top-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-[#17B15E] text-white text-xs font-bold shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>{copyToast}</span>
+        </div>
+      )}
+
       {/* ============================================================== */}
       {/* 1. TOP HEADER (pakvip21.com layout)                            */}
       {/* ============================================================== */}
@@ -685,58 +765,91 @@ export function WinzoPlayApp() {
         style={{ backgroundColor: `${THEME.bgL2}F5`, borderColor: THEME.border }}
       >
         <div className="flex items-center gap-2">
-          <div className="relative w-8 h-8 rounded-lg flex items-center justify-center p-1 bg-gradient-to-br from-[#21D9CC]/20 to-[#BED921]/20 border border-[#21D9CC]/50">
-            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow">
-              <defs>
-                <linearGradient id="wpNeon" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#21D9CC" />
-                  <stop offset="100%" stopColor="#BED921" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M16 28 L28 72 L42 38 L54 72 L66 28"
-                fill="none"
-                stroke="url(#wpNeon)"
-                strokeWidth="10"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M58 28 L78 28 C88 28 88 50 78 50 L58 50 L58 72"
-                fill="none"
-                stroke="#E6EBF0"
-                strokeWidth="8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          {/* WinZO Official Gaming Logo */}
+          <div className="relative w-8 h-8 rounded-lg flex items-center justify-center p-0.5 bg-gradient-to-br from-[#FFDE30] via-[#21D9CC] to-[#BED921] shadow-[0_0_12px_rgba(255,222,48,0.35)]">
+            <div className="w-full h-full rounded-[6px] bg-[#161420] flex items-center justify-center overflow-hidden p-1">
+              <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow">
+                <defs>
+                  <linearGradient id="winzoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FFDE30" />
+                    <stop offset="50%" stopColor="#21D9CC" />
+                    <stop offset="100%" stopColor="#BED921" />
+                  </linearGradient>
+                  <linearGradient id="winzoPlay" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#FFDE30" />
+                    <stop offset="100%" stopColor="#FFA500" />
+                  </linearGradient>
+                </defs>
+                {/* Stylized geometric WinZO 'W' */}
+                <path
+                  d="M14 26 L28 76 L44 38 L52 56 L62 26"
+                  fill="none"
+                  stroke="url(#winzoGrad)"
+                  strokeWidth="11"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Integrated dynamic Play triangle in the ZO spark */}
+                <polygon
+                  points="62,42 86,56 62,70"
+                  fill="url(#winzoPlay)"
+                />
+                {/* Accent jewel */}
+                <circle cx="86" cy="30" r="4.5" fill="#BED921" />
+              </svg>
+            </div>
           </div>
           <div>
-            <div className="flex items-center gap-1 leading-none">
-              <span className="font-black text-sm tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#21D9CC] to-[#BED921]">
-                WINZO PLAY
+            <div className="flex items-center gap-1.5 leading-none">
+              <span className="font-black text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FFDE30] via-[#21D9CC] to-[#BED921]">
+                WinZO
               </span>
-              <span className="text-[8px] px-1 py-0.2 rounded font-bold bg-[#21D9CC]/20 text-[#21D9CC]">
+              <span className="text-[8px] px-1 py-0.2 rounded font-black bg-gradient-to-r from-[#FFDE30] to-[#BED921] text-[#15131E]">
                 VIP
               </span>
             </div>
-            <span className="text-[9px] text-[#9EA2A8]">Official Online Casino</span>
+            <span className="text-[9px] text-[#9EA2A8] font-medium">Official Gaming Platform</span>
           </div>
         </div>
 
-        {/* Right Section: Balance & Deposit */}
+        {/* Right Section: Header Controls & Balance & Deposit */}
         <div className="flex items-center gap-1.5">
+          {/* Quick CS Icon */}
+          <button
+            onClick={() => setShowSupportModal(true)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#21D9CC] border border-white/5 bg-[#282537] hover:bg-[#38374B] transition"
+            title="24/7 Customer Support"
+          >
+            <Headphones className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Quick Notice Bell */}
+          <button
+            onClick={() => setShowNoticeModal(true)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#BED921] border border-white/5 bg-[#282537] hover:bg-[#38374B] transition"
+            title="Official Announcements"
+          >
+            <Bell className="w-3.5 h-3.5" />
+          </button>
+
           {user ? (
             <>
               <div
                 onClick={() => setShowDepositModal(true)}
-                className="cursor-pointer px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
+                className="cursor-pointer px-2 py-1 rounded-lg border flex items-center gap-1.5 hover:border-[#21D9CC]/50 transition"
                 style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-[#17B15E] animate-pulse" />
                 <span className="text-xs font-bold text-[#E6EBF0] font-mono">
                   Rs {user.balance.toLocaleString()}
                 </span>
+                <RefreshCw
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    triggerToast("Balance refreshed!");
+                  }}
+                  className="w-2.5 h-2.5 text-[#9EA2A8] hover:text-[#21D9CC]"
+                />
               </div>
               <button
                 onClick={() => setShowDepositModal(true)}
@@ -782,16 +895,23 @@ export function WinzoPlayApp() {
                 {activeBanner === 0 ? (
                   <img
                     src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823173234k1c5.png"
-                    alt="Banner 1"
+                    alt="PakVIP Featured Promotions"
                     className="w-full h-full object-cover"
                   />
                 ) : (
                   <img
                     src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823172133g2ho.png"
-                    alt="Banner 2"
+                    alt="PakVIP First Recharge Bonus"
                     className="w-full h-full object-cover"
                   />
                 )}
+              </div>
+              {/* Quick VIP Tag */}
+              <div className="absolute top-2 left-2 z-20">
+                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#15131E]/80 backdrop-blur-md border border-[#21D9CC]/50 text-[#21D9CC] flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  +100% First Deposit Bonus
+                </span>
               </div>
               <div className="absolute bottom-2 right-3 flex items-center gap-1 z-20">
                 {[0, 1].map((i) => (
@@ -822,11 +942,11 @@ export function WinzoPlayApp() {
               <Volume2 className="w-4 h-4 text-[#21D9CC] flex-shrink-0 [img:not([style*='display: none'])~&]:hidden" />
               <div className="flex-1 overflow-hidden whitespace-nowrap">
                 <div className="inline-block animate-[marquee_20s_linear_infinite] text-[#9EA2A8] text-[11px]">
-                  Welcome to Winzo Play! Instant JazzCash & EasyPaisa deposits & withdrawals active with zero fee. 24/7 VIP Customer Support.
+                  Welcome to WinZO Official Platform! Instant JazzCash & EasyPaisa deposits & withdrawals active 24/7 with zero fee. Download the WinZO app to claim Rs 500 bonus!
                 </div>
               </div>
               <button
-                onClick={() => setShowDepositModal(true)}
+                onClick={() => setShowNoticeModal(true)}
                 className="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold text-[#15131E]"
                 style={{ background: THEME.gradient }}
               >
@@ -834,37 +954,75 @@ export function WinzoPlayApp() {
               </button>
             </section>
 
-            {/* 3D Category Bar */}
+            {/* 3D Category Bar (pakvip21 exact) */}
             <section className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    const el = document.getElementById(`sec-${cat.id}`);
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="flex-shrink-0 flex flex-col items-center justify-center p-1.5 rounded-xl transition border min-w-[62px] border-transparent bg-[#201D2B] hover:border-white/10 active:scale-95"
-                >
-                  <div className="w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden mb-1">
-                    <img
-                      src={cat.img}
-                      alt={cat.label}
-                      className="w-10 h-10 object-contain drop-shadow"
-                      loading="lazy"
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#9EA2A8] truncate max-w-[64px]">
-                    {cat.label}
+              {CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setSelectedCategory(cat.id);
+                      const el = document.getElementById(`sec-${cat.id}`);
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`flex-shrink-0 flex flex-col items-center justify-center p-1.5 rounded-xl transition border min-w-[62px] ${
+                      isSelected
+                        ? "border-[#21D9CC] bg-[#21D9CC]/15 shadow-[0_0_10px_rgba(33,217,204,0.3)]"
+                        : "border-transparent bg-[#201D2B] hover:border-white/10 active:scale-95"
+                    }`}
+                  >
+                    <div className="w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden mb-1">
+                      <img
+                        src={cat.img}
+                        alt={cat.label}
+                        className="w-10 h-10 object-contain drop-shadow"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span
+                      className={`text-[10px] font-bold truncate max-w-[64px] ${
+                        isSelected ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+                      }`}
+                    >
+                      {cat.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </section>
+
+            {/* Super Progressive Jackpot Pool (pakvip21 bigaward) */}
+            <section
+              className="p-3 rounded-2xl border space-y-1 relative overflow-hidden bg-gradient-to-r from-[#201D2B] via-[#282537] to-[#201D2B]"
+              style={{ borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Crown className="w-4 h-4 text-[#BED921] animate-bounce" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#BED921]">
+                    Super Progressive Jackpot
                   </span>
-                </button>
-              ))}
+                </div>
+                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#BED921]/20 text-[#BED921] font-bold">
+                  LIVE POOL
+                </span>
+              </div>
+              <div className="text-center py-1">
+                <div className="font-mono font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#BED921] via-[#21D9CC] to-[#BED921] tracking-wider">
+                  PKR {jackpot.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </div>
+                <p className="text-[9px] text-[#9EA2A8] mt-0.5">
+                  Play any JILI Slot or Win Go round to qualify for the Mega Drop
+                </p>
+              </div>
             </section>
 
             {/* Section 1: Recommended Games */}
             <section id="sec-popular" className="space-y-2">
               <SectionHeader
                 title="Recommended Games"
-                subtitle="The most popular electronic games among players"
+                subtitle="The most popular electronic games among Pakistani players"
               />
               <div className="grid grid-cols-3 gap-2">
                 {RECOMMENDED_GAMES.map((game) => (
@@ -875,7 +1033,7 @@ export function WinzoPlayApp() {
 
             {/* Section 2: Top Games */}
             <section className="space-y-2">
-              <SectionHeader title="Top Games" subtitle="Recently played games" />
+              <SectionHeader title="Top Games" subtitle="Recently played and trending games" />
               <div className="grid grid-cols-3 gap-2">
                 {TOP_GAMES.map((game) => (
                   <GameCard key={game.id} game={game} />
@@ -905,7 +1063,7 @@ export function WinzoPlayApp() {
             <section id="sec-original" className="space-y-2">
               <SectionHeader
                 title="Original"
-                subtitle="The games are independently developed by our team, fun, fair, and safe"
+                subtitle="The games are independently developed by WinZO, fun, fair, and safe"
               />
               <div className="grid grid-cols-3 gap-2">
                 {ORIGINAL_GAMES.map((game) => (
@@ -920,18 +1078,24 @@ export function WinzoPlayApp() {
                 title="Slots"
                 subtitle="Online real-time game dealers, all verified fair games"
               />
+              {/* Vendor Filter Buttons */}
               <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-                {["JILI", "BGAMING", "INOUT", "CQ9", "JDB", "TURBO", "PP"].map((prov) => (
-                  <span
+                {["ALL", "JILI", "BGAMING", "INOUT", "CQ9", "JDB", "TURBO", "PP"].map((prov) => (
+                  <button
                     key={prov}
-                    className="flex-shrink-0 text-[9px] font-mono font-bold px-2 py-0.5 rounded-md bg-[#282537] text-[#9EA2A8] border border-white/5"
+                    onClick={() => setSlotVendor(prov)}
+                    className={`flex-shrink-0 text-[9px] font-mono font-bold px-2 py-0.5 rounded-md border transition ${
+                      slotVendor === prov
+                        ? "bg-[#21D9CC] text-[#15131E] border-transparent font-black"
+                        : "bg-[#282537] text-[#9EA2A8] border-white/5 hover:text-[#E6EBF0]"
+                    }`}
                   >
                     {prov}
-                  </span>
+                  </button>
                 ))}
               </div>
               <div className="grid grid-cols-3 gap-2">
-                {SLOT_GAMES.map((game) => (
+                {SLOT_GAMES.filter((g) => slotVendor === "ALL" || g.provider.toUpperCase().includes(slotVendor)).map((game) => (
                   <GameCard key={game.id} game={game} />
                 ))}
               </div>
@@ -970,7 +1134,7 @@ export function WinzoPlayApp() {
               </div>
             </section>
 
-            {/* Section 9: Winning Information */}
+            {/* Section 9: Winning Information (pakvip21 winner.vue) */}
             <section
               className="rounded-2xl p-3 border space-y-2"
               style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
@@ -982,94 +1146,146 @@ export function WinzoPlayApp() {
                     Winning information
                   </h3>
                 </div>
-                <span className="text-[10px] text-[#21D9CC] font-mono">Live</span>
+                <span className="text-[10px] text-[#21D9CC] font-mono font-bold">● Live Broadcast</span>
               </div>
               <div className="space-y-1.5">
                 {LIVE_WINNERS.map((w, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-2 rounded-xl text-xs border"
+                    className="flex items-center justify-between p-2 rounded-xl text-xs border transition hover:border-[#21D9CC]/30"
                     style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}
                   >
                     <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold bg-[#38374B] text-[#9EA2A8]">
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black bg-gradient-to-br from-[#282537] to-[#15131E] border border-white/10 text-[#21D9CC]">
                         {idx + 1}
                       </div>
                       <div>
                         <div className="font-mono text-[11px] text-[#E6EBF0] font-semibold">{w.user}</div>
-                        <div className="text-[10px] text-[#9EA2A8]">{w.game}</div>
+                        <div className="text-[9px] text-[#9EA2A8]">{w.game} • {w.time}</div>
                       </div>
                     </div>
-                    <div className="font-bold text-[#BED921] font-mono">{w.amount}</div>
+                    <div className="text-right">
+                      <div className="font-bold text-[#BED921] font-mono">{w.amount}</div>
+                      <span className="text-[8px] text-[#17B15E]">Paid to JazzCash/EP</span>
+                    </div>
                   </div>
                 ))}
               </div>
             </section>
 
-            {/* Section 10: Today's Earnings Chart */}
+            {/* Section 10: Today's Earnings Chart (pakvip21 DailyProfitRank) */}
             <section
-              className="rounded-2xl p-3 border space-y-3"
+              className="rounded-2xl p-3.5 border space-y-3"
               style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Trophy className="w-4 h-4 text-[#BED921]" />
                   <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
-                    Today's earnings chart
+                    Today's Earnings Ranking
                   </h3>
                 </div>
-                <span className="text-[10px] text-[#9EA2A8]">Daily Rank</span>
+                <span className="text-[10px] text-[#21D9CC] font-mono font-bold">Daily Profit</span>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-center pt-2">
-                <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
-                  <div className="w-7 h-7 mx-auto rounded-full bg-[#9EA2A8]/20 text-[#9EA2A8] flex items-center justify-center font-bold text-xs mb-1">
-                    2
+
+              {/* 3D Authentic Top 3 Podium */}
+              <div className="grid grid-cols-3 gap-2 text-center pt-3 items-end">
+                {/* Rank 2 (Left, Silver) */}
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end bg-[#201D2B]" style={{ borderColor: THEME.border }}>
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-9 h-9 rounded-full bg-[#9EA2A8]/20 border-2 border-[#9EA2A8] text-[#9EA2A8] flex items-center justify-center font-black text-sm">
+                      2
+                    </div>
                   </div>
-                  <span className="text-[10px] text-[#9EA2A8] truncate">Member347216</span>
-                  <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 4,120,000</span>
+                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">92321***410</span>
+                  <span className="text-[9px] text-[#9EA2A8]">Silver VIP</span>
+                  <span className="text-xs font-black text-[#BED921] font-mono mt-1">Rs 1,740,200</span>
                 </div>
-                <div className="p-3 rounded-xl border-2 border-[#21D9CC] flex flex-col justify-end shadow-[0_0_15px_rgba(33,217,204,0.3)]" style={{ backgroundColor: THEME.bgL3 }}>
-                  <div className="w-8 h-8 mx-auto rounded-full bg-[#21D9CC] text-[#15131E] flex items-center justify-center font-black text-sm mb-1">
-                    1
+
+                {/* Rank 1 (Center, Elevated, Gold) */}
+                <div className="p-3.5 rounded-xl border-2 border-[#BED921] flex flex-col justify-end bg-[#252233] shadow-[0_0_20px_rgba(190,217,33,0.35)] relative -top-2">
+                  <Crown className="w-5 h-5 text-[#BED921] mx-auto mb-0.5 animate-bounce" />
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-10 h-10 rounded-full bg-[#BED921] text-[#15131E] flex items-center justify-center font-black text-base shadow-lg">
+                      1
+                    </div>
                   </div>
-                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">MemberNNGQNSPE</span>
-                  <span className="text-xs font-black text-[#21D9CC] font-mono mt-1">Rs 7,390,180</span>
+                  <span className="text-[11px] text-[#E6EBF0] font-black truncate">92300***892</span>
+                  <span className="text-[9px] text-[#BED921] font-bold">Crown Champion</span>
+                  <span className="text-sm font-black text-[#21D9CC] font-mono mt-1">Rs 2,890,500</span>
                 </div>
-                <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
-                  <div className="w-7 h-7 mx-auto rounded-full bg-[#DD9138]/20 text-[#DD9138] flex items-center justify-center font-bold text-xs mb-1">
-                    3
+
+                {/* Rank 3 (Right, Bronze) */}
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end bg-[#201D2B]" style={{ borderColor: THEME.border }}>
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-9 h-9 rounded-full bg-[#DD9138]/20 border-2 border-[#DD9138] text-[#DD9138] flex items-center justify-center font-black text-sm">
+                      3
+                    </div>
                   </div>
-                  <span className="text-[10px] text-[#9EA2A8] truncate">MemberZGHVEG</span>
-                  <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 2,890,000</span>
+                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">92345***653</span>
+                  <span className="text-[9px] text-[#9EA2A8]">Bronze VIP</span>
+                  <span className="text-xs font-black text-[#BED921] font-mono mt-1">Rs 960,000</span>
                 </div>
+              </div>
+
+              {/* Ranks 4 to 7 Leaderboard List */}
+              <div className="space-y-1 pt-1 border-t border-white/5">
+                {[
+                  { rank: 4, user: "92314***901", profit: "Rs 680,400" },
+                  { rank: 5, user: "92333***219", profit: "Rs 520,000" },
+                  { rank: 6, user: "92308***544", profit: "Rs 445,100" },
+                  { rank: 7, user: "92318***872", profit: "Rs 389,000" },
+                ].map((item) => (
+                  <div key={item.rank} className="flex items-center justify-between p-2 rounded-lg bg-[#282537] text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="w-4 text-center font-mono font-bold text-[#9EA2A8]">{item.rank}</span>
+                      <span className="text-[#E6EBF0] font-mono text-[11px]">{item.user}</span>
+                    </div>
+                    <span className="font-mono font-bold text-[#21D9CC] text-xs">{item.profit}</span>
+                  </div>
+                ))}
               </div>
             </section>
 
-            {/* Section 11: Basic Tools */}
+            {/* Section 11: PAKVIP Platform Info & Basic Tools */}
             <section
-              className="rounded-2xl p-3 border space-y-2 text-xs"
+              className="rounded-2xl p-3.5 border space-y-3 text-xs"
               style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
             >
-              <h3 className="font-bold text-[#E6EBF0] uppercase tracking-wider text-[11px]">
-                Basic Tools
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-black text-[#E6EBF0] uppercase tracking-wider text-[11px]">
+                  WinZO Official Platform Tools
+                </h3>
+                <span className="text-[9px] text-[#FFDE30]">winzoplay.com</span>
+              </div>
               <div className="grid grid-cols-4 gap-2 text-center text-[#9EA2A8]">
-                <div onClick={() => alert("Language: English")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                <div onClick={() => triggerToast("Language: English (Pakistan)")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
                   <Globe className="w-4 h-4 mx-auto mb-1 text-[#21D9CC]" />
-                  <span className="text-[10px]">Language</span>
+                  <span className="text-[10px] font-bold">Language</span>
                 </div>
-                <div onClick={() => alert("Notice: System fully operational")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                <div onClick={() => setShowNoticeModal(true)} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
                   <Bell className="w-4 h-4 mx-auto mb-1 text-[#BED921]" />
-                  <span className="text-[10px]">Notice</span>
+                  <span className="text-[10px] font-bold">Notice</span>
                 </div>
-                <div onClick={() => alert("24/7 VIP CS: WhatsApp +92 300 0000000")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                <div onClick={() => setShowSupportModal(true)} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
                   <Headphones className="w-4 h-4 mx-auto mb-1 text-[#17B15E]" />
-                  <span className="text-[10px]">24/7 CS</span>
+                  <span className="text-[10px] font-bold">24/7 CS</span>
                 </div>
-                <div onClick={() => alert("Winzo Play Official Licensed Platform")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                <div onClick={() => alert("WinZO v3.8.2 Official Pakistani Gaming Platform")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
                   <HelpCircle className="w-4 h-4 mx-auto mb-1 text-[#9EA2A8]" />
-                  <span className="text-[10px]">About</span>
+                  <span className="text-[10px] font-bold">About</span>
                 </div>
+              </div>
+
+              {/* Responsible Gaming & License Notice */}
+              <div className="p-3 rounded-xl bg-[#15131E]/60 border border-white/5 space-y-1">
+                <div className="flex items-center gap-1.5 text-[#17B15E]">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span className="font-bold text-[10px]">Certified Fair Play & 100% Guaranteed Payouts</span>
+                </div>
+                <p className="text-[9px] text-[#9EA2A8] leading-tight">
+                  WinZO is officially licensed. Fast deposits and withdrawals via JazzCash, EasyPaisa, and Bank Transfer with 0% processing fee. 18+ Only.
+                </p>
               </div>
             </section>
           </div>
@@ -1084,12 +1300,34 @@ export function WinzoPlayApp() {
             <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 flex items-center justify-between" style={{ borderColor: THEME.border }}>
               <div>
                 <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase tracking-wider">
-                  Activity Center
+                  WinZO Activity Center
                 </span>
                 <h2 className="text-lg font-black text-[#E6EBF0]">Super Jackpot & Rewards</h2>
-                <p className="text-[11px] text-[#9EA2A8]">Complete missions and claim instant PKR cash</p>
+                <p className="text-[11px] text-[#9EA2A8]">Complete daily missions and claim instant PKR cash</p>
               </div>
               <Trophy className="w-10 h-10 text-[#BED921] flex-shrink-0" />
+            </div>
+
+            {/* Lucky Turntable Wheel Quick Launch Card */}
+            <div
+              onClick={() => setShowTurntableModal(true)}
+              className="p-3.5 rounded-2xl border cursor-pointer bg-gradient-to-r from-[#BED921]/20 via-[#282537] to-[#21D9CC]/20 flex items-center justify-between hover:border-[#21D9CC]/50 transition"
+              style={{ borderColor: THEME.border }}
+            >
+              <div className="space-y-0.5">
+                <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#BED921] text-[#15131E] uppercase">
+                  Daily Free Spin
+                </span>
+                <h3 className="text-sm font-black text-[#E6EBF0]">WinZO Lucky Turntable</h3>
+                <p className="text-[10px] text-[#9EA2A8]">Spin the wheel to win up to Rs 5,000 cash rewards!</p>
+              </div>
+              <button
+                className="px-3 py-1.5 rounded-xl text-xs font-black text-[#15131E] shadow-md flex items-center gap-1"
+                style={{ background: THEME.gradient }}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Spin Now</span>
+              </button>
             </div>
 
             {/* Gift Redemption Code Box */}
@@ -1099,7 +1337,7 @@ export function WinzoPlayApp() {
                 <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Gifts / Redemption Code</h3>
               </div>
               <p className="text-[10px] text-[#9EA2A8]">
-                Enter your redemption code to receive gift rewards directly into your wallet.
+                Enter your redemption code (e.g. WINZO2026 or WINZO888) to receive instant gift balance.
               </p>
               {giftClaimMsg ? (
                 <div className="p-2 rounded-xl bg-[#17B15E]/20 text-[#17B15E] text-xs font-bold text-center">
@@ -1117,11 +1355,17 @@ export function WinzoPlayApp() {
                   />
                   <button
                     onClick={() => {
-                      if (!giftCode.trim()) return alert("Please enter a code");
+                      if (!giftCode.trim()) return alert("Please enter a redemption code");
+                      const clean = giftCode.trim().toUpperCase();
                       if (user) {
-                        saveUser({ ...user, balance: user.balance + 500 });
-                        setGiftClaimMsg("Success! Rs 500 Gift Reward added to your balance!");
-                        setTimeout(() => setGiftClaimMsg(""), 3000);
+                        if (clean.includes("WINZO") || clean.includes("PAKVIP") || clean.includes("VIP")) {
+                          saveUser({ ...user, balance: user.balance + 500 });
+                          setGiftClaimMsg("Success! Rs 500 WinZO Gift Reward added to your balance!");
+                          setGiftCode("");
+                          setTimeout(() => setGiftClaimMsg(""), 3000);
+                        } else {
+                          alert("Invalid code. Try WINZO2026 or WINZO888");
+                        }
                       }
                     }}
                     className="px-4 py-2 rounded-xl text-xs font-bold text-[#15131E]"
@@ -1139,7 +1383,7 @@ export function WinzoPlayApp() {
                 <div>
                   <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Attendance Bonus</h3>
                   <p className="text-[10px] text-[#9EA2A8]">
-                    The more consecutive days you sign in, the higher the reward will be.
+                    Sign in consecutively for 7 days to claim higher rewards.
                   </p>
                 </div>
                 <Calendar className="w-5 h-5 text-[#BED921]" />
@@ -1174,7 +1418,7 @@ export function WinzoPlayApp() {
                   const rew = attendanceDay * 100;
                   saveUser({ ...user, balance: user.balance + rew });
                   setAttendanceClaimed(true);
-                  alert(`Checked in! Rs ${rew} Attendance Bonus credited!`);
+                  triggerToast(`Checked in! Rs ${rew} credited to your wallet!`);
                 }}
                 className={`w-full py-2.5 rounded-xl text-xs font-bold transition ${
                   attendanceClaimed
@@ -1190,15 +1434,15 @@ export function WinzoPlayApp() {
             {/* Activity Reward Promotions List (pakvip21 exact) */}
             <div className="space-y-2">
               <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0] px-1">
-                Active Promotions
+                WinZO Official Promotions
               </h3>
               {[
+                { title: "FIRST DEPOSIT BIG REWARDS", desc: "Double your first deposit with 100% matching bonus up to Rs 20,000.", tag: "DEPOSIT" },
                 { title: "AVIATOR ADDITIONAL REWARDS", desc: "Get an extra 5% cash rebate on every cashout above x50.00.", tag: "SPRIBE" },
                 { title: "WINGO WIN STREAK BONUS", desc: "Win 5 rounds consecutively in Win Go 30s to claim Rs 5,000 cash.", tag: "LOTTERY" },
                 { title: "LUCKY 10 DAYS OF INTEREST", desc: "Keep balance in your wallet to receive 0.8% daily compounded interest.", tag: "PASSIVE" },
                 { title: "CREATIVE VIDEO CONTENT REWARDS", desc: "Upload gameplay video on TikTok / YouTube and claim Rs 2,000 bounty.", tag: "BOUNTY" },
                 { title: "DAILY SLOTS TREASURE CHEST CHALLENGE", desc: "Bet 100 times in JILI Slots to unlock the Golden Mystery Chest.", tag: "CHEST" },
-                { title: "FIRST DEPOSIT BIG REWARDS", desc: "Double your first deposit with 100% matching bonus up to Rs 20,000.", tag: "DEPOSIT" },
                 { title: "INVITE & EARN REWARDS", desc: "Receive Rs 500 instantly for every friend who registers and deposits.", tag: "REFERRAL" },
               ].map((act, i) => (
                 <div
@@ -1236,7 +1480,7 @@ export function WinzoPlayApp() {
             {/* Header Banner */}
             <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 space-y-1" style={{ borderColor: THEME.border }}>
               <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase">
-                Agency Program
+                WinZO Agency Program
               </span>
               <h2 className="text-lg font-black text-[#E6EBF0]">Agency Promotion Center</h2>
               <p className="text-[11px] text-[#9EA2A8]">
@@ -1248,15 +1492,15 @@ export function WinzoPlayApp() {
             <div className="p-3.5 rounded-2xl border grid grid-cols-3 gap-2 text-center" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
               <div className="p-2 rounded-xl bg-[#282537]">
                 <span className="text-[9px] text-[#9EA2A8] block">Yesterday's Total</span>
-                <span className="text-sm font-black text-[#BED921] font-mono">Rs 0.00</span>
+                <span className="text-sm font-black text-[#BED921] font-mono">Rs 4,120.00</span>
               </div>
               <div className="p-2 rounded-xl bg-[#282537]">
                 <span className="text-[9px] text-[#9EA2A8] block">Direct Subordinates</span>
-                <span className="text-sm font-black text-[#21D9CC] font-mono">0</span>
+                <span className="text-sm font-black text-[#21D9CC] font-mono">42</span>
               </div>
               <div className="p-2 rounded-xl bg-[#282537]">
                 <span className="text-[9px] text-[#9EA2A8] block">Team Members</span>
-                <span className="text-sm font-black text-[#E6EBF0] font-mono">0</span>
+                <span className="text-sm font-black text-[#E6EBF0] font-mono">198</span>
               </div>
             </div>
 
@@ -1273,7 +1517,7 @@ export function WinzoPlayApp() {
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText("WINZO7788");
-                      alert("Invitation Code copied!");
+                      triggerToast("Invitation Code copied to clipboard!");
                     }}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
                     style={{ background: THEME.gradient }}
@@ -1286,12 +1530,12 @@ export function WinzoPlayApp() {
                 <div className="flex items-center justify-between p-2.5 rounded-xl border text-xs" style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}>
                   <div className="truncate max-w-[200px]">
                     <span className="text-[9px] text-[#9EA2A8] block">Invitation Link</span>
-                    <span className="font-mono text-[#E6EBF0] text-[11px] truncate">https://winzoplay.com/reg?r=WINZO7788</span>
+                    <span className="font-mono text-[#E6EBF0] text-[11px] truncate">https://pakvip21.com/register?r=WINZO7788</span>
                   </div>
                   <button
                     onClick={() => {
-                      navigator.clipboard.writeText("https://winzoplay.com/register?code=WINZO7788");
-                      alert("Invitation Link copied to clipboard!");
+                      navigator.clipboard.writeText("https://pakvip21.com/register?r=WINZO7788");
+                      triggerToast("Invitation Link copied to clipboard!");
                     }}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
                     style={{ background: THEME.gradient }}
@@ -1327,7 +1571,7 @@ export function WinzoPlayApp() {
 
             {/* Rules (pakvip21 exact) */}
             <div className="p-3.5 rounded-2xl border space-y-2 text-xs text-[#9EA2A8]" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
-              <h3 className="font-bold text-[#E6EBF0] uppercase text-[11px]">Promotion Rules</h3>
+              <h3 className="font-bold text-[#E6EBF0] uppercase text-[11px]">WinZO Promotion Rules</h3>
               <p><strong>01.</strong> There are 6 subordinate levels in inviting friends. If A invites B, B is level 1 of A. If B invites C, C is level 2 of A.</p>
               <p><strong>02.</strong> When inviting friends to register, you must send the invitation link provided or enter the invitation code manually.</p>
               <p><strong>03.</strong> The commission is calculated automatically every night at 00:00 and credited directly to your withdrawable wallet.</p>
@@ -1368,7 +1612,7 @@ export function WinzoPlayApp() {
 
               {/* Main Wallet Transfer Button */}
               <button
-                onClick={() => alert("All 3rd party game balances have been recycled to your Main Wallet!")}
+                onClick={() => triggerToast("All 3rd party game balances have been recycled to your Main Wallet!")}
                 className="w-full py-2 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 text-[#21D9CC] border-[#21D9CC]/30 hover:bg-[#21D9CC]/10 transition"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -1379,7 +1623,10 @@ export function WinzoPlayApp() {
             {/* Quick Actions (Deposit & Withdraw) */}
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => setShowDepositModal(true)}
+                onClick={() => {
+                  setWalletSubTab("deposit");
+                  setShowDepositModal(true);
+                }}
                 className="p-3 rounded-2xl font-black text-sm text-[#15131E] flex items-center justify-center gap-2 shadow-lg active:scale-95 transition"
                 style={{ background: THEME.gradient }}
               >
@@ -1413,41 +1660,88 @@ export function WinzoPlayApp() {
                     onSubmit={(e) => {
                       e.preventDefault();
                       if (!user || user.balance < withdrawAmount) return alert("Insufficient balance");
+                      if (withdrawAmount < 500) return alert("Minimum withdrawal is Rs 500");
                       saveUser({ ...user, balance: user.balance - withdrawAmount });
                       setTransactions((prev) => [
                         { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Withdraw", amount: withdrawAmount, time: "Just now", status: "Processing" },
                         ...prev,
                       ]);
-                      setWithdrawMsg(`Withdrawal of Rs ${withdrawAmount} submitted! Payout will arrive in your account shortly.`);
-                      setTimeout(() => setWithdrawMsg(""), 3000);
+                      setWithdrawMsg(`Withdrawal of Rs ${withdrawAmount.toLocaleString()} submitted to ${withdrawMethod.toUpperCase()}!`);
+                      setTimeout(() => {
+                        setWithdrawMsg("");
+                        setWalletSubTab("deposit");
+                      }, 2500);
                     }}
-                    className="space-y-2.5"
+                    className="space-y-3"
                   >
                     <div>
-                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Select Account (JazzCash / EasyPaisa)</label>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Withdrawal Method</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setWithdrawMethod("jazzcash")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold ${
+                            withdrawMethod === "jazzcash" ? "border-[#21D9CC] bg-[#21D9CC]/15 text-[#E6EBF0]" : "border-white/5 text-[#9EA2A8]"
+                          }`}
+                        >
+                          JazzCash
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setWithdrawMethod("easypaisa")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold ${
+                            withdrawMethod === "easypaisa" ? "border-[#BED921] bg-[#BED921]/15 text-[#E6EBF0]" : "border-white/5 text-[#9EA2A8]"
+                          }`}
+                        >
+                          EasyPaisa
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Account Title</label>
                       <input
                         type="text"
                         required
-                        placeholder="Enter 11-digit mobile number (0300...)"
+                        placeholder="Account Holder Name"
+                        value={withdrawAccountTitle}
+                        onChange={(e) => setWithdrawAccountTitle(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Mobile Account Number</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 03001234567"
                         value={withdrawPhone}
                         onChange={(e) => setWithdrawPhone(e.target.value)}
                         className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
                         style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
                       />
                     </div>
+
                     <div>
-                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Withdraw Amount (Rs)</label>
-                      <input
-                        type="number"
-                        min="500"
-                        max={user?.balance || 5000}
-                        required
-                        value={withdrawAmount}
-                        onChange={(e) => setWithdrawAmount(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none font-mono font-bold"
-                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
-                      />
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Amount (Rs) - Min Rs 500</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[500, 1000, 2000, 5000, 10000, 20000].map((amt) => (
+                          <button
+                            type="button"
+                            key={amt}
+                            onClick={() => setWithdrawAmount(amt)}
+                            className={`py-1.5 rounded-xl border text-xs font-mono font-bold ${
+                              withdrawAmount === amt ? "bg-[#BED921] text-[#15131E] border-transparent" : "bg-[#282537] text-[#9EA2A8] border-white/5"
+                            }`}
+                          >
+                            Rs {amt.toLocaleString()}
+                          </button>
+                        ))}
+                      </div>
                     </div>
+
                     <button
                       type="submit"
                       className="w-full py-2.5 rounded-xl font-bold text-xs text-[#15131E]"
@@ -1464,7 +1758,7 @@ export function WinzoPlayApp() {
             <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
               <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
                 <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Transaction History</h3>
-                <span className="text-[10px] text-[#9EA2A8]">Recent 10 entries</span>
+                <span className="text-[10px] text-[#9EA2A8]">Recent entries</span>
               </div>
 
               <div className="space-y-1.5">
@@ -1507,7 +1801,7 @@ export function WinzoPlayApp() {
                       VIP {user?.vip || 1}
                     </span>
                   </div>
-                  <div className="text-[10px] font-mono text-[#9EA2A8]">UID: 954821</div>
+                  <div className="text-[10px] font-mono text-[#9EA2A8]">UID: PAK954821</div>
                 </div>
               </div>
 
@@ -1526,13 +1820,13 @@ export function WinzoPlayApp() {
             {/* Feature Menu List (pakvip21 exact) */}
             <div className="p-2 rounded-2xl border space-y-1" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
               {[
-                { label: "VIP Center", icon: Trophy, color: "#BED921", action: () => alert("VIP Center: Level-up bonus Rs 1,000!") },
-                { label: "Safe Center (Security)", icon: Lock, color: "#21D9CC", action: () => alert("Safe Center: Password & PIN active.") },
-                { label: "Bank Card / E-Wallet Binding", icon: CreditCard, color: "#17B15E", action: () => alert("Binding: JazzCash & EasyPaisa bound.") },
+                { label: "VIP Center", icon: Trophy, color: "#BED921", action: () => alert("VIP Center: Level-up bonus Rs 1,000 available at VIP 2!") },
+                { label: "Safe Center (Security)", icon: Lock, color: "#21D9CC", action: () => alert("Safe Center: 2FA & Withdrawal PIN active.") },
+                { label: "Bank Card / E-Wallet Binding", icon: CreditCard, color: "#17B15E", action: () => alert("Bound: JazzCash (0300***1234) & EasyPaisa.") },
                 { label: "Transaction Records", icon: Clock, color: "#9EA2A8", action: () => setActiveTab("wallet") },
-                { label: "Notifications & Messages", icon: Bell, color: "#BED921", action: () => alert("No unread messages.") },
-                { label: "24/7 VIP Customer Service", icon: Headphones, color: "#21D9CC", action: () => alert("WhatsApp CS: +92 300 0000000") },
-                { label: "About Winzo Play", icon: HelpCircle, color: "#9EA2A8", action: () => alert("Winzo Play v2.4 Official Build") },
+                { label: "Notifications & Messages", icon: Bell, color: "#BED921", action: () => setShowNoticeModal(true) },
+                { label: "24/7 VIP Customer Service", icon: Headphones, color: "#21D9CC", action: () => setShowSupportModal(true) },
+                { label: "About WinZO", icon: HelpCircle, color: "#9EA2A8", action: () => alert("WinZO v3.8.2 Official Pakistani Gaming Platform") },
               ].map((item, i) => (
                 <button
                   key={i}
@@ -1552,9 +1846,10 @@ export function WinzoPlayApp() {
             <button
               onClick={() => {
                 if (confirm("Are you sure you want to log out?")) {
+                  localStorage.removeItem("winzo_user"); localStorage.removeItem("pakvip_user");
                   localStorage.removeItem("winzo_play_user");
                   setUser(null);
-                  alert("Logged out successfully.");
+                  triggerToast("Logged out successfully.");
                 }
               }}
               className="w-full py-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold text-[#D23838] border-[#D23838]/30 hover:bg-[#D23838]/10 transition"
@@ -1567,15 +1862,28 @@ export function WinzoPlayApp() {
       </main>
 
       {/* ============================================================== */}
-      {/* 3. FLOATING LUCKY TREASURE CHEST                               */}
+      {/* 3. FLOATING LUCKY TREASURE CHEST & TURNTABLE                   */}
       {/* ============================================================== */}
-      <div className="fixed bottom-20 right-3 z-30 flex flex-col items-center">
+      <div className="fixed bottom-20 right-3 z-30 flex flex-col items-center gap-2">
+        {/* Lucky Turntable Floating Button */}
+        <button
+          onClick={() => setShowTurntableModal(true)}
+          className="w-12 h-12 rounded-full flex items-center justify-center p-1 bg-gradient-to-br from-[#BED921] to-[#21D9CC] shadow-[0_0_15px_rgba(190,217,33,0.5)] animate-pulse hover:scale-110 transition-transform"
+          title="Lucky Spin Wheel"
+        >
+          <div className="w-full h-full rounded-full bg-[#15131E] flex items-center justify-center text-[#BED921]">
+            <Sparkles className="w-6 h-6 fill-current" />
+          </div>
+        </button>
+
+        {/* Lucky Treasure Chest */}
         <button
           onClick={() => {
             setChestOpened(false);
             setShowChestModal(true);
           }}
           className="w-14 h-14 relative flex items-center justify-center animate-bounce hover:scale-110 transition-transform"
+          title="Daily Treasure Chest"
         >
           <img
             src="/pakvip/images/box_closed-CHcnurtG.png"
@@ -1599,7 +1907,10 @@ export function WinzoPlayApp() {
         <div className="max-w-md mx-auto px-4 py-1.5 flex items-center justify-between relative">
           {/* Tab 1: Home */}
           <button
-            onClick={() => setActiveTab("home")}
+            onClick={() => {
+              setActiveTab("home");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className={`flex flex-col items-center gap-0.5 transition ${
               activeTab === "home" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
             }`}
@@ -1677,18 +1988,18 @@ export function WinzoPlayApp() {
       </nav>
 
       {/* ============================================================== */}
-      {/* 5. DEPOSIT MODAL (JazzCash & EasyPaisa)                         */}
+      {/* 5. DEPOSIT MODAL (JazzCash & EasyPaisa & Bank & USDT)           */}
       {/* ============================================================== */}
       {showDepositModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
           <div
-            className="w-full max-w-md rounded-t-3xl sm:rounded-3xl border p-5 space-y-4"
+            className="w-full max-w-md rounded-t-3xl sm:rounded-3xl border p-5 space-y-4 max-h-[90vh] overflow-y-auto"
             style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
           >
             <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: THEME.border }}>
               <div className="flex items-center gap-2">
                 <Wallet className="w-5 h-5 text-[#21D9CC]" />
-                <h3 className="font-black text-base text-[#E6EBF0]">Deposit Funds (PKR)</h3>
+                <h3 className="font-black text-base text-[#E6EBF0]">Deposit Funds (WinZO Official)</h3>
               </div>
               <button
                 onClick={() => setShowDepositModal(false)}
@@ -1714,7 +2025,7 @@ export function WinzoPlayApp() {
                     { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Deposit", amount: depositAmount, time: "Just now", status: "Success" },
                     ...prev,
                   ]);
-                  setDepositSuccessMsg(`Successfully credited Rs ${depositAmount.toLocaleString()}!`);
+                  setDepositSuccessMsg(`Successfully credited Rs ${depositAmount.toLocaleString()} to your balance!`);
                   setTimeout(() => {
                     setDepositSuccessMsg("");
                     setShowDepositModal(false);
@@ -1723,7 +2034,7 @@ export function WinzoPlayApp() {
                 className="space-y-3.5"
               >
                 <div>
-                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Payment Gateway</label>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Payment Gateway (Pakistan)</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
@@ -1757,9 +2068,9 @@ export function WinzoPlayApp() {
                 </div>
 
                 <div>
-                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Amount (Rs)</label>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Deposit Amount (PKR)</label>
                   <div className="grid grid-cols-3 gap-2">
-                    {[500, 1000, 2000, 5000, 10000, 25000].map((amt) => (
+                    {[300, 500, 1000, 2000, 5000, 10000, 25000, 50000].map((amt) => (
                       <button
                         type="button"
                         key={amt}
@@ -1777,13 +2088,26 @@ export function WinzoPlayApp() {
                 </div>
 
                 <div className="p-3 rounded-xl border space-y-1 text-xs" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
-                  <div className="flex justify-between text-[#9EA2A8]">
-                    <span>Merchant Account:</span>
-                    <span className="text-[#E6EBF0] font-mono font-bold">0300-9876543</span>
+                  <div className="flex justify-between items-center text-[#9EA2A8]">
+                    <span>Official Merchant Account:</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#E6EBF0] font-mono font-bold">0300-9876543</span>
+                      <Copy
+                        onClick={() => {
+                          navigator.clipboard.writeText("03009876543");
+                          triggerToast("Merchant number copied!");
+                        }}
+                        className="w-3.5 h-3.5 text-[#21D9CC] cursor-pointer"
+                      />
+                    </div>
                   </div>
                   <div className="flex justify-between text-[#9EA2A8]">
                     <span>Account Name:</span>
-                    <span className="text-[#E6EBF0] font-bold">WINZO OFFICIAL</span>
+                    <span className="text-[#BED921] font-bold">WINZO OFFICIAL</span>
+                  </div>
+                  <div className="flex justify-between text-[#9EA2A8]">
+                    <span>Bonus:</span>
+                    <span className="text-[#17B15E] font-bold">+10% Extra on first deposit</span>
                   </div>
                 </div>
 
@@ -1792,7 +2116,7 @@ export function WinzoPlayApp() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. 984512789"
+                    placeholder="Enter 11-digit TID from SMS"
                     value={depositTid}
                     onChange={(e) => setDepositTid(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border text-sm text-[#E6EBF0] outline-none"
@@ -1824,7 +2148,10 @@ export function WinzoPlayApp() {
           >
             <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
               <div>
-                <h3 className="font-black text-base text-[#E6EBF0]">Win Go 30s</h3>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-black text-base text-[#E6EBF0]">Win Go 30s</h3>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#FFDE30]/20 text-[#FFDE30]">WINZO</span>
+                </div>
                 <span className="text-[10px] text-[#9EA2A8]">Period #{wingoPeriod}</span>
               </div>
               <button onClick={() => setActiveGame(null)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
@@ -1902,7 +2229,7 @@ export function WinzoPlayApp() {
               onClick={() => {
                 if (!user || user.balance < wingoAmount) return alert("Insufficient balance");
                 saveUser({ ...user, balance: user.balance - wingoAmount });
-                alert(`Bet of Rs ${wingoAmount} placed for Round #${wingoPeriod}!`);
+                alert(`Bet of Rs ${wingoAmount} placed on Round #${wingoPeriod}! Good luck!`);
               }}
               className="w-full py-3 rounded-xl font-bold text-sm text-[#15131E] shadow-lg active:scale-95 transition"
               style={{ background: THEME.gradient }}
@@ -1923,7 +2250,10 @@ export function WinzoPlayApp() {
             style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
           >
             <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
-              <h3 className="font-black text-base text-[#E6EBF0]">Spribe Aviator</h3>
+              <div className="flex items-center gap-1.5">
+                <h3 className="font-black text-base text-[#E6EBF0]">Aviator</h3>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#D23838] text-white">SPRIBE</span>
+              </div>
               <button onClick={() => setActiveGame(null)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
                 <X className="w-4 h-4" />
               </button>
@@ -1981,7 +2311,7 @@ export function WinzoPlayApp() {
       {/* 8. LUCKY TREASURE CHEST MODAL                                  */}
       {/* ============================================================== */}
       {showChestModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
           <div
             className="w-full max-w-sm rounded-3xl border p-5 text-center space-y-4"
             style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
@@ -2007,7 +2337,7 @@ export function WinzoPlayApp() {
               </div>
             ) : (
               <p className="text-xs text-[#9EA2A8]">
-                Open your daily mystery chest and receive up to Rs 1,000 instantly!
+                Open your daily WinZO mystery chest and receive up to Rs 1,000 instantly!
               </p>
             )}
             {!chestOpened ? (
@@ -2029,6 +2359,193 @@ export function WinzoPlayApp() {
                 DONE
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 9. LUCKY TURNTABLE WHEEL MODAL                                 */}
+      {/* ============================================================== */}
+      {showTurntableModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 text-center space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#BED921]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO Lucky Turntable</h3>
+              </div>
+              <button onClick={() => setShowTurntableModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Turntable Wheel */}
+            <div className="relative w-56 h-56 mx-auto my-2 flex items-center justify-center">
+              {/* Pointer */}
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-x-8 border-x-transparent border-t-[18px] border-t-[#D23838] drop-shadow-lg" />
+              {/* Wheel Body */}
+              <div
+                className="w-full h-full rounded-full border-4 border-[#21D9CC] shadow-[0_0_25px_rgba(33,217,204,0.4)] flex items-center justify-center overflow-hidden transition-transform duration-[3800ms] cubic-bezier(0.17, 0.67, 0.12, 0.99)"
+                style={{
+                  transform: `rotate(${turntableAngle}deg)`,
+                  background: "conic-gradient(#201D2B 0deg 45deg, #282537 45deg 90deg, #201D2B 90deg 135deg, #282537 135deg 180deg, #201D2B 180deg 225deg, #282537 225deg 270deg, #201D2B 270deg 315deg, #282537 315deg 360deg)",
+                }}
+              >
+                {/* Visual Segments */}
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-[#BED921]">
+                  <span className="absolute top-2">Rs 100</span>
+                  <span className="absolute right-3">Rs 200</span>
+                  <span className="absolute bottom-2">Rs 500</span>
+                  <span className="absolute left-3">Rs 1,000</span>
+                </div>
+              </div>
+              {/* Center Hub */}
+              <div
+                onClick={spinTurntable}
+                className="absolute z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer font-black text-xs text-[#15131E] shadow-xl active:scale-95 border-2 border-white/20"
+                style={{ background: THEME.gradient }}
+              >
+                SPIN
+              </div>
+            </div>
+
+            {turntablePrize ? (
+              <div className="p-3 rounded-2xl bg-[#17B15E]/20 border border-[#17B15E] text-[#17B15E] font-black text-sm">
+                🎉 Won {turntablePrize}! Credited to your wallet!
+              </div>
+            ) : (
+              <p className="text-[11px] text-[#9EA2A8]">
+                Tap SPIN to rotate the lucky wheel. Free daily spin for VIP players!
+              </p>
+            )}
+
+            <button
+              onClick={spinTurntable}
+              disabled={turntableSpinning}
+              className={`w-full py-3 rounded-xl font-black text-sm transition ${
+                turntableSpinning ? "bg-[#38374B] text-[#9EA2A8]" : "text-[#15131E] shadow-lg active:scale-95"
+              }`}
+              style={{ background: turntableSpinning ? undefined : THEME.gradient }}
+            >
+              {turntableSpinning ? "Spinning..." : "SPIN THE WHEEL NOW"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 10. 24/7 CUSTOMER SUPPORT MODAL                                */}
+      {/* ============================================================== */}
+      {showSupportModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Headphones className="w-4 h-4 text-[#21D9CC]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO 24/7 Customer Care</h3>
+              </div>
+              <button onClick={() => setShowSupportModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <a
+                href="https://t.me/prediction_officials"
+                target="_blank"
+                rel="noreferrer"
+                className="p-3 rounded-xl bg-[#282537] hover:bg-[#38374B] flex items-center justify-between border border-white/5 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#21D9CC]/20 text-[#21D9CC] flex items-center justify-center font-bold">
+                    TG
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-xs font-bold text-[#E6EBF0]">Official Telegram Channel</span>
+                    <span className="text-[10px] text-[#9EA2A8]">@prediction_officials</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+              </a>
+
+              <a
+                href="https://wa.me/923001234567"
+                target="_blank"
+                rel="noreferrer"
+                className="p-3 rounded-xl bg-[#282537] hover:bg-[#38374B] flex items-center justify-between border border-white/5 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#17B15E]/20 text-[#17B15E] flex items-center justify-center font-bold">
+                    WA
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-xs font-bold text-[#E6EBF0]">WhatsApp VIP Support</span>
+                    <span className="text-[10px] text-[#9EA2A8]">+92 300 1234567</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+              </a>
+
+              <button
+                onClick={() => {
+                  setShowSupportModal(false);
+                  triggerToast("Connecting to live agent in Pakistan...");
+                }}
+                className="w-full p-3 rounded-xl bg-[#21D9CC]/15 text-[#21D9CC] border border-[#21D9CC]/30 font-bold text-xs flex items-center justify-center gap-1.5"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Start Live Chat Support</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 11. OFFICIAL NOTICE MODAL                                      */}
+      {/* ============================================================== */}
+      {showNoticeModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 space-y-3.5"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Bell className="w-4 h-4 text-[#BED921]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO Official Announcement</h3>
+              </div>
+              <button onClick={() => setShowNoticeModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3 rounded-xl bg-[#282537] text-xs text-[#9EA2A8] space-y-2 leading-relaxed">
+              <p className="font-bold text-[#E6EBF0]">Dear WinZO Members,</p>
+              <p>
+                1. JazzCash and EasyPaisa automatic deposit and withdrawal channels are running at 100% capacity with 0% fee.
+              </p>
+              <p>
+                2. First recharge players receive an instant 100% matching cash bonus up to Rs 20,000.
+              </p>
+              <p>
+                3. Download the official WinZO Android APK from the homepage for faster loading and exclusive daily check-in gifts.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowNoticeModal(false)}
+              className="w-full py-2.5 rounded-xl font-bold text-xs text-[#15131E]"
+              style={{ background: THEME.gradient }}
+            >
+              I Understand
+            </button>
           </div>
         </div>
       )}
