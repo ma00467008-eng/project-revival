@@ -21,6 +21,19 @@ import {
   ShieldCheck,
   TrendingUp,
   Award,
+  Copy,
+  Share2,
+  Users,
+  Calendar,
+  CreditCard,
+  Lock,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Clock,
+  LogOut,
+  RefreshCw,
+  QrCode,
+  DollarSign,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -30,7 +43,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Official Winzo Play: Recommended Games, JILI Slots, Spribe Aviator, Win Go Lottery, and Live Casino with instant JazzCash & EasyPaisa payouts.",
+          "Official Winzo Play: Recommended Games, JILI Slots, Spribe Aviator, Win Go Lottery, Activity Center, Promotion Agency, and Wallet.",
       },
       {
         property: "og:title",
@@ -48,7 +61,7 @@ export const Route = createFileRoute("/")({
   component: WinzoPlayApp,
 });
 
-// Authentic pakvip21.com Colors
+// Authentic pakvip21.com Theme Colors
 const THEME = {
   bgL1: "#15131E",
   bgL2: "#201D2B",
@@ -165,7 +178,7 @@ const RECOMMENDED_GAMES: GameItem[] = [
   },
 ];
 
-// 2. Top Games (Recently played hits)
+// 2. Top Games
 const TOP_GAMES: GameItem[] = [
   {
     id: "super-ace",
@@ -459,6 +472,7 @@ const LIVE_WINNERS = [
 ];
 
 export function WinzoPlayApp() {
+  // Navigation Tabs: home | activity | promo | wallet | account
   const [activeTab, setActiveTab] = useState<"home" | "activity" | "promo" | "wallet" | "account">("home");
   const [activeBanner, setActiveBanner] = useState(0);
 
@@ -469,7 +483,7 @@ export function WinzoPlayApp() {
   const [chestOpened, setChestOpened] = useState(false);
   const [chestReward, setChestReward] = useState(0);
 
-  // Active Game Modal
+  // Active Playable Game Modal
   const [activeGame, setActiveGame] = useState<GameItem | null>(null);
 
   // Win Go State
@@ -485,11 +499,31 @@ export function WinzoPlayApp() {
   const [aviatorCrashed, setAviatorCrashed] = useState(false);
   const [aviatorCashedOut, setAviatorCashedOut] = useState(false);
 
-  // Deposit Form
+  // Deposit Form State
   const [depositAmount, setDepositAmount] = useState(1000);
   const [depositMethod, setDepositMethod] = useState<"jazzcash" | "easypaisa">("jazzcash");
   const [depositTid, setDepositTid] = useState("");
   const [depositSuccessMsg, setDepositSuccessMsg] = useState("");
+
+  // Activity Tab State: Gift Code & Attendance
+  const [giftCode, setGiftCode] = useState("");
+  const [giftClaimMsg, setGiftClaimMsg] = useState("");
+  const [attendanceDay, setAttendanceDay] = useState(1);
+  const [attendanceClaimed, setAttendanceClaimed] = useState(false);
+
+  // Wallet Tab Sub-tabs
+  const [walletSubTab, setWalletSubTab] = useState<"deposit" | "withdraw" | "records">("deposit");
+  const [withdrawAmount, setWithdrawAmount] = useState(1000);
+  const [withdrawPhone, setWithdrawPhone] = useState("");
+  const [withdrawMsg, setWithdrawMsg] = useState("");
+
+  // Transactions Log
+  const [transactions, setTransactions] = useState<
+    { id: string; type: "Deposit" | "Withdraw" | "Win"; amount: number; time: string; status: string }[]
+  >([
+    { id: "TX984102", type: "Deposit", amount: 1000, time: "2026-11-25 15:40", status: "Success" },
+    { id: "TX984101", type: "Win", amount: 2400, time: "2026-11-25 14:12", status: "Completed" },
+  ]);
 
   useEffect(() => {
     const saved = localStorage.getItem("winzo_play_user");
@@ -580,14 +614,13 @@ export function WinzoPlayApp() {
     </div>
   );
 
-  // 3-Column Poster Card Component (Pakvip21 exact)
+  // 3-Column Poster Card Component (Pakvip21 exact 124x168)
   const GameCard = ({ game }: { game: GameItem }) => (
     <div
       onClick={() => setActiveGame(game)}
       className="group cursor-pointer rounded-xl overflow-hidden border transition-all duration-200 hover:scale-[1.03] active:scale-95 flex flex-col justify-between"
       style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
     >
-      {/* Poster Image (124x168 aspect-[3/4]) */}
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#161420]">
         <img
           src={game.img}
@@ -595,14 +628,11 @@ export function WinzoPlayApp() {
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-
-        {/* Top Provider Tag */}
         <div className="absolute top-1 left-1">
           <span className="text-[8px] font-extrabold px-1 py-0.2 rounded bg-black/75 backdrop-blur-sm text-[#E6EBF0] uppercase font-mono">
             {game.provider}
           </span>
         </div>
-
         {game.hot && (
           <div className="absolute top-1 right-1">
             <span className="text-[8px] font-black px-1 py-0.2 rounded bg-[#D23838] text-white flex items-center gap-0.5">
@@ -611,8 +641,6 @@ export function WinzoPlayApp() {
             </span>
           </div>
         )}
-
-        {/* Play Overlay */}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200">
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center text-[#15131E] shadow-lg"
@@ -622,8 +650,6 @@ export function WinzoPlayApp() {
           </div>
         </div>
       </div>
-
-      {/* pakvip21 .win-odds Box */}
       <div className="p-1.5 space-y-1 bg-[#1a1724]">
         <div className="text-[10px] font-bold text-[#E6EBF0] truncate">{game.title}</div>
         <div className="space-y-0.5">
@@ -658,7 +684,6 @@ export function WinzoPlayApp() {
         className="sticky top-0 z-40 px-3 py-2 flex items-center justify-between backdrop-blur-md border-b"
         style={{ backgroundColor: `${THEME.bgL2}F5`, borderColor: THEME.border }}
       >
-        {/* Left: Brand Monogram & Name */}
         <div className="flex items-center gap-2">
           <div className="relative w-8 h-8 rounded-lg flex items-center justify-center p-1 bg-gradient-to-br from-[#21D9CC]/20 to-[#BED921]/20 border border-[#21D9CC]/50">
             <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow">
@@ -699,7 +724,7 @@ export function WinzoPlayApp() {
           </div>
         </div>
 
-        {/* Right: Wallet & Deposit Buttons */}
+        {/* Right Section: Balance & Deposit */}
         <div className="flex items-center gap-1.5">
           {user ? (
             <>
@@ -715,7 +740,7 @@ export function WinzoPlayApp() {
               </div>
               <button
                 onClick={() => setShowDepositModal(true)}
-                className="px-2.5 py-1 rounded-lg text-xs font-black text-[#15131E] shadow-sm hover:brightness-110 active:scale-95 transition"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-black text-[#15131E] shadow-sm hover:brightness-110 active:scale-95 transition"
                 style={{ background: THEME.gradient }}
               >
                 Deposit
@@ -742,367 +767,807 @@ export function WinzoPlayApp() {
         </div>
       </header>
 
-      {/* Main App Container */}
-      <main className="max-w-md mx-auto px-2.5 pt-2 space-y-4">
+      {/* ============================================================== */}
+      {/* 2. TAB CONTENT SWITCHER                                        */}
+      {/* ============================================================== */}
+      <main className="max-w-md mx-auto px-2.5 pt-2">
         {/* ============================================================== */}
-        {/* 2. OFFICIAL PAKVIP21 BANNER CAROUSEL                           */}
+        {/* TAB 1: HOME SECTION                                           */}
         {/* ============================================================== */}
-        <section className="relative rounded-2xl overflow-hidden border shadow-lg" style={{ borderColor: THEME.border }}>
-          <div className="relative h-40 w-full bg-[#110e1a]">
-            {activeBanner === 0 ? (
-              <img
-                src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823173234k1c5.png"
-                alt="Banner 1"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <img
-                src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823172133g2ho.png"
-                alt="Banner 2"
-                className="w-full h-full object-cover"
-              />
-            )}
-          </div>
-          <div className="absolute bottom-2 right-3 flex items-center gap-1 z-20">
-            {[0, 1].map((i) => (
-              <button
-                key={i}
-                onClick={() => setActiveBanner(i)}
-                className={`h-1 rounded-full transition-all ${
-                  activeBanner === i ? "w-4 bg-[#21D9CC]" : "w-1 bg-[#525167]"
-                }`}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* 3. NOTICE TICKER (pakvip21 Speaker + Detail)                   */}
-        {/* ============================================================== */}
-        <section
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs"
-          style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
-        >
-          <img
-            src="/pakvip/images/noticeBarSpeaker-Cfctxsme.svg"
-            alt="Speaker"
-            className="w-4 h-4 flex-shrink-0"
-            onError={(e) => {
-              (e.target as HTMLElement).style.display = "none";
-            }}
-          />
-          <Volume2 className="w-4 h-4 text-[#21D9CC] flex-shrink-0 [img:not([style*='display: none'])~&]:hidden" />
-          <div className="flex-1 overflow-hidden whitespace-nowrap">
-            <div className="inline-block animate-[marquee_20s_linear_infinite] text-[#9EA2A8] text-[11px]">
-              Welcome to Winzo Play! Instant JazzCash & EasyPaisa deposits and withdrawals active with zero fee. 24/7 VIP Customer Support.
-            </div>
-          </div>
-          <button
-            onClick={() => setShowDepositModal(true)}
-            className="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold text-[#15131E]"
-            style={{ background: THEME.gradient }}
-          >
-            Detail
-          </button>
-        </section>
-
-        {/* ============================================================== */}
-        {/* 4. OFFICIAL 3D CATEGORIES (Horizontal Scroll)                  */}
-        {/* ============================================================== */}
-        <section className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => {
-                const el = document.getElementById(`sec-${cat.id}`);
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="flex-shrink-0 flex flex-col items-center justify-center p-1.5 rounded-xl transition border min-w-[62px] border-transparent bg-[#201D2B] hover:border-white/10 active:scale-95"
-            >
-              <div className="w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden mb-1">
-                <img
-                  src={cat.img}
-                  alt={cat.label}
-                  className="w-10 h-10 object-contain drop-shadow"
-                  loading="lazy"
-                />
+        {activeTab === "home" && (
+          <div className="space-y-4">
+            {/* Banner Carousel */}
+            <section className="relative rounded-2xl overflow-hidden border shadow-lg" style={{ borderColor: THEME.border }}>
+              <div className="relative h-40 w-full bg-[#110e1a]">
+                {activeBanner === 0 ? (
+                  <img
+                    src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823173234k1c5.png"
+                    alt="Banner 1"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823172133g2ho.png"
+                    alt="Banner 2"
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
-              <span className="text-[10px] font-bold text-[#9EA2A8] truncate max-w-[64px]">
-                {cat.label}
-              </span>
-            </button>
-          ))}
-        </section>
+              <div className="absolute bottom-2 right-3 flex items-center gap-1 z-20">
+                {[0, 1].map((i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveBanner(i)}
+                    className={`h-1 rounded-full transition-all ${
+                      activeBanner === i ? "w-4 bg-[#21D9CC]" : "w-1 bg-[#525167]"
+                    }`}
+                  />
+                ))}
+              </div>
+            </section>
 
-        {/* ============================================================== */}
-        {/* SECTION 1: Recommended Games                                  */}
-        {/* ============================================================== */}
-        <section id="sec-popular" className="space-y-2">
-          <SectionHeader
-            title="Recommended Games"
-            subtitle="The most popular electronic games among players"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {RECOMMENDED_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 2: Top Games                                          */}
-        {/* ============================================================== */}
-        <section className="space-y-2">
-          <SectionHeader
-            title="Top Games"
-            subtitle="Recently played games"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {TOP_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 3: Lottery                                            */}
-        {/* ============================================================== */}
-        <section id="sec-lottery" className="space-y-2">
-          <SectionHeader
-            title="Lottery"
-            subtitle="Fair and diverse lottery gameplay"
-            moreCount={5}
-            onMore={() => {
-              const wg = LOTTERY_GAMES.find((g) => g.id === "wingo-30s");
-              if (wg) setActiveGame(wg);
-            }}
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {LOTTERY_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 4: Original (Mini Games)                              */}
-        {/* ============================================================== */}
-        <section id="sec-original" className="space-y-2">
-          <SectionHeader
-            title="Original"
-            subtitle="The games are independently developed by our team, fun, fair, and safe"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {ORIGINAL_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 5: Slots (JILI, BGAMING, INOUT)                        */}
-        {/* ============================================================== */}
-        <section id="sec-slots" className="space-y-2">
-          <SectionHeader
-            title="Slots"
-            subtitle="Online real-time game dealers, all verified fair games"
-          />
-          {/* Provider Pills Row from pakvip21 */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-            {["JILI", "BGAMING", "INOUT", "CQ9", "JDB", "TURBO", "PP"].map((prov) => (
-              <span
-                key={prov}
-                className="flex-shrink-0 text-[9px] font-mono font-bold px-2 py-0.5 rounded-md bg-[#282537] text-[#9EA2A8] border border-white/5"
+            {/* Notice Marquee */}
+            <section
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <img
+                src="/pakvip/images/noticeBarSpeaker-Cfctxsme.svg"
+                alt="Speaker"
+                className="w-4 h-4 flex-shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
+              <Volume2 className="w-4 h-4 text-[#21D9CC] flex-shrink-0 [img:not([style*='display: none'])~&]:hidden" />
+              <div className="flex-1 overflow-hidden whitespace-nowrap">
+                <div className="inline-block animate-[marquee_20s_linear_infinite] text-[#9EA2A8] text-[11px]">
+                  Welcome to Winzo Play! Instant JazzCash & EasyPaisa deposits & withdrawals active with zero fee. 24/7 VIP Customer Support.
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDepositModal(true)}
+                className="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold text-[#15131E]"
+                style={{ background: THEME.gradient }}
               >
-                {prov}
-              </span>
-            ))}
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            {SLOT_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
+                Detail
+              </button>
+            </section>
 
-        {/* ============================================================== */}
-        {/* SECTION 6: Fishing                                            */}
-        {/* ============================================================== */}
-        <section id="sec-fishing" className="space-y-2">
-          <SectionHeader
-            title="Fishing"
-            subtitle="Classic arcade gameplay, super cool special effects"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {FISHING_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 7: Casino (Live Video)                                */}
-        {/* ============================================================== */}
-        <section id="sec-casino" className="space-y-2">
-          <SectionHeader
-            title="Casino"
-            subtitle="Real dealers, immersive experience"
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {CASINO_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 8: PVC (Cards & Chess)                                */}
-        {/* ============================================================== */}
-        <section id="sec-pvc" className="space-y-2">
-          <SectionHeader
-            title="PVC"
-            subtitle="Traditional card games"
-            moreCount={2}
-          />
-          <div className="grid grid-cols-3 gap-2">
-            {PVC_GAMES.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 9: Winning Information (pakvip21 live ticker)         */}
-        {/* ============================================================== */}
-        <section
-          className="rounded-2xl p-3 border space-y-2"
-          style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-[#17B15E] animate-ping" />
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
-                Winning information
-              </h3>
-            </div>
-            <span className="text-[10px] text-[#21D9CC] font-mono">Live</span>
-          </div>
-
-          <div className="space-y-1.5">
-            {LIVE_WINNERS.map((w, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between p-2 rounded-xl text-xs border"
-                style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold bg-[#38374B] text-[#9EA2A8]">
-                    {idx + 1}
+            {/* 3D Category Bar */}
+            <section className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    const el = document.getElementById(`sec-${cat.id}`);
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="flex-shrink-0 flex flex-col items-center justify-center p-1.5 rounded-xl transition border min-w-[62px] border-transparent bg-[#201D2B] hover:border-white/10 active:scale-95"
+                >
+                  <div className="w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden mb-1">
+                    <img
+                      src={cat.img}
+                      alt={cat.label}
+                      className="w-10 h-10 object-contain drop-shadow"
+                      loading="lazy"
+                    />
                   </div>
+                  <span className="text-[10px] font-bold text-[#9EA2A8] truncate max-w-[64px]">
+                    {cat.label}
+                  </span>
+                </button>
+              ))}
+            </section>
+
+            {/* Section 1: Recommended Games */}
+            <section id="sec-popular" className="space-y-2">
+              <SectionHeader
+                title="Recommended Games"
+                subtitle="The most popular electronic games among players"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {RECOMMENDED_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 2: Top Games */}
+            <section className="space-y-2">
+              <SectionHeader title="Top Games" subtitle="Recently played games" />
+              <div className="grid grid-cols-3 gap-2">
+                {TOP_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 3: Lottery */}
+            <section id="sec-lottery" className="space-y-2">
+              <SectionHeader
+                title="Lottery"
+                subtitle="Fair and diverse lottery gameplay"
+                moreCount={5}
+                onMore={() => {
+                  const wg = LOTTERY_GAMES.find((g) => g.id === "wingo-30s");
+                  if (wg) setActiveGame(wg);
+                }}
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {LOTTERY_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 4: Original (Mini Games) */}
+            <section id="sec-original" className="space-y-2">
+              <SectionHeader
+                title="Original"
+                subtitle="The games are independently developed by our team, fun, fair, and safe"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {ORIGINAL_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 5: Slots */}
+            <section id="sec-slots" className="space-y-2">
+              <SectionHeader
+                title="Slots"
+                subtitle="Online real-time game dealers, all verified fair games"
+              />
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                {["JILI", "BGAMING", "INOUT", "CQ9", "JDB", "TURBO", "PP"].map((prov) => (
+                  <span
+                    key={prov}
+                    className="flex-shrink-0 text-[9px] font-mono font-bold px-2 py-0.5 rounded-md bg-[#282537] text-[#9EA2A8] border border-white/5"
+                  >
+                    {prov}
+                  </span>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {SLOT_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 6: Fishing */}
+            <section id="sec-fishing" className="space-y-2">
+              <SectionHeader
+                title="Fishing"
+                subtitle="Classic arcade gameplay, super cool special effects"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {FISHING_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 7: Casino */}
+            <section id="sec-casino" className="space-y-2">
+              <SectionHeader title="Casino" subtitle="Real dealers, immersive experience" />
+              <div className="grid grid-cols-3 gap-2">
+                {CASINO_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 8: PVC */}
+            <section id="sec-pvc" className="space-y-2">
+              <SectionHeader title="PVC" subtitle="Traditional card games" moreCount={2} />
+              <div className="grid grid-cols-3 gap-2">
+                {PVC_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 9: Winning Information */}
+            <section
+              className="rounded-2xl p-3 border space-y-2"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-[#17B15E] animate-ping" />
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
+                    Winning information
+                  </h3>
+                </div>
+                <span className="text-[10px] text-[#21D9CC] font-mono">Live</span>
+              </div>
+              <div className="space-y-1.5">
+                {LIVE_WINNERS.map((w, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 rounded-xl text-xs border"
+                    style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold bg-[#38374B] text-[#9EA2A8]">
+                        {idx + 1}
+                      </div>
+                      <div>
+                        <div className="font-mono text-[11px] text-[#E6EBF0] font-semibold">{w.user}</div>
+                        <div className="text-[10px] text-[#9EA2A8]">{w.game}</div>
+                      </div>
+                    </div>
+                    <div className="font-bold text-[#BED921] font-mono">{w.amount}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Section 10: Today's Earnings Chart */}
+            <section
+              className="rounded-2xl p-3 border space-y-3"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-[#BED921]" />
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
+                    Today's earnings chart
+                  </h3>
+                </div>
+                <span className="text-[10px] text-[#9EA2A8]">Daily Rank</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center pt-2">
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
+                  <div className="w-7 h-7 mx-auto rounded-full bg-[#9EA2A8]/20 text-[#9EA2A8] flex items-center justify-center font-bold text-xs mb-1">
+                    2
+                  </div>
+                  <span className="text-[10px] text-[#9EA2A8] truncate">Member347216</span>
+                  <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 4,120,000</span>
+                </div>
+                <div className="p-3 rounded-xl border-2 border-[#21D9CC] flex flex-col justify-end shadow-[0_0_15px_rgba(33,217,204,0.3)]" style={{ backgroundColor: THEME.bgL3 }}>
+                  <div className="w-8 h-8 mx-auto rounded-full bg-[#21D9CC] text-[#15131E] flex items-center justify-center font-black text-sm mb-1">
+                    1
+                  </div>
+                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">MemberNNGQNSPE</span>
+                  <span className="text-xs font-black text-[#21D9CC] font-mono mt-1">Rs 7,390,180</span>
+                </div>
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
+                  <div className="w-7 h-7 mx-auto rounded-full bg-[#DD9138]/20 text-[#DD9138] flex items-center justify-center font-bold text-xs mb-1">
+                    3
+                  </div>
+                  <span className="text-[10px] text-[#9EA2A8] truncate">MemberZGHVEG</span>
+                  <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 2,890,000</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 11: Basic Tools */}
+            <section
+              className="rounded-2xl p-3 border space-y-2 text-xs"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <h3 className="font-bold text-[#E6EBF0] uppercase tracking-wider text-[11px]">
+                Basic Tools
+              </h3>
+              <div className="grid grid-cols-4 gap-2 text-center text-[#9EA2A8]">
+                <div onClick={() => alert("Language: English")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                  <Globe className="w-4 h-4 mx-auto mb-1 text-[#21D9CC]" />
+                  <span className="text-[10px]">Language</span>
+                </div>
+                <div onClick={() => alert("Notice: System fully operational")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                  <Bell className="w-4 h-4 mx-auto mb-1 text-[#BED921]" />
+                  <span className="text-[10px]">Notice</span>
+                </div>
+                <div onClick={() => alert("24/7 VIP CS: WhatsApp +92 300 0000000")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                  <Headphones className="w-4 h-4 mx-auto mb-1 text-[#17B15E]" />
+                  <span className="text-[10px]">24/7 CS</span>
+                </div>
+                <div onClick={() => alert("Winzo Play Official Licensed Platform")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]">
+                  <HelpCircle className="w-4 h-4 mx-auto mb-1 text-[#9EA2A8]" />
+                  <span className="text-[10px]">About</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 2: ACTIVITY SECTION (pakvip21.com/#/activity)              */}
+        {/* ============================================================== */}
+        {activeTab === "activity" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Top Activity Header */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 flex items-center justify-between" style={{ borderColor: THEME.border }}>
+              <div>
+                <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase tracking-wider">
+                  Activity Center
+                </span>
+                <h2 className="text-lg font-black text-[#E6EBF0]">Super Jackpot & Rewards</h2>
+                <p className="text-[11px] text-[#9EA2A8]">Complete missions and claim instant PKR cash</p>
+              </div>
+              <Trophy className="w-10 h-10 text-[#BED921] flex-shrink-0" />
+            </div>
+
+            {/* Gift Redemption Code Box */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center gap-2">
+                <Gift className="w-4 h-4 text-[#21D9CC]" />
+                <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Gifts / Redemption Code</h3>
+              </div>
+              <p className="text-[10px] text-[#9EA2A8]">
+                Enter your redemption code to receive gift rewards directly into your wallet.
+              </p>
+              {giftClaimMsg ? (
+                <div className="p-2 rounded-xl bg-[#17B15E]/20 text-[#17B15E] text-xs font-bold text-center">
+                  {giftClaimMsg}
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter Redemption Code (e.g. WINZO2026)"
+                    value={giftCode}
+                    onChange={(e) => setGiftCode(e.target.value)}
+                    className="flex-1 px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                    style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                  />
+                  <button
+                    onClick={() => {
+                      if (!giftCode.trim()) return alert("Please enter a code");
+                      if (user) {
+                        saveUser({ ...user, balance: user.balance + 500 });
+                        setGiftClaimMsg("Success! Rs 500 Gift Reward added to your balance!");
+                        setTimeout(() => setGiftClaimMsg(""), 3000);
+                      }
+                    }}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    Receive
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Attendance Bonus Check-in */}
+            <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Attendance Bonus</h3>
+                  <p className="text-[10px] text-[#9EA2A8]">
+                    The more consecutive days you sign in, the higher the reward will be.
+                  </p>
+                </div>
+                <Calendar className="w-5 h-5 text-[#BED921]" />
+              </div>
+
+              {/* 7-Day Matrix */}
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {[1, 2, 3, 4, 5, 6, 7].map((day) => {
+                  const isChecked = day <= attendanceDay;
+                  return (
+                    <div
+                      key={day}
+                      className={`p-1.5 rounded-xl border text-[10px] ${
+                        isChecked
+                          ? "bg-[#21D9CC]/20 border-[#21D9CC] text-[#21D9CC]"
+                          : "bg-[#282537] border-white/5 text-[#9EA2A8]"
+                      }`}
+                    >
+                      <span className="block font-bold">Day {day}</span>
+                      <span className="block font-mono font-black mt-0.5">
+                        +{day * 100}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button
+                disabled={attendanceClaimed}
+                onClick={() => {
+                  if (attendanceClaimed || !user) return;
+                  const rew = attendanceDay * 100;
+                  saveUser({ ...user, balance: user.balance + rew });
+                  setAttendanceClaimed(true);
+                  alert(`Checked in! Rs ${rew} Attendance Bonus credited!`);
+                }}
+                className={`w-full py-2.5 rounded-xl text-xs font-bold transition ${
+                  attendanceClaimed
+                    ? "bg-[#38374B] text-[#9EA2A8]"
+                    : "text-[#15131E] shadow-lg active:scale-95"
+                }`}
+                style={{ background: attendanceClaimed ? undefined : THEME.gradient }}
+              >
+                {attendanceClaimed ? "Already Signed In Today" : "Sign In & Claim Reward"}
+              </button>
+            </div>
+
+            {/* Activity Reward Promotions List (pakvip21 exact) */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0] px-1">
+                Active Promotions
+              </h3>
+              {[
+                { title: "AVIATOR ADDITIONAL REWARDS", desc: "Get an extra 5% cash rebate on every cashout above x50.00.", tag: "SPRIBE" },
+                { title: "WINGO WIN STREAK BONUS", desc: "Win 5 rounds consecutively in Win Go 30s to claim Rs 5,000 cash.", tag: "LOTTERY" },
+                { title: "LUCKY 10 DAYS OF INTEREST", desc: "Keep balance in your wallet to receive 0.8% daily compounded interest.", tag: "PASSIVE" },
+                { title: "CREATIVE VIDEO CONTENT REWARDS", desc: "Upload gameplay video on TikTok / YouTube and claim Rs 2,000 bounty.", tag: "BOUNTY" },
+                { title: "DAILY SLOTS TREASURE CHEST CHALLENGE", desc: "Bet 100 times in JILI Slots to unlock the Golden Mystery Chest.", tag: "CHEST" },
+                { title: "FIRST DEPOSIT BIG REWARDS", desc: "Double your first deposit with 100% matching bonus up to Rs 20,000.", tag: "DEPOSIT" },
+                { title: "INVITE & EARN REWARDS", desc: "Receive Rs 500 instantly for every friend who registers and deposits.", tag: "REFERRAL" },
+              ].map((act, i) => (
+                <div
+                  key={i}
+                  className="p-3 rounded-2xl border flex items-center justify-between transition hover:border-white/20"
+                  style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+                >
+                  <div className="space-y-1 max-w-[280px]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#21D9CC]/15 text-[#21D9CC]">
+                        {act.tag}
+                      </span>
+                      <h4 className="text-xs font-bold text-[#E6EBF0] truncate">{act.title}</h4>
+                    </div>
+                    <p className="text-[10px] text-[#9EA2A8] leading-tight">{act.desc}</p>
+                  </div>
+                  <button
+                    onClick={() => setShowDepositModal(true)}
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    Join
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 3: PROMOTION SECTION (pakvip21.com/#/promotion)            */}
+        {/* ============================================================== */}
+        {activeTab === "promo" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Header Banner */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 space-y-1" style={{ borderColor: THEME.border }}>
+              <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase">
+                Agency Program
+              </span>
+              <h2 className="text-lg font-black text-[#E6EBF0]">Agency Promotion Center</h2>
+              <p className="text-[11px] text-[#9EA2A8]">
+                Invite friends and earn up to 0.7% multi-tier lifetime commission on every bet.
+              </p>
+            </div>
+
+            {/* Dashboard Overview */}
+            <div className="p-3.5 rounded-2xl border grid grid-cols-3 gap-2 text-center" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Yesterday's Total</span>
+                <span className="text-sm font-black text-[#BED921] font-mono">Rs 0.00</span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Direct Subordinates</span>
+                <span className="text-sm font-black text-[#21D9CC] font-mono">0</span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Team Members</span>
+                <span className="text-sm font-black text-[#E6EBF0] font-mono">0</span>
+              </div>
+            </div>
+
+            {/* Invite Links & Code Box */}
+            <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Your Exclusive Invitation</h3>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border text-xs" style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}>
                   <div>
-                    <div className="font-mono text-[11px] text-[#E6EBF0] font-semibold">{w.user}</div>
-                    <div className="text-[10px] text-[#9EA2A8]">{w.game}</div>
+                    <span className="text-[9px] text-[#9EA2A8] block">Invitation Code</span>
+                    <span className="font-mono font-black text-[#21D9CC] text-sm tracking-wider">WINZO7788</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText("WINZO7788");
+                      alert("Invitation Code copied!");
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Code</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-xl border text-xs" style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}>
+                  <div className="truncate max-w-[200px]">
+                    <span className="text-[9px] text-[#9EA2A8] block">Invitation Link</span>
+                    <span className="font-mono text-[#E6EBF0] text-[11px] truncate">https://winzoplay.com/reg?r=WINZO7788</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText("https://winzoplay.com/register?code=WINZO7788");
+                      alert("Invitation Link copied to clipboard!");
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Copy Link</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 6 Subordinate Levels Commission Table */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="text-xs font-black uppercase text-[#E6EBF0]">
+                【Promotion Partner】Commission Tier Rates
+              </h3>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { tier: "Tier 1 (Direct)", rate: "0.7% Rebate" },
+                  { tier: "Tier 2", rate: "0.4% Rebate" },
+                  { tier: "Tier 3", rate: "0.2% Rebate" },
+                  { tier: "Tier 4", rate: "0.1% Rebate" },
+                  { tier: "Tier 5", rate: "0.05% Rebate" },
+                  { tier: "Tier 6", rate: "0.02% Rebate" },
+                ].map((item, i) => (
+                  <div key={i} className="p-2 rounded-xl bg-[#282537] flex justify-between items-center border border-white/5">
+                    <span className="text-[#9EA2A8] text-[11px]">{item.tier}</span>
+                    <span className="font-mono font-bold text-[#BED921]">{item.rate}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Rules (pakvip21 exact) */}
+            <div className="p-3.5 rounded-2xl border space-y-2 text-xs text-[#9EA2A8]" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="font-bold text-[#E6EBF0] uppercase text-[11px]">Promotion Rules</h3>
+              <p><strong>01.</strong> There are 6 subordinate levels in inviting friends. If A invites B, B is level 1 of A. If B invites C, C is level 2 of A.</p>
+              <p><strong>02.</strong> When inviting friends to register, you must send the invitation link provided or enter the invitation code manually.</p>
+              <p><strong>03.</strong> The commission is calculated automatically every night at 00:00 and credited directly to your withdrawable wallet.</p>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 4: WALLET SECTION (pakvip21.com/#/wallet)                  */}
+        {/* ============================================================== */}
+        {activeTab === "wallet" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Balance Overview Card */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-br from-[#201D2B] via-[#282537] to-[#15131E] space-y-3" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#9EA2A8] font-semibold">Total Balance</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#17B15E]/20 text-[#17B15E] font-bold">
+                  ACTIVE
+                </span>
+              </div>
+              <div className="text-3xl font-black text-[#E6EBF0] font-mono">
+                Rs {user?.balance.toLocaleString() || "0.00"}
+              </div>
+
+              {/* Main Wallet vs 3rd Party Wallet */}
+              <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
+                <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5">
+                  <span className="text-[10px] text-[#9EA2A8] block">Main Wallet (100%)</span>
+                  <span className="font-mono font-bold text-[#21D9CC]">
+                    Rs {user?.balance.toLocaleString() || "0.00"}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5">
+                  <span className="text-[10px] text-[#9EA2A8] block">3rd Party Wallet (0%)</span>
+                  <span className="font-mono font-bold text-[#9EA2A8]">Rs 0.00</span>
+                </div>
+              </div>
+
+              {/* Main Wallet Transfer Button */}
+              <button
+                onClick={() => alert("All 3rd party game balances have been recycled to your Main Wallet!")}
+                className="w-full py-2 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 text-[#21D9CC] border-[#21D9CC]/30 hover:bg-[#21D9CC]/10 transition"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Main Wallet Transfer (Recycle)</span>
+              </button>
+            </div>
+
+            {/* Quick Actions (Deposit & Withdraw) */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setShowDepositModal(true)}
+                className="p-3 rounded-2xl font-black text-sm text-[#15131E] flex items-center justify-center gap-2 shadow-lg active:scale-95 transition"
+                style={{ background: THEME.gradient }}
+              >
+                <ArrowDownCircle className="w-5 h-5" />
+                <span>Deposit</span>
+              </button>
+              <button
+                onClick={() => setWalletSubTab("withdraw")}
+                className="p-3 rounded-2xl font-black text-sm text-[#E6EBF0] border flex items-center justify-center gap-2 active:scale-95 transition"
+                style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+              >
+                <ArrowUpCircle className="w-5 h-5 text-[#BED921]" />
+                <span>Withdraw</span>
+              </button>
+            </div>
+
+            {/* Withdraw Section (if selected) */}
+            {walletSubTab === "withdraw" && (
+              <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Withdrawal Request</h3>
+                  <button onClick={() => setWalletSubTab("deposit")} className="text-xs text-[#9EA2A8]">Cancel</button>
+                </div>
+
+                {withdrawMsg ? (
+                  <div className="p-3 rounded-xl bg-[#17B15E]/20 text-[#17B15E] text-xs font-bold text-center">
+                    {withdrawMsg}
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!user || user.balance < withdrawAmount) return alert("Insufficient balance");
+                      saveUser({ ...user, balance: user.balance - withdrawAmount });
+                      setTransactions((prev) => [
+                        { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Withdraw", amount: withdrawAmount, time: "Just now", status: "Processing" },
+                        ...prev,
+                      ]);
+                      setWithdrawMsg(`Withdrawal of Rs ${withdrawAmount} submitted! Payout will arrive in your account shortly.`);
+                      setTimeout(() => setWithdrawMsg(""), 3000);
+                    }}
+                    className="space-y-2.5"
+                  >
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Select Account (JazzCash / EasyPaisa)</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Enter 11-digit mobile number (0300...)"
+                        value={withdrawPhone}
+                        onChange={(e) => setWithdrawPhone(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Withdraw Amount (Rs)</label>
+                      <input
+                        type="number"
+                        min="500"
+                        max={user?.balance || 5000}
+                        required
+                        value={withdrawAmount}
+                        onChange={(e) => setWithdrawAmount(Number(e.target.value))}
+                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none font-mono font-bold"
+                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full py-2.5 rounded-xl font-bold text-xs text-[#15131E]"
+                      style={{ background: THEME.gradient }}
+                    >
+                      Submit Withdrawal (Rs {withdrawAmount.toLocaleString()})
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* Transaction Records List */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+                <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Transaction History</h3>
+                <span className="text-[10px] text-[#9EA2A8]">Recent 10 entries</span>
+              </div>
+
+              <div className="space-y-1.5">
+                {transactions.map((tx) => (
+                  <div key={tx.id} className="p-2.5 rounded-xl bg-[#282537] flex items-center justify-between text-xs border border-white/5">
+                    <div>
+                      <div className="font-bold text-[#E6EBF0]">{tx.type} ({tx.id})</div>
+                      <div className="text-[10px] text-[#9EA2A8]">{tx.time}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`font-mono font-bold ${tx.type === "Withdraw" ? "text-[#D23838]" : "text-[#17B15E]"}`}>
+                        {tx.type === "Withdraw" ? `-${tx.amount}` : `+${tx.amount}`} Rs
+                      </div>
+                      <span className="text-[9px] text-[#21D9CC]">{tx.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 5: ACCOUNT SECTION (pakvip21.com/#/main)                   */}
+        {/* ============================================================== */}
+        {activeTab === "account" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* User Profile Card */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-br from-[#201D2B] via-[#282537] to-[#15131E] space-y-3" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-3">
+                <div className="w-13 h-13 rounded-full flex items-center justify-center p-0.5 bg-gradient-to-tr from-[#21D9CC] to-[#BED921]">
+                  <div className="w-full h-full rounded-full bg-[#15131E] flex items-center justify-center text-[#21D9CC]">
+                    <User className="w-7 h-7" />
                   </div>
                 </div>
-                <div className="font-bold text-[#BED921] font-mono">{w.amount}</div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-sm text-[#E6EBF0]">{user?.phone || "03001234567"}</span>
+                    <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#BED921] text-[#15131E]">
+                      VIP {user?.vip || 1}
+                    </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-[#9EA2A8]">UID: 954821</div>
+                </div>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* ============================================================== */}
-        {/* SECTION 10: Today's Earnings Chart (pakvip21 podium)          */}
-        {/* ============================================================== */}
-        <section
-          className="rounded-2xl p-3 border space-y-3"
-          style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <Trophy className="w-4 h-4 text-[#BED921]" />
-              <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
-                Today's earnings chart
-              </h3>
-            </div>
-            <span className="text-[10px] text-[#9EA2A8]">Daily Rank</span>
-          </div>
-
-          {/* Top 3 Podium */}
-          <div className="grid grid-cols-3 gap-2 text-center pt-2">
-            {/* 2nd Place */}
-            <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
-              <div className="w-7 h-7 mx-auto rounded-full bg-[#9EA2A8]/20 text-[#9EA2A8] flex items-center justify-center font-bold text-xs mb-1">
-                2
+              {/* VIP Progress Bar */}
+              <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5 space-y-1.5">
+                <div className="flex justify-between text-[10px]">
+                  <span className="text-[#9EA2A8]">VIP 1 Privilege Level</span>
+                  <span className="font-mono text-[#21D9CC] font-bold">VIP 2 (65%)</span>
+                </div>
+                <div className="w-full h-1.5 bg-[#282537] rounded-full overflow-hidden">
+                  <div className="h-full rounded-full w-[65%]" style={{ background: THEME.gradient }} />
+                </div>
               </div>
-              <span className="text-[10px] text-[#9EA2A8] truncate">Member347216</span>
-              <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 4,120,000</span>
             </div>
 
-            {/* 1st Place */}
-            <div className="p-3 rounded-xl border-2 border-[#21D9CC] flex flex-col justify-end shadow-[0_0_15px_rgba(33,217,204,0.3)]" style={{ backgroundColor: THEME.bgL3 }}>
-              <div className="w-8 h-8 mx-auto rounded-full bg-[#21D9CC] text-[#15131E] flex items-center justify-center font-black text-sm mb-1">
-                1
-              </div>
-              <span className="text-[10px] text-[#E6EBF0] font-bold truncate">MemberNNGQNSPE</span>
-              <span className="text-xs font-black text-[#21D9CC] font-mono mt-1">Rs 7,390,180</span>
+            {/* Feature Menu List (pakvip21 exact) */}
+            <div className="p-2 rounded-2xl border space-y-1" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              {[
+                { label: "VIP Center", icon: Trophy, color: "#BED921", action: () => alert("VIP Center: Level-up bonus Rs 1,000!") },
+                { label: "Safe Center (Security)", icon: Lock, color: "#21D9CC", action: () => alert("Safe Center: Password & PIN active.") },
+                { label: "Bank Card / E-Wallet Binding", icon: CreditCard, color: "#17B15E", action: () => alert("Binding: JazzCash & EasyPaisa bound.") },
+                { label: "Transaction Records", icon: Clock, color: "#9EA2A8", action: () => setActiveTab("wallet") },
+                { label: "Notifications & Messages", icon: Bell, color: "#BED921", action: () => alert("No unread messages.") },
+                { label: "24/7 VIP Customer Service", icon: Headphones, color: "#21D9CC", action: () => alert("WhatsApp CS: +92 300 0000000") },
+                { label: "About Winzo Play", icon: HelpCircle, color: "#9EA2A8", action: () => alert("Winzo Play v2.4 Official Build") },
+              ].map((item, i) => (
+                <button
+                  key={i}
+                  onClick={item.action}
+                  className="w-full p-3 rounded-xl flex items-center justify-between text-xs text-[#E6EBF0] hover:bg-[#282537] transition"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon className="w-4 h-4" style={{ color: item.color }} />
+                    <span className="font-semibold">{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+                </button>
+              ))}
             </div>
 
-            {/* 3rd Place */}
-            <div className="p-2.5 rounded-xl border flex flex-col justify-end" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
-              <div className="w-7 h-7 mx-auto rounded-full bg-[#DD9138]/20 text-[#DD9138] flex items-center justify-center font-bold text-xs mb-1">
-                3
-              </div>
-              <span className="text-[10px] text-[#9EA2A8] truncate">MemberZGHVEG</span>
-              <span className="text-xs font-bold text-[#BED921] font-mono mt-1">Rs 2,890,000</span>
-            </div>
+            {/* Log Out Button */}
+            <button
+              onClick={() => {
+                if (confirm("Are you sure you want to log out?")) {
+                  localStorage.removeItem("winzo_play_user");
+                  setUser(null);
+                  alert("Logged out successfully.");
+                }
+              }}
+              className="w-full py-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold text-[#D23838] border-[#D23838]/30 hover:bg-[#D23838]/10 transition"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Log Out</span>
+            </button>
           </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 11: Basic Tools (pakvip21 bottom utility block)       */}
-        {/* ============================================================== */}
-        <section
-          className="rounded-2xl p-3 border space-y-2 text-xs"
-          style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
-        >
-          <h3 className="font-bold text-[#E6EBF0] uppercase tracking-wider text-[11px]">
-            Basic Tools
-          </h3>
-          <div className="grid grid-cols-4 gap-2 text-center text-[#9EA2A8]">
-            <div
-              onClick={() => alert("Language: English (Official)")}
-              className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]"
-            >
-              <Globe className="w-4 h-4 mx-auto mb-1 text-[#21D9CC]" />
-              <span className="text-[10px]">Language</span>
-            </div>
-            <div
-              onClick={() => alert("Notifications: All systems operational.")}
-              className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]"
-            >
-              <Bell className="w-4 h-4 mx-auto mb-1 text-[#BED921]" />
-              <span className="text-[10px]">Notice</span>
-            </div>
-            <div
-              onClick={() => alert("24/7 VIP Customer Support: WhatsApp +92 300 0000000")}
-              className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]"
-            >
-              <Headphones className="w-4 h-4 mx-auto mb-1 text-[#17B15E]" />
-              <span className="text-[10px]">24/7 CS</span>
-            </div>
-            <div
-              onClick={() => alert("Winzo Play - Licensed & Secured Gaming Platform.")}
-              className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0]"
-            >
-              <HelpCircle className="w-4 h-4 mx-auto mb-1 text-[#9EA2A8]" />
-              <span className="text-[10px]">About</span>
-            </div>
-          </div>
-        </section>
+        )}
       </main>
 
       {/* ============================================================== */}
-      {/* FLOATING LUCKY CHEST (pakvip21 style)                          */}
+      {/* 3. FLOATING LUCKY TREASURE CHEST                               */}
       {/* ============================================================== */}
       <div className="fixed bottom-20 right-3 z-30 flex flex-col items-center">
         <button
@@ -1125,13 +1590,14 @@ export function WinzoPlayApp() {
       </div>
 
       {/* ============================================================== */}
-      {/* BOTTOM NAVIGATION (pakvip21 5 tabs + elevated center)          */}
+      {/* 4. AUTHENTIC 5-TAB BOTTOM NAVIGATION BAR (pakvip21 exact)     */}
       {/* ============================================================== */}
       <nav
         className="fixed bottom-0 left-0 right-0 z-40 border-t backdrop-blur-lg"
         style={{ backgroundColor: `${THEME.bgL2}F8`, borderColor: THEME.border }}
       >
         <div className="max-w-md mx-auto px-4 py-1.5 flex items-center justify-between relative">
+          {/* Tab 1: Home */}
           <button
             onClick={() => setActiveTab("home")}
             className={`flex flex-col items-center gap-0.5 transition ${
@@ -1143,11 +1609,9 @@ export function WinzoPlayApp() {
             {activeTab === "home" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
           </button>
 
+          {/* Tab 2: Activity */}
           <button
-            onClick={() => {
-              setActiveTab("activity");
-              setShowChestModal(true);
-            }}
+            onClick={() => setActiveTab("activity")}
             className={`flex flex-col items-center gap-0.5 transition ${
               activeTab === "activity" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
             }`}
@@ -1174,11 +1638,21 @@ export function WinzoPlayApp() {
             </span>
           </div>
 
+          {/* Tab 3: Promotion */}
           <button
-            onClick={() => {
-              setActiveTab("wallet");
-              setShowDepositModal(true);
-            }}
+            onClick={() => setActiveTab("promo")}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "promo" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Promotion</span>
+            {activeTab === "promo" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+
+          {/* Tab 4: Wallet */}
+          <button
+            onClick={() => setActiveTab("wallet")}
             className={`flex flex-col items-center gap-0.5 transition ${
               activeTab === "wallet" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
             }`}
@@ -1188,11 +1662,9 @@ export function WinzoPlayApp() {
             {activeTab === "wallet" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
           </button>
 
+          {/* Tab 5: Account */}
           <button
-            onClick={() => {
-              setActiveTab("account");
-              if (user) alert(`Account: ${user.phone}\nBalance: Rs ${user.balance}\nVIP: ${user.vip}`);
-            }}
+            onClick={() => setActiveTab("account")}
             className={`flex flex-col items-center gap-0.5 transition ${
               activeTab === "account" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
             }`}
@@ -1205,7 +1677,7 @@ export function WinzoPlayApp() {
       </nav>
 
       {/* ============================================================== */}
-      {/* DEPOSIT MODAL (JazzCash & EasyPaisa)                           */}
+      {/* 5. DEPOSIT MODAL (JazzCash & EasyPaisa)                         */}
       {/* ============================================================== */}
       {showDepositModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -1238,6 +1710,10 @@ export function WinzoPlayApp() {
                   e.preventDefault();
                   if (!user) return;
                   saveUser({ ...user, balance: user.balance + Number(depositAmount) });
+                  setTransactions((prev) => [
+                    { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Deposit", amount: depositAmount, time: "Just now", status: "Success" },
+                    ...prev,
+                  ]);
                   setDepositSuccessMsg(`Successfully credited Rs ${depositAmount.toLocaleString()}!`);
                   setTimeout(() => {
                     setDepositSuccessMsg("");
@@ -1247,7 +1723,7 @@ export function WinzoPlayApp() {
                 className="space-y-3.5"
               >
                 <div>
-                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Payment Method</label>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Payment Gateway</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
@@ -1338,7 +1814,7 @@ export function WinzoPlayApp() {
       )}
 
       {/* ============================================================== */}
-      {/* PLAYABLE WIN GO 30S LOTTERY                                    */}
+      {/* 6. PLAYABLE WIN GO 30S LOTTERY                                 */}
       {/* ============================================================== */}
       {activeGame?.id === "wingo-30s" && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3">
@@ -1438,7 +1914,7 @@ export function WinzoPlayApp() {
       )}
 
       {/* ============================================================== */}
-      {/* PLAYABLE AVIATOR CRASH                                         */}
+      {/* 7. PLAYABLE AVIATOR CRASH                                      */}
       {/* ============================================================== */}
       {activeGame?.id === "aviator-spribe" && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3">
@@ -1501,7 +1977,9 @@ export function WinzoPlayApp() {
         </div>
       )}
 
-      {/* Lucky Chest Modal */}
+      {/* ============================================================== */}
+      {/* 8. LUCKY TREASURE CHEST MODAL                                  */}
+      {/* ============================================================== */}
       {showChestModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
           <div
