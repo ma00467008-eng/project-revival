@@ -1,132 +1,2555 @@
-import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { createFileRoute } from '@tanstack/react-router'
 import {
-  Volume2, Bell, Globe, Headphones, ChevronRight, ChevronLeft, Gift, Users,
-  Wallet, User, Play, X, Sparkles, Trophy, Flame, ShieldCheck, ArrowUpRight,
-  ArrowDownLeft, RotateCw, ExternalLink, Check, Copy, AlertTriangle, HelpCircle,
-  Info, Download, Crown, Send, MessageCircle, Home, Gamepad2, CircleDollarSign,
-  Search, Star, Zap, Clock, Medal, MessageSquareText
+  Volume2,
+  Gamepad2,
+  Gift,
+  Wallet,
+  User,
+  Flame,
+  X,
+  ChevronRight,
+  Globe,
+  Play,
+  Trophy,
+  MessageCircle,
+  Zap,
+  CheckCircle2,
+  Bell,
+  Headphones,
+  HelpCircle,
+  ShieldCheck,
+  TrendingUp,
+  Award,
+  Copy,
+  Share2,
+  Users,
+  Calendar,
+  CreditCard,
+  Lock,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Clock,
+  LogOut,
+  RefreshCw,
+  QrCode,
+  DollarSign,
+  Sparkles,
+  Download,
+  Smartphone,
+  Search,
+  Crown,
+  ChevronDown,
+  Check
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "WinZO VIP | Games & Rewards" },
-      { name: "description", content: "WinZO VIP entertainment and rewards home." },
+      { title: "WinZO - Pakistan's #1 Online Casino & Gaming Platform" },
+      {
+        name: "description",
+        content: "Official WinZO: Pakistan's #1 Online Casino, Live Win Go, Lottery, Aviator, JILI Slots, JazzCash & EasyPaisa 24/7 Fast Payouts.",
+      },
+      {
+        property: "og:title",
+        content: "WinZO - Pakistan's #1 Online Casino & Gaming Platform",
+      },
+      {
+        property: "og:description",
+        content: "Play Super Ace, Aviator, Fortune Gems 2, and Win Go with instant PKR payouts.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "icon", href: "/pakvip/images/favico.ico" }],
   }),
-  component: WinzoHome,
+  component: WinzoApp,
 });
 
-const C = {
-  bg: "#15131e", panel: "#201d2b", panel2: "#282633", line: "#373443",
-  text: "#f3f2f7", muted: "#a09eaa", dim: "#777481", teal: "#20d8c9",
-  lime: "#c9df38", red: "#ff6468", gold: "#ffc45c",
+// Authentic pakvip21.com Theme Colors
+const THEME = {
+  bgL1: "#15131E",
+  bgL2: "#201D2B",
+  bgL3: "#282537",
+  bgPill: "#38374B",
+  border: "rgba(255, 255, 255, 0.08)",
+  cyan: "#21D9CC",
+  lime: "#BED921",
+  gradient: "linear-gradient(90deg, #21D9CC 0%, #BED921 100%)",
+  textL1: "#E6EBF0",
+  textL2: "#9EA2A8",
 };
-const banners = [
-  { tag: "WELCOME REWARDS", title: "Start your game", sub: "Discover featured games and daily offers", art: "✦", accent: "#2bd5c8" },
-  { tag: "DAILY CHALLENGE", title: "Play. Collect. Repeat.", sub: "Explore today's highlighted activities", art: "♛", accent: "#ffb84a" },
-  { tag: "VIP CLUB", title: "Your next reward awaits", sub: "Check the rewards centre for details", art: "★", accent: "#ad78ff" },
-];
-const categories = ["All", "Lottery", "Slots", "Fishing", "Sports", "Cards"];
-const gameData = [
-  { name: "WinGo", type: "Lottery", icon: "🎯", color: "#ed614f", note: "Quick rounds" },
-  { name: "5D", type: "Lottery", icon: "🎲", color: "#7865e8", note: "Number draw" },
-  { name: "K3", type: "Lottery", icon: "🎰", color: "#24a8a0", note: "Classic dice" },
-  { name: "WinTrx", type: "Lottery", icon: "🚀", color: "#db723f", note: "Fast play" },
-  { name: "XoSo", type: "Lottery", icon: "🎟️", color: "#ce4d82", note: "Lucky draw" },
-  { name: "Binguo", type: "Lottery", icon: "🟣", color: "#4d82ca", note: "Bingo" },
-  { name: "JILI Slots", type: "Slots", icon: "💎", color: "#7255ca", note: "Featured" },
-  { name: "Fortune Gems", type: "Slots", icon: "💠", color: "#1c8d88", note: "Popular" },
-  { name: "Fishing King", type: "Fishing", icon: "🐠", color: "#258bb0", note: "Arcade" },
-  { name: "Ocean Catch", type: "Fishing", icon: "🐙", color: "#2367a7", note: "Arcade" },
-  { name: "Sports Arena", type: "Sports", icon: "⚽", color: "#438657", note: "Sports" },
-  { name: "Chess Club", type: "Cards", icon: "♟️", color: "#a76a37", note: "Strategy" },
-];
-const winners = [
-  { name: "Ali K.", game: "WinGo", amount: "Rs 8,450" },
-  { name: "Sara M.", game: "JILI Slots", amount: "Rs 6,200" },
-  { name: "Hamza R.", game: "K3", amount: "Rs 4,800" },
-  { name: "Noor A.", game: "Fishing King", amount: "Rs 3,750" },
-  { name: "M. Ahmed", game: "5D", amount: "Rs 2,900" },
-];
-const rankings = [
-  { name: "Player***18", amount: "Rs 128,500", rank: 1 },
-  { name: "Lucky***92", amount: "Rs 96,200", rank: 2 },
-  { name: "M.***Khan", amount: "Rs 84,750", rank: 3 },
-  { name: "Star***07", amount: "Rs 68,300", rank: 4 },
-  { name: "Win***777", amount: "Rs 59,800", rank: 5 },
+
+// Official 3D Category Tabs from pakvip21 CDN
+const CATEGORIES = [
+  {
+    id: "popular",
+    label: "Hot Slots",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_202608131718483ic9.png",
+  },
+  {
+    id: "lottery",
+    label: "Lottery",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_20260810182325juft.png",
+  },
+  {
+    id: "original",
+    label: "Original",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_20260813171856trpj.png",
+  },
+  {
+    id: "slots",
+    label: "Slots",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_20260810182333aqc4.png",
+  },
+  {
+    id: "fishing",
+    label: "Fishing",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_2026081018222762uc.png",
+  },
+  {
+    id: "casino",
+    label: "Casino",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_20260810182256xty3.png",
+  },
+  {
+    id: "pvc",
+    label: "PVC",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_202608101822434ox5.png",
+  },
+  {
+    id: "sports",
+    label: "Sports",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamecategory/gamecategory_20260810182310dacc.png",
+  },
 ];
 
-function WinzoHome() {
-  const [activeTab, setActiveTab] = useState("Home");
-  const [category, setCategory] = useState("All");
-  const [banner, setBanner] = useState(0);
-  const [modal, setModal] = useState("");
-  const [notice, setNotice] = useState(true);
-  const [search, setSearch] = useState("");
-  const [copied, setCopied] = useState(false);
+interface GameItem {
+  id: string;
+  title: string;
+  provider: string;
+  rtp: string;
+  hot?: boolean;
+  img: string;
+}
+
+// 1. Recommended Games (pakvip21 exact)
+const RECOMMENDED_GAMES: GameItem[] = [
+  {
+    id: "aviator-spribe",
+    title: "Aviator",
+    provider: "SPRIBE",
+    rtp: "96.66%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/SPRIBE/aviator_20260812174827906.png",
+  },
+  {
+    id: "aviator-tb",
+    title: "Aviator",
+    provider: "TB_Chess",
+    rtp: "97.01%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/TB_Chess/800_20260812175121657.png",
+  },
+  {
+    id: "chicken-road-tb",
+    title: "Chicken Road 2",
+    provider: "TB_Chess",
+    rtp: "97.68%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/TB_Chess/121.png",
+  },
+  {
+    id: "chicken-road-inout",
+    title: "Chicken Road 2",
+    provider: "INOUT",
+    rtp: "97.55%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/INOUT/chicken-road-two.png",
+  },
+  {
+    id: "jackpot-fishing",
+    title: "JackPot Fishing",
+    provider: "JILI",
+    rtp: "97.96%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/32.png",
+  },
+  {
+    id: "royal-fishing",
+    title: "Royal Fishing",
+    provider: "JILI",
+    rtp: "96.49%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/1.png",
+  },
+];
+
+// 2. Top Games
+const TOP_GAMES: GameItem[] = [
+  {
+    id: "super-ace",
+    title: "Super Ace",
+    provider: "JILI",
+    rtp: "98.40%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/51.png",
+  },
+  {
+    id: "fortune-gems-2",
+    title: "Fortune Gems 2",
+    provider: "JILI",
+    rtp: "98.12%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/109.png",
+  },
+  {
+    id: "money-coming",
+    title: "Money Coming",
+    provider: "JILI",
+    rtp: "97.80%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/58.png",
+  },
+  {
+    id: "crazy-777",
+    title: "Crazy 777",
+    provider: "JILI",
+    rtp: "97.45%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/43.png",
+  },
+  {
+    id: "golden-empire",
+    title: "Golden Empire",
+    provider: "JILI",
+    rtp: "97.60%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/48.png",
+  },
+  {
+    id: "mega-ace",
+    title: "Mega Ace",
+    provider: "JILI",
+    rtp: "98.50%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/115.png",
+  },
+];
+
+// 3. Lottery Games
+const LOTTERY_GAMES: GameItem[] = [
+  {
+    id: "wingo-30s",
+    title: "Win Go 30s",
+    provider: "WinZO",
+    rtp: "98.90%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_202608101818434tdn.png",
+  },
+  {
+    id: "k3-lottery",
+    title: "K3 Lotre",
+    provider: "WinZO",
+    rtp: "98.30%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260810181852r5xt.png",
+  },
+  {
+    id: "5d-lottery",
+    title: "5D Lotre",
+    provider: "WinZO",
+    rtp: "98.15%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_202608101819028h63.png",
+  },
+  {
+    id: "trx-wingo",
+    title: "Trx Win Go",
+    provider: "WinZO",
+    rtp: "98.70%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260810181917mlmi.png",
+  },
+  {
+    id: "motorace",
+    title: "MotoRace",
+    provider: "WinZO",
+    rtp: "97.50%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/lotterycategory/lotterycategory_20260811123643rnhj.png",
+  },
+];
+
+// 4. Original / Mini Games
+const ORIGINAL_GAMES: GameItem[] = [
+  {
+    id: "mines-jili",
+    title: "Mines",
+    provider: "JILI",
+    rtp: "97.50%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/229.png",
+  },
+  {
+    id: "plinko-spribe",
+    title: "Plinko",
+    provider: "SPRIBE",
+    rtp: "98.40%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/SPRIBE/plinko.png",
+  },
+  {
+    id: "go-rush",
+    title: "Go Rush",
+    provider: "JILI",
+    rtp: "97.80%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/224.png",
+  },
+  {
+    id: "limbo-tb",
+    title: "Limbo",
+    provider: "TB_Chess",
+    rtp: "98.20%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/TB_Chess/110.png",
+  },
+  {
+    id: "cricket-tb",
+    title: "Cricket",
+    provider: "TB_Chess",
+    rtp: "97.30%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/TB_Chess/810.png",
+  },
+  {
+    id: "chicken-road-original",
+    title: "Chicken Road",
+    provider: "INOUT",
+    rtp: "98.00%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/INOUT/chicken-road.png",
+  },
+];
+
+// 5. Slots (JILI, BGAMING, INOUT)
+const SLOT_GAMES: GameItem[] = [
+  {
+    id: "fortune-gems",
+    title: "Fortune Gems",
+    provider: "JILI",
+    rtp: "98.00%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/49.png",
+  },
+  {
+    id: "charge-buffalo",
+    title: "Charge Buffalo",
+    provider: "JILI",
+    rtp: "96.90%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/77.png",
+  },
+  {
+    id: "boxing-king",
+    title: "Boxing King",
+    provider: "JILI",
+    rtp: "97.10%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/102.png",
+  },
+  {
+    id: "all-lucky-clover",
+    title: "All Lucky Clover",
+    provider: "BGAMING",
+    rtp: "97.40%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/BGAMING/AllLuckyClover.png",
+  },
+  {
+    id: "space-xy",
+    title: "Space XY",
+    provider: "BGAMING",
+    rtp: "97.60%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/BGAMING/SpaceXY.png",
+  },
+  {
+    id: "aviamasters",
+    title: "Aviamasters",
+    provider: "BGAMING",
+    rtp: "97.20%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/BGAMING/Aviamasters.png",
+  },
+];
+
+// 6. Fishing Games
+const FISHING_GAMES: GameItem[] = [
+  {
+    id: "mega-fishing",
+    title: "Mega Fishing",
+    provider: "JILI",
+    rtp: "97.40%",
+    hot: true,
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/74.png",
+  },
+  {
+    id: "happy-fishing",
+    title: "Happy Fishing",
+    provider: "JILI",
+    rtp: "96.90%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/82.png",
+  },
+  {
+    id: "dragon-master",
+    title: "Dragon Master",
+    provider: "JDB",
+    rtp: "96.50%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JDB/7006.png",
+  },
+  {
+    id: "oneshot-fishing",
+    title: "OneShot Fishing",
+    provider: "CQ9",
+    rtp: "96.80%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/CQ9/AT01.png",
+  },
+  {
+    id: "bombing-fishing",
+    title: "Bombing Fishing",
+    provider: "JILI",
+    rtp: "97.10%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JILI/20.png",
+  },
+  {
+    id: "cai-shen-fishing",
+    title: "Cai Shen Fishing",
+    provider: "JDB",
+    rtp: "96.70%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/gamelogo/JDB/7003.png",
+  },
+];
+
+// 7. Live Casino Games
+const CASINO_GAMES: GameItem[] = [
+  {
+    id: "crazy-time",
+    title: "Crazy Time Live",
+    provider: "EVOLUTION",
+    rtp: "96.50%",
+    hot: true,
+    img: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "lightning-roulette",
+    title: "Lightning Roulette",
+    provider: "EVOLUTION",
+    rtp: "97.30%",
+    img: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "dragon-tiger",
+    title: "Dragon Tiger",
+    provider: "EVOLUTION",
+    rtp: "96.80%",
+    img: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=400&q=80",
+  },
+];
+
+// 8. PVC / Cards
+const PVC_GAMES: GameItem[] = [
+  {
+    id: "teen-patti",
+    title: "Teen Patti 20-20",
+    provider: "TB_Chess",
+    rtp: "97.50%",
+    hot: true,
+    img: "https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "andar-bahar",
+    title: "Andar Bahar",
+    provider: "TB_Chess",
+    rtp: "98.00%",
+    img: "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "card-365",
+    title: "Card 365",
+    provider: "Card365",
+    rtp: "97.20%",
+    img: "https://ossimg.pakvipacting.com/Pakvip/vendorlogo/vendorlogo_20260810181404ot98.png",
+  },
+];
+
+// Live Winning Information from pakvip21 API
+const LIVE_WINNERS = [
+  { user: "92300***781", game: "Aviator", amount: "Rs 1,240,500", time: "Just now" },
+  { user: "Ali_Khan***92", game: "Super Ace", amount: "Rs 48,200", time: "1m ago" },
+  { user: "92345***824", game: "Win Go 30s", amount: "Rs 350,000", time: "2m ago" },
+  { user: "Malik***110", game: "Fortune Gems 2", amount: "Rs 18,900", time: "3m ago" },
+  { user: "92312***993", game: "Space XY", amount: "Rs 92,600", time: "4m ago" },
+  { user: "Farhan***567", game: "Cai Shen Fishing", amount: "Rs 64,000", time: "5m ago" },
+  { user: "92333***812", game: "Chicken Road 2", amount: "Rs 115,000", time: "6m ago" },
+  { user: "Raja***404", game: "Boxing King", amount: "Rs 27,800", time: "7m ago" },
+];
+
+
+export function WinzoApp() {
+  // Navigation Tabs: home | activity | promo | wallet | account
+  const [activeTab, setActiveTab] = useState<"home" | "activity" | "promo" | "wallet" | "account">("home");
+  const [activeBanner, setActiveBanner] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("popular");
+  const [slotVendor, setSlotVendor] = useState("ALL");
+
+  // User Local Storage Wallet (with pakvip_user key & migration from winzo_play_user)
+  const [user, setUser] = useState<{ phone: string; balance: number; vip: number } | null>(null);
+  
+  // Modals
+  const [showDepositModal, setShowDepositModal] = useState(false);
+  const [showChestModal, setShowChestModal] = useState(false);
+  const [showTurntableModal, setShowTurntableModal] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
+  const [chestOpened, setChestOpened] = useState(false);
+  const [chestReward, setChestReward] = useState(0);
+
+  // Active Playable Game Modal
+  const [activeGame, setActiveGame] = useState<GameItem | null>(null);
+
+  // Progressive Jackpot live ticker
+  const [jackpot, setJackpot] = useState(88492150.8);
+
+  // Win Go State
+  const [wingoTimer, setWingoTimer] = useState(30);
+  const [wingoPeriod, setWingoPeriod] = useState(20261125091);
+  const [wingoBetColor, setWingoBetColor] = useState<"green" | "violet" | "red" | null>(null);
+  const [wingoBetNum, setWingoBetNum] = useState<number | null>(null);
+  const [wingoAmount, setWingoAmount] = useState(100);
+
+  // Aviator State
+  const [aviatorRunning, setAviatorRunning] = useState(false);
+  const [aviatorMultiplier, setAviatorMultiplier] = useState(1.0);
+  const [aviatorCrashed, setAviatorCrashed] = useState(false);
+  const [aviatorCashedOut, setAviatorCashedOut] = useState(false);
+
+  // Turntable State
+  const [turntableSpinning, setTurntableSpinning] = useState(false);
+  const [turntableAngle, setTurntableAngle] = useState(0);
+  const [turntablePrize, setTurntablePrize] = useState<string | null>(null);
+
+  // Deposit Form State
+  const [depositAmount, setDepositAmount] = useState(1000);
+  const [depositMethod, setDepositMethod] = useState<"jazzcash" | "easypaisa" | "bank" | "usdt">("jazzcash");
+  const [depositTid, setDepositTid] = useState("");
+  const [depositSuccessMsg, setDepositSuccessMsg] = useState("");
+
+  // Activity Tab State: Gift Code & Attendance
+  const [giftCode, setGiftCode] = useState("");
+  const [giftClaimMsg, setGiftClaimMsg] = useState("");
+  const [attendanceDay, setAttendanceDay] = useState(1);
+  const [attendanceClaimed, setAttendanceClaimed] = useState(false);
+
+  // Wallet Tab Sub-tabs
+  const [walletSubTab, setWalletSubTab] = useState<"deposit" | "withdraw" | "records">("deposit");
+  const [withdrawAmount, setWithdrawAmount] = useState(1000);
+  const [withdrawMethod, setWithdrawMethod] = useState<"jazzcash" | "easypaisa">("jazzcash");
+  const [withdrawAccountTitle, setWithdrawAccountTitle] = useState("");
+  const [withdrawPhone, setWithdrawPhone] = useState("");
+  const [withdrawMsg, setWithdrawMsg] = useState("");
+
+  // Toast / Copy notification
+  const [copyToast, setCopyToast] = useState("");
+
+  // Transactions Log
+  const [transactions, setTransactions] = useState<
+    { id: string; type: "Deposit" | "Withdraw" | "Win"; amount: number; time: string; status: string }[]
+  >([
+    { id: "TX984102", type: "Deposit", amount: 1000, time: "2026-11-25 15:40", status: "Success" },
+    { id: "TX984101", type: "Win", amount: 2400, time: "2026-11-25 14:12", status: "Completed" },
+  ]);
+
+  const triggerToast = (msg: string) => {
+    setCopyToast(msg);
+    setTimeout(() => setCopyToast(""), 2500);
+  };
 
   useEffect(() => {
-    const timer = window.setInterval(() => setBanner((current) => (current + 1) % banners.length), 5000);
-    return () => window.clearInterval(timer);
+    // Check pakvip_user first, fallback to winzo_play_user
+    const saved = localStorage.getItem("winzo_user") || localStorage.getItem("pakvip_user") || localStorage.getItem("winzo_play_user");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setUser(parsed);
+        localStorage.setItem("winzo_user", JSON.stringify(parsed));
+      } catch (e) {}
+    } else {
+      const defaultUser = { phone: "03001234567", balance: 5000, vip: 1 };
+      setUser(defaultUser);
+      localStorage.setItem("winzo_user", JSON.stringify(defaultUser));
+    }
   }, []);
 
-  const filteredGames = gameData.filter((game) => (category === "All" || game.type === category) && game.name.toLowerCase().includes(search.toLowerCase()));
-  const showModal = (name: string) => setModal(name);
-  const copyCode = async () => {
-    try { await navigator.clipboard.writeText("WINZO-VIP"); setCopied(true); window.setTimeout(() => setCopied(false), 1500); } catch { setCopied(false); }
+  const saveUser = (updated: { phone: string; balance: number; vip: number }) => {
+    setUser(updated);
+    localStorage.setItem("winzo_user", JSON.stringify(updated));
   };
-  const section = (title: string, icon: React.ReactNode, right?: React.ReactNode) => (
-    <div className="section-title"><div className="section-heading">{icon}<h2>{title}</h2></div>{right}</div>
+
+  // Carousel timer
+  useEffect(() => {
+    const t = setInterval(() => setActiveBanner((prev) => (prev + 1) % 2), 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Progressive Jackpot incrementer
+  useEffect(() => {
+    const t = setInterval(() => {
+      setJackpot((prev) => +(prev + (Math.random() * 0.4 + 0.1)).toFixed(2));
+    }, 1200);
+    return () => clearInterval(t);
+  }, []);
+
+  // Win Go countdown
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWingoTimer((prev) => {
+        if (prev <= 1) {
+          setWingoPeriod((p) => p + 1);
+          return 30;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Aviator Loop
+  useEffect(() => {
+    let anim: any;
+    if (aviatorRunning && !aviatorCrashed && !aviatorCashedOut) {
+      anim = setInterval(() => {
+        setAviatorMultiplier((prev) => {
+          const next = +(prev + 0.06).toFixed(2);
+          if (next > 1.35 && Math.random() < 0.035) {
+            setAviatorCrashed(true);
+            setAviatorRunning(false);
+            return next;
+          }
+          return next;
+        });
+      }, 100);
+    }
+    return () => clearInterval(anim);
+  }, [aviatorRunning, aviatorCrashed, aviatorCashedOut]);
+
+  // Lucky Turntable Spin
+  const spinTurntable = () => {
+    if (turntableSpinning || !user) return;
+    setTurntableSpinning(true);
+    setTurntablePrize(null);
+    const prizes = [
+      { label: "Rs 100", amount: 100 },
+      { label: "Rs 200", amount: 200 },
+      { label: "Rs 500", amount: 500 },
+      { label: "Rs 1,000", amount: 1000 },
+      { label: "Rs 50", amount: 50 },
+      { label: "Rs 2,000", amount: 2000 },
+      { label: "Rs 300", amount: 300 },
+      { label: "Rs 5,000", amount: 5000 },
+    ];
+    const pickedIdx = Math.floor(Math.random() * prizes.length);
+    const degrees = 360 * 5 + (pickedIdx * 45) + 22.5;
+    setTurntableAngle((prev) => prev + degrees);
+
+    setTimeout(() => {
+      setTurntableSpinning(false);
+      const won = prizes[pickedIdx];
+      setTurntablePrize(won.label);
+      saveUser({ ...user, balance: user.balance + won.amount });
+    }, 3800);
+  };
+
+  // Section Header Component (Pakvip21 style)
+  const SectionHeader = ({
+    title,
+    subtitle,
+    moreCount,
+    onMore,
+  }: {
+    title: string;
+    subtitle: string;
+    moreCount?: number;
+    onMore?: () => void;
+  }) => (
+    <div className="flex items-center justify-between pt-1">
+      <div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-1 h-3.5 rounded-full" style={{ background: THEME.gradient }} />
+          <h3 className="text-sm font-black text-[#E6EBF0] uppercase tracking-wide">{title}</h3>
+        </div>
+        <p className="text-[10px] text-[#9EA2A8] mt-0.5">{subtitle}</p>
+      </div>
+      {moreCount && (
+        <button
+          onClick={onMore}
+          className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold text-[#21D9CC] border border-[#21D9CC]/30 bg-[#21D9CC]/10 hover:bg-[#21D9CC]/20 transition"
+        >
+          <span>More {moreCount}</span>
+          <ChevronRight className="w-3 h-3" />
+        </button>
+      )}
+    </div>
+  );
+
+  // 3-Column Poster Card Component (Pakvip21 exact 124x168)
+  const GameCard = ({ game }: { game: GameItem }) => (
+    <div
+      onClick={() => setActiveGame(game)}
+      className="group cursor-pointer rounded-xl overflow-hidden border transition-all duration-200 hover:scale-[1.03] active:scale-95 flex flex-col justify-between"
+      style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+    >
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#161420]">
+        <img
+          src={game.img}
+          alt={game.title}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute top-1 left-1">
+          <span className="text-[8px] font-extrabold px-1 py-0.2 rounded bg-black/75 backdrop-blur-sm text-[#E6EBF0] uppercase font-mono">
+            {game.provider}
+          </span>
+        </div>
+        {game.hot && (
+          <div className="absolute top-1 right-1">
+            <span className="text-[8px] font-black px-1 py-0.2 rounded bg-[#D23838] text-white flex items-center gap-0.5">
+              <Flame className="w-2 h-2" />
+              HOT
+            </span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200">
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center text-[#15131E] shadow-lg"
+            style={{ background: THEME.gradient }}
+          >
+            <Play className="w-4 h-4 fill-current ml-0.5" />
+          </div>
+        </div>
+      </div>
+      <div className="p-1.5 space-y-1 bg-[#1a1724]">
+        <div className="text-[10px] font-bold text-[#E6EBF0] truncate">{game.title}</div>
+        <div className="space-y-0.5">
+          <div className="flex items-center justify-between text-[8px] text-[#9EA2A8]">
+            <span>RTP</span>
+            <span className="font-mono font-bold text-[#21D9CC]">{game.rtp}</span>
+          </div>
+          <div className="w-full h-1 bg-[#282537] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: game.rtp,
+                background: THEME.gradient,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 
   return (
-    <div className="winzo-app" style={{ "--bg": C.bg, "--panel": C.panel, "--panel2": C.panel2, "--line": C.line, "--txt": C.text, "--muted": C.muted, "--dim": C.dim, "--teal": C.teal, "--lime": C.lime, "--gold": C.gold } as React.CSSProperties}>
-      <header className="topbar">
-        <div className="brand"><div className="brand-mark">W</div><div className="brand-word">WinZO<span>VIP</span></div></div>
-        <div className="top-actions">
-          <button className="icon-button language" onClick={() => showModal("Language")} aria-label="Language"><Globe size={18}/><span>EN</span></button>
-          <button className="icon-button" onClick={() => showModal("Notifications")} aria-label="Notifications"><Bell size={19}/><i className="notification-dot"/></button>
+    <div
+      className="min-h-screen text-[#E6EBF0] font-sans select-none pb-24 antialiased"
+      style={{ backgroundColor: THEME.bgL1 }}
+      dir="ltr"
+    >
+      {/* Toast Notification */}
+      {copyToast && (
+        <div className="fixed top-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-[#17B15E] text-white text-xs font-bold shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>{copyToast}</span>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 1. TOP HEADER (pakvip21.com layout)                            */}
+      {/* ============================================================== */}
+      <header
+        className="sticky top-0 z-40 px-3 py-2 flex items-center justify-between backdrop-blur-md border-b"
+        style={{ backgroundColor: `${THEME.bgL2}F5`, borderColor: THEME.border }}
+      >
+        <div className="flex items-center gap-2">
+          {/* WinZO Official Gaming Logo */}
+          <div className="relative w-8 h-8 rounded-lg flex items-center justify-center p-0.5 bg-gradient-to-br from-[#FFDE30] via-[#21D9CC] to-[#BED921] shadow-[0_0_12px_rgba(255,222,48,0.35)]">
+            <div className="w-full h-full rounded-[6px] bg-[#161420] flex items-center justify-center overflow-hidden p-1">
+              <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow">
+                <defs>
+                  <linearGradient id="winzoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FFDE30" />
+                    <stop offset="50%" stopColor="#21D9CC" />
+                    <stop offset="100%" stopColor="#BED921" />
+                  </linearGradient>
+                  <linearGradient id="winzoPlay" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#FFDE30" />
+                    <stop offset="100%" stopColor="#FFA500" />
+                  </linearGradient>
+                </defs>
+                {/* Stylized geometric WinZO 'W' */}
+                <path
+                  d="M14 26 L28 76 L44 38 L52 56 L62 26"
+                  fill="none"
+                  stroke="url(#winzoGrad)"
+                  strokeWidth="11"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Integrated dynamic Play triangle in the ZO spark */}
+                <polygon
+                  points="62,42 86,56 62,70"
+                  fill="url(#winzoPlay)"
+                />
+                {/* Accent jewel */}
+                <circle cx="86" cy="30" r="4.5" fill="#BED921" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 leading-none">
+              <span className="font-black text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#FFDE30] via-[#21D9CC] to-[#BED921]">
+                WinZO
+              </span>
+              <span className="text-[8px] px-1 py-0.2 rounded font-black bg-gradient-to-r from-[#FFDE30] to-[#BED921] text-[#15131E]">
+                VIP
+              </span>
+            </div>
+            <span className="text-[9px] text-[#9EA2A8] font-medium">Official Gaming Platform</span>
+          </div>
+        </div>
+
+        {/* Right Section: Header Controls & Balance & Deposit */}
+        <div className="flex items-center gap-1.5">
+          {/* Quick CS Icon */}
+          <button
+            onClick={() => setShowSupportModal(true)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#21D9CC] border border-white/5 bg-[#282537] hover:bg-[#38374B] transition"
+            title="24/7 Customer Support"
+          >
+            <Headphones className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Quick Notice Bell */}
+          <button
+            onClick={() => setShowNoticeModal(true)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#BED921] border border-white/5 bg-[#282537] hover:bg-[#38374B] transition"
+            title="Official Announcements"
+          >
+            <Bell className="w-3.5 h-3.5" />
+          </button>
+
+          {user ? (
+            <>
+              <div
+                onClick={() => setShowDepositModal(true)}
+                className="cursor-pointer px-2 py-1 rounded-lg border flex items-center gap-1.5 hover:border-[#21D9CC]/50 transition"
+                style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-[#17B15E] animate-pulse" />
+                <span className="text-xs font-bold text-[#E6EBF0] font-mono">
+                  Rs {user.balance.toLocaleString()}
+                </span>
+                <RefreshCw
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    triggerToast("Balance refreshed!");
+                  }}
+                  className="w-2.5 h-2.5 text-[#9EA2A8] hover:text-[#21D9CC]"
+                />
+              </div>
+              <button
+                onClick={() => setShowDepositModal(true)}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-black text-[#15131E] shadow-sm hover:brightness-110 active:scale-95 transition"
+                style={{ background: THEME.gradient }}
+              >
+                Deposit
+              </button>
+            </>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setShowDepositModal(true)}
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold text-[#E6EBF0] border"
+                style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+              >
+                Log in
+              </button>
+              <button
+                onClick={() => setShowDepositModal(true)}
+                className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#15131E]"
+                style={{ background: THEME.gradient }}
+              >
+                Register
+              </button>
+            </div>
+          )}
         </div>
       </header>
-      <main className="page-content">
-        <div className="auth-row"><div className="welcome-copy"><span className="eyebrow">WELCOME TO WINZO VIP</span><strong>Your play space</strong><small>Sign in to explore your account</small></div><div className="auth-actions"><button className="btn-quiet" onClick={() => showModal("Log in")}>Log in</button><button className="btn-primary" onClick={() => showModal("Register")}>Register</button></div></div>
-        <section className="hero-card" style={{ "--accent": banners[banner].accent } as React.CSSProperties}>
-          <div className="hero-copy"><span className="hero-tag"><Sparkles size={12}/>{banners[banner].tag}</span><h1>{banners[banner].title}</h1><p>{banners[banner].sub}</p><button className="hero-cta" onClick={() => showModal("Featured games")}>Explore now <ChevronRight size={15}/></button></div>
-          <div className="hero-art"><div className="hero-orbit orbit-a"/><div className="hero-orbit orbit-b"/><span>{banners[banner].art}</span></div>
-          <div className="hero-arrows"><button onClick={() => setBanner((banner + banners.length - 1) % banners.length)} aria-label="Previous banner"><ChevronLeft size={16}/></button><button onClick={() => setBanner((banner + 1) % banners.length)} aria-label="Next banner"><ChevronRight size={16}/></button></div>
-          <div className="hero-dots">{banners.map((_, index) => <button key={index} onClick={() => setBanner(index)} className={banner === index ? "active" : ""} aria-label={`Show banner ${index + 1}`}/>)}</div>
-        </section>
-        {notice && <div className="notice-strip"><Volume2 size={16}/><div className="notice-text"><span>Announcement</span><p>Welcome to WinZO VIP. Please review offers and terms before participating.</p></div><button onClick={() => setNotice(false)} aria-label="Close announcement"><X size={15}/></button></div>}
-        <section className="quick-actions">
-          <button onClick={() => showModal("Promotions")}><span className="quick-icon promo"><Gift size={21}/></span><span>Promotion</span></button>
-          <button onClick={() => showModal("Rewards centre")}><span className="quick-icon reward"><Crown size={21}/></span><span>Rewards</span></button>
-          <button onClick={() => showModal("Invite friends")}><span className="quick-icon invite"><Users size={21}/></span><span>Invite</span></button>
-          <button onClick={() => showModal("Help centre")}><span className="quick-icon service"><Headphones size={21}/></span><span>Service</span></button>
-        </section>
-        <section className="games-section">
-          {section("Game lobby", <Gamepad2 size={19}/>, <button className="see-all" onClick={() => { setCategory("All"); document.getElementById("game-list")?.scrollIntoView({ behavior: "smooth" }); }}>All games <ChevronRight size={15}/></button>)}
-          <div className="search-box"><Search size={15}/><input aria-label="Search games" placeholder="Search games" value={search} onChange={(event) => setSearch(event.target.value)}/>{search && <button onClick={() => setSearch("")} aria-label="Clear search"><X size={14}/></button>}</div>
-          <div className="category-tabs">{categories.map((item) => <button key={item} className={category === item ? "selected" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div>
-          <div className="game-grid" id="game-list">{filteredGames.map((game, index) => <button className="game-card" key={game.name} onClick={() => showModal(game.name)}><div className="game-art" style={{ "--game": game.color } as React.CSSProperties}><span className="game-stamp">{index < 3 ? <Flame size={12} fill="currentColor"/> : <Star size={11}/>} {index < 3 ? "HOT" : game.note.toUpperCase()}</span><span className="game-emoji">{game.icon}</span><span className="game-title">{game.name}</span></div><div className="game-meta"><span>{game.type}</span><Play size={12} fill="currentColor"/></div></button>)}</div>
-          {filteredGames.length === 0 && <div className="empty-state">No games match that search.</div>}
-        </section>
-        <section className="jackpot-panel"><div className="jackpot-top"><div className="jackpot-emblem"><Trophy size={24}/></div><div><span className="eyebrow">FEATURED REWARDS</span><h2>Super Jackpot</h2><p>Explore current reward campaigns</p></div><button onClick={() => showModal("Super Jackpot")} aria-label="Open Super Jackpot"><ChevronRight size={19}/></button></div><div className="jackpot-bottom"><div className="jackpot-amount"><small>FEATURED PRIZE POOL</small><strong>Rs 2,500,000</strong></div><span className="jackpot-badge"><Sparkles size={13}/> VIEW DETAILS</span></div><div className="jackpot-disclaimer"><Info size={13}/> Demonstration display only. Rewards depend on official campaign terms.</div></section>
-        <section className="winners-section">{section("Recent winners", <Trophy size={19}/>, <button className="see-all" onClick={() => showModal("Recent winners")}>View more <ChevronRight size={15}/></button>)}<div className="winner-card">{winners.map((winner, index) => <div className="winner-row" key={winner.name}><div className={`winner-avatar avatar-${index}`}>{winner.name.charAt(0)}</div><div className="winner-info"><strong>{winner.name}</strong><span>Won in {winner.game}</span></div><strong className="winner-amount">{winner.amount}</strong></div>)}<div className="simulation-note"><Info size={12}/> Sample display data, not verified live results.</div></div></section>
-        <section className="ranking-section">{section("Today's earnings ranking", <Medal size={19}/>, <button className="see-all" onClick={() => showModal("Earnings ranking")}>Rules <ChevronRight size={15}/></button>)}<div className="rank-podium">{[rankings[1], rankings[0], rankings[2]].map((item, index) => <div className={`podium-person podium-${item.rank}`} key={item.rank}><span className="podium-crown">{item.rank === 1 ? "♛" : item.rank === 2 ? "♕" : "♕"}</span><div className="podium-avatar">{item.name.charAt(0)}</div><strong>{item.name}</strong><span>{item.amount}</span><div className="podium-step">{item.rank}</div></div>)}</div><div className="rank-list">{rankings.slice(3).map((item) => <div className="rank-row" key={item.rank}><span className="rank-number">{item.rank}</span><span className="rank-user">{item.name}</span><strong>{item.amount}</strong></div>)}</div><div className="simulation-note"><Info size={12}/> Illustrative sample ranking. Figures are not live or guaranteed.</div></section>
-        <section className="tools-section">{section("Quick links", <Zap size={18}/>)}<div className="tools-grid"><button onClick={() => showModal("Language")}><span className="tool-icon"><Globe size={19}/></span><span>Language</span></button><button onClick={() => showModal("Notifications")}><span className="tool-icon"><Bell size={19}/></span><span>Messages</span></button><button onClick={() => showModal("Help centre")}><span className="tool-icon"><Headphones size={19}/></span><span>Customer service</span></button><button onClick={() => showModal("Game guide")}><span className="tool-icon"><HelpCircle size={19}/></span><span>Game guide</span></button><button onClick={() => showModal("About WinZO")}><span className="tool-icon"><Info size={19}/></span><span>About</span></button><button onClick={() => showModal("Download app")}><span className="tool-icon"><Download size={19}/></span><span>Download app</span></button></div></section>
-        <section className="invite-panel"><div className="invite-copy"><span className="eyebrow">SHARE THE FUN</span><h2>Invite friends</h2><p>Share your invite code with friends.</p><div className="invite-code"><span>WINZO-VIP</span><button onClick={copyCode}>{copied ? <Check size={14}/> : <Copy size={14}/>} {copied ? "Copied" : "Copy code"}</button></div></div><div className="invite-art"><Users size={41}/><Sparkles size={19}/></div></section>
-        <footer className="site-footer"><div className="footer-brand"><div className="brand-mark small">W</div><div><strong>WinZO VIP</strong><span>Entertainment & games</span></div></div><div className="payment-row"><span>PAYMENT METHODS</span><div><b>JazzCash</b><b>easypaisa</b><b>Bank</b></div></div><div className="footer-links"><button onClick={() => showModal("About WinZO")}>About us</button><i>·</i><button onClick={() => showModal("Terms & conditions")}>Terms</button><i>·</i><button onClick={() => showModal("Privacy policy")}>Privacy</button><i>·</i><button onClick={() => showModal("Responsible play")}>Responsible play</button></div><div className="responsible-note"><ShieldCheck size={15}/><span>For adults only. Play responsibly. Terms and eligibility apply.</span></div><p className="copyright">© 2026 WinZO VIP · Demonstration experience</p><p className="site-note">This interface is a visual demonstration. Game activity, prize amounts, winners, account, payments and rewards shown here are not connected to live services.</p></footer>
+
+      {/* ============================================================== */}
+      {/* 2. TAB CONTENT SWITCHER                                        */}
+      {/* ============================================================== */}
+      <main className="max-w-md mx-auto px-2.5 pt-2">
+        {/* ============================================================== */}
+        {/* TAB 1: HOME SECTION                                           */}
+        {/* ============================================================== */}
+        {activeTab === "home" && (
+          <div className="space-y-4">
+            {/* Banner Carousel */}
+            <section className="relative rounded-2xl overflow-hidden border shadow-lg" style={{ borderColor: THEME.border }}>
+              <div className="relative h-40 w-full bg-[#110e1a]">
+                {activeBanner === 0 ? (
+                  <img
+                    src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823173234k1c5.png"
+                    alt="PakVIP Featured Promotions"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src="https://ossimg.pakvipacting.com/Pakvip/banner/Banner_20260823172133g2ho.png"
+                    alt="PakVIP First Recharge Bonus"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              {/* Quick VIP Tag */}
+              <div className="absolute top-2 left-2 z-20">
+                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#15131E]/80 backdrop-blur-md border border-[#21D9CC]/50 text-[#21D9CC] flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  +100% First Deposit Bonus
+                </span>
+              </div>
+              <div className="absolute bottom-2 right-3 flex items-center gap-1 z-20">
+                {[0, 1].map((i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveBanner(i)}
+                    className={`h-1 rounded-full transition-all ${
+                      activeBanner === i ? "w-4 bg-[#21D9CC]" : "w-1 bg-[#525167]"
+                    }`}
+                  />
+                ))}
+              </div>
+            </section>
+
+            {/* Notice Marquee */}
+            <section
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <img
+                src="/pakvip/images/noticeBarSpeaker-Cfctxsme.svg"
+                alt="Speaker"
+                className="w-4 h-4 flex-shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
+              <Volume2 className="w-4 h-4 text-[#21D9CC] flex-shrink-0 [img:not([style*='display: none'])~&]:hidden" />
+              <div className="flex-1 overflow-hidden whitespace-nowrap">
+                <div className="inline-block animate-[marquee_20s_linear_infinite] text-[#9EA2A8] text-[11px]">
+                  Welcome to WinZO Official Platform! Instant JazzCash & EasyPaisa deposits & withdrawals active 24/7 with zero fee. Download the WinZO app to claim Rs 500 bonus!
+                </div>
+              </div>
+              <button
+                onClick={() => setShowNoticeModal(true)}
+                className="flex-shrink-0 px-2 py-0.5 rounded text-[10px] font-bold text-[#15131E]"
+                style={{ background: THEME.gradient }}
+              >
+                Detail
+              </button>
+            </section>
+
+            {/* 3D Category Bar (pakvip21 exact) */}
+            <section className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+              {CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setSelectedCategory(cat.id);
+                      const el = document.getElementById(`sec-${cat.id}`);
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`flex-shrink-0 flex flex-col items-center justify-center p-1.5 rounded-xl transition border min-w-[62px] ${
+                      isSelected
+                        ? "border-[#21D9CC] bg-[#21D9CC]/15 shadow-[0_0_10px_rgba(33,217,204,0.3)]"
+                        : "border-transparent bg-[#201D2B] hover:border-white/10 active:scale-95"
+                    }`}
+                  >
+                    <div className="w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden mb-1">
+                      <img
+                        src={cat.img}
+                        alt={cat.label}
+                        className="w-10 h-10 object-contain drop-shadow"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span
+                      className={`text-[10px] font-bold truncate max-w-[64px] ${
+                        isSelected ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+                      }`}
+                    >
+                      {cat.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </section>
+
+            {/* Super Progressive Jackpot Pool (pakvip21 bigaward) */}
+            <section
+              className="p-3 rounded-2xl border space-y-1 relative overflow-hidden bg-gradient-to-r from-[#201D2B] via-[#282537] to-[#201D2B]"
+              style={{ borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Crown className="w-4 h-4 text-[#BED921] animate-bounce" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#BED921]">
+                    Super Progressive Jackpot
+                  </span>
+                </div>
+                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#BED921]/20 text-[#BED921] font-bold">
+                  LIVE POOL
+                </span>
+              </div>
+              <div className="text-center py-1">
+                <div className="font-mono font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#BED921] via-[#21D9CC] to-[#BED921] tracking-wider">
+                  PKR {jackpot.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </div>
+                <p className="text-[9px] text-[#9EA2A8] mt-0.5">
+                  Play any JILI Slot or Win Go round to qualify for the Mega Drop
+                </p>
+              </div>
+            </section>
+
+            {/* Section 1: Recommended Games */}
+            <section id="sec-popular" className="space-y-2">
+              <SectionHeader
+                title="Recommended Games"
+                subtitle="The most popular electronic games among Pakistani players"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {RECOMMENDED_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 2: Top Games */}
+            <section className="space-y-2">
+              <SectionHeader title="Top Games" subtitle="Recently played and trending games" />
+              <div className="grid grid-cols-3 gap-2">
+                {TOP_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 3: Lottery */}
+            <section id="sec-lottery" className="space-y-2">
+              <SectionHeader
+                title="Lottery"
+                subtitle="Fair and diverse lottery gameplay"
+                moreCount={5}
+                onMore={() => {
+                  const wg = LOTTERY_GAMES.find((g) => g.id === "wingo-30s");
+                  if (wg) setActiveGame(wg);
+                }}
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {LOTTERY_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 4: Original (Mini Games) */}
+            <section id="sec-original" className="space-y-2">
+              <SectionHeader
+                title="Original"
+                subtitle="The games are independently developed by WinZO, fun, fair, and safe"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {ORIGINAL_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 5: Slots */}
+            <section id="sec-slots" className="space-y-2">
+              <SectionHeader
+                title="Slots"
+                subtitle="Online real-time game dealers, all verified fair games"
+              />
+              {/* Vendor Filter Buttons */}
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                {["ALL", "JILI", "BGAMING", "INOUT", "CQ9", "JDB", "TURBO", "PP"].map((prov) => (
+                  <button
+                    key={prov}
+                    onClick={() => setSlotVendor(prov)}
+                    className={`flex-shrink-0 text-[9px] font-mono font-bold px-2 py-0.5 rounded-md border transition ${
+                      slotVendor === prov
+                        ? "bg-[#21D9CC] text-[#15131E] border-transparent font-black"
+                        : "bg-[#282537] text-[#9EA2A8] border-white/5 hover:text-[#E6EBF0]"
+                    }`}
+                  >
+                    {prov}
+                  </button>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {SLOT_GAMES.filter((g) => slotVendor === "ALL" || g.provider.toUpperCase().includes(slotVendor)).map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 6: Fishing */}
+            <section id="sec-fishing" className="space-y-2">
+              <SectionHeader
+                title="Fishing"
+                subtitle="Classic arcade gameplay, super cool special effects"
+              />
+              <div className="grid grid-cols-3 gap-2">
+                {FISHING_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 7: Casino */}
+            <section id="sec-casino" className="space-y-2">
+              <SectionHeader title="Casino" subtitle="Real dealers, immersive experience" />
+              <div className="grid grid-cols-3 gap-2">
+                {CASINO_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 8: PVC */}
+            <section id="sec-pvc" className="space-y-2">
+              <SectionHeader title="PVC" subtitle="Traditional card games" moreCount={2} />
+              <div className="grid grid-cols-3 gap-2">
+                {PVC_GAMES.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+
+            {/* Section 9: Winning Information (pakvip21 winner.vue) */}
+            <section
+              className="rounded-2xl p-3 border space-y-2"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-[#17B15E] animate-ping" />
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
+                    Winning information
+                  </h3>
+                </div>
+                <span className="text-[10px] text-[#21D9CC] font-mono font-bold">● Live Broadcast</span>
+              </div>
+              <div className="space-y-1.5">
+                {LIVE_WINNERS.map((w, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 rounded-xl text-xs border transition hover:border-[#21D9CC]/30"
+                    style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black bg-gradient-to-br from-[#282537] to-[#15131E] border border-white/10 text-[#21D9CC]">
+                        {idx + 1}
+                      </div>
+                      <div>
+                        <div className="font-mono text-[11px] text-[#E6EBF0] font-semibold">{w.user}</div>
+                        <div className="text-[9px] text-[#9EA2A8]">{w.game} • {w.time}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-[#BED921] font-mono">{w.amount}</div>
+                      <span className="text-[8px] text-[#17B15E]">Paid to JazzCash/EP</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Section 10: Today's Earnings Chart (pakvip21 DailyProfitRank) */}
+            <section
+              className="rounded-2xl p-3.5 border space-y-3"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-[#BED921]" />
+                  <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0]">
+                    Today's Earnings Ranking
+                  </h3>
+                </div>
+                <span className="text-[10px] text-[#21D9CC] font-mono font-bold">Daily Profit</span>
+              </div>
+
+              {/* 3D Authentic Top 3 Podium */}
+              <div className="grid grid-cols-3 gap-2 text-center pt-3 items-end">
+                {/* Rank 2 (Left, Silver) */}
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end bg-[#201D2B]" style={{ borderColor: THEME.border }}>
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-9 h-9 rounded-full bg-[#9EA2A8]/20 border-2 border-[#9EA2A8] text-[#9EA2A8] flex items-center justify-center font-black text-sm">
+                      2
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">92321***410</span>
+                  <span className="text-[9px] text-[#9EA2A8]">Silver VIP</span>
+                  <span className="text-xs font-black text-[#BED921] font-mono mt-1">Rs 1,740,200</span>
+                </div>
+
+                {/* Rank 1 (Center, Elevated, Gold) */}
+                <div className="p-3.5 rounded-xl border-2 border-[#BED921] flex flex-col justify-end bg-[#252233] shadow-[0_0_20px_rgba(190,217,33,0.35)] relative -top-2">
+                  <Crown className="w-5 h-5 text-[#BED921] mx-auto mb-0.5 animate-bounce" />
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-10 h-10 rounded-full bg-[#BED921] text-[#15131E] flex items-center justify-center font-black text-base shadow-lg">
+                      1
+                    </div>
+                  </div>
+                  <span className="text-[11px] text-[#E6EBF0] font-black truncate">92300***892</span>
+                  <span className="text-[9px] text-[#BED921] font-bold">Crown Champion</span>
+                  <span className="text-sm font-black text-[#21D9CC] font-mono mt-1">Rs 2,890,500</span>
+                </div>
+
+                {/* Rank 3 (Right, Bronze) */}
+                <div className="p-2.5 rounded-xl border flex flex-col justify-end bg-[#201D2B]" style={{ borderColor: THEME.border }}>
+                  <div className="relative mx-auto mb-1">
+                    <div className="w-9 h-9 rounded-full bg-[#DD9138]/20 border-2 border-[#DD9138] text-[#DD9138] flex items-center justify-center font-black text-sm">
+                      3
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-[#E6EBF0] font-bold truncate">92345***653</span>
+                  <span className="text-[9px] text-[#9EA2A8]">Bronze VIP</span>
+                  <span className="text-xs font-black text-[#BED921] font-mono mt-1">Rs 960,000</span>
+                </div>
+              </div>
+
+              {/* Ranks 4 to 7 Leaderboard List */}
+              <div className="space-y-1 pt-1 border-t border-white/5">
+                {[
+                  { rank: 4, user: "92314***901", profit: "Rs 680,400" },
+                  { rank: 5, user: "92333***219", profit: "Rs 520,000" },
+                  { rank: 6, user: "92308***544", profit: "Rs 445,100" },
+                  { rank: 7, user: "92318***872", profit: "Rs 389,000" },
+                ].map((item) => (
+                  <div key={item.rank} className="flex items-center justify-between p-2 rounded-lg bg-[#282537] text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="w-4 text-center font-mono font-bold text-[#9EA2A8]">{item.rank}</span>
+                      <span className="text-[#E6EBF0] font-mono text-[11px]">{item.user}</span>
+                    </div>
+                    <span className="font-mono font-bold text-[#21D9CC] text-xs">{item.profit}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Section 11: PAKVIP Platform Info & Basic Tools */}
+            <section
+              className="rounded-2xl p-3.5 border space-y-3 text-xs"
+              style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="font-black text-[#E6EBF0] uppercase tracking-wider text-[11px]">
+                  WinZO Official Platform Tools
+                </h3>
+                <span className="text-[9px] text-[#FFDE30]">winzoplay.com</span>
+              </div>
+              <div className="grid grid-cols-4 gap-2 text-center text-[#9EA2A8]">
+                <div onClick={() => triggerToast("Language: English (Pakistan)")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
+                  <Globe className="w-4 h-4 mx-auto mb-1 text-[#21D9CC]" />
+                  <span className="text-[10px] font-bold">Language</span>
+                </div>
+                <div onClick={() => setShowNoticeModal(true)} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
+                  <Bell className="w-4 h-4 mx-auto mb-1 text-[#BED921]" />
+                  <span className="text-[10px] font-bold">Notice</span>
+                </div>
+                <div onClick={() => setShowSupportModal(true)} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
+                  <Headphones className="w-4 h-4 mx-auto mb-1 text-[#17B15E]" />
+                  <span className="text-[10px] font-bold">24/7 CS</span>
+                </div>
+                <div onClick={() => alert("WinZO v3.8.2 Official Pakistani Gaming Platform")} className="p-2 rounded-xl bg-[#282537] cursor-pointer hover:text-[#E6EBF0] transition">
+                  <HelpCircle className="w-4 h-4 mx-auto mb-1 text-[#9EA2A8]" />
+                  <span className="text-[10px] font-bold">About</span>
+                </div>
+              </div>
+
+              {/* Responsible Gaming & License Notice */}
+              <div className="p-3 rounded-xl bg-[#15131E]/60 border border-white/5 space-y-1">
+                <div className="flex items-center gap-1.5 text-[#17B15E]">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span className="font-bold text-[10px]">Certified Fair Play & 100% Guaranteed Payouts</span>
+                </div>
+                <p className="text-[9px] text-[#9EA2A8] leading-tight">
+                  WinZO is officially licensed. Fast deposits and withdrawals via JazzCash, EasyPaisa, and Bank Transfer with 0% processing fee. 18+ Only.
+                </p>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 2: ACTIVITY SECTION (pakvip21.com/#/activity)              */}
+        {/* ============================================================== */}
+        {activeTab === "activity" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Top Activity Header */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 flex items-center justify-between" style={{ borderColor: THEME.border }}>
+              <div>
+                <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase tracking-wider">
+                  WinZO Activity Center
+                </span>
+                <h2 className="text-lg font-black text-[#E6EBF0]">Super Jackpot & Rewards</h2>
+                <p className="text-[11px] text-[#9EA2A8]">Complete daily missions and claim instant PKR cash</p>
+              </div>
+              <Trophy className="w-10 h-10 text-[#BED921] flex-shrink-0" />
+            </div>
+
+            {/* Lucky Turntable Wheel Quick Launch Card */}
+            <div
+              onClick={() => setShowTurntableModal(true)}
+              className="p-3.5 rounded-2xl border cursor-pointer bg-gradient-to-r from-[#BED921]/20 via-[#282537] to-[#21D9CC]/20 flex items-center justify-between hover:border-[#21D9CC]/50 transition"
+              style={{ borderColor: THEME.border }}
+            >
+              <div className="space-y-0.5">
+                <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#BED921] text-[#15131E] uppercase">
+                  Daily Free Spin
+                </span>
+                <h3 className="text-sm font-black text-[#E6EBF0]">WinZO Lucky Turntable</h3>
+                <p className="text-[10px] text-[#9EA2A8]">Spin the wheel to win up to Rs 5,000 cash rewards!</p>
+              </div>
+              <button
+                className="px-3 py-1.5 rounded-xl text-xs font-black text-[#15131E] shadow-md flex items-center gap-1"
+                style={{ background: THEME.gradient }}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Spin Now</span>
+              </button>
+            </div>
+
+            {/* Gift Redemption Code Box */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center gap-2">
+                <Gift className="w-4 h-4 text-[#21D9CC]" />
+                <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Gifts / Redemption Code</h3>
+              </div>
+              <p className="text-[10px] text-[#9EA2A8]">
+                Enter your redemption code (e.g. WINZO2026 or WINZO888) to receive instant gift balance.
+              </p>
+              {giftClaimMsg ? (
+                <div className="p-2 rounded-xl bg-[#17B15E]/20 text-[#17B15E] text-xs font-bold text-center">
+                  {giftClaimMsg}
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter Redemption Code (e.g. WINZO2026)"
+                    value={giftCode}
+                    onChange={(e) => setGiftCode(e.target.value)}
+                    className="flex-1 px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                    style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                  />
+                  <button
+                    onClick={() => {
+                      if (!giftCode.trim()) return alert("Please enter a redemption code");
+                      const clean = giftCode.trim().toUpperCase();
+                      if (user) {
+                        if (clean.includes("WINZO") || clean.includes("PAKVIP") || clean.includes("VIP")) {
+                          saveUser({ ...user, balance: user.balance + 500 });
+                          setGiftClaimMsg("Success! Rs 500 WinZO Gift Reward added to your balance!");
+                          setGiftCode("");
+                          setTimeout(() => setGiftClaimMsg(""), 3000);
+                        } else {
+                          alert("Invalid code. Try WINZO2026 or WINZO888");
+                        }
+                      }
+                    }}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    Receive
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Attendance Bonus Check-in */}
+            <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Attendance Bonus</h3>
+                  <p className="text-[10px] text-[#9EA2A8]">
+                    Sign in consecutively for 7 days to claim higher rewards.
+                  </p>
+                </div>
+                <Calendar className="w-5 h-5 text-[#BED921]" />
+              </div>
+
+              {/* 7-Day Matrix */}
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {[1, 2, 3, 4, 5, 6, 7].map((day) => {
+                  const isChecked = day <= attendanceDay;
+                  return (
+                    <div
+                      key={day}
+                      className={`p-1.5 rounded-xl border text-[10px] ${
+                        isChecked
+                          ? "bg-[#21D9CC]/20 border-[#21D9CC] text-[#21D9CC]"
+                          : "bg-[#282537] border-white/5 text-[#9EA2A8]"
+                      }`}
+                    >
+                      <span className="block font-bold">Day {day}</span>
+                      <span className="block font-mono font-black mt-0.5">
+                        +{day * 100}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button
+                disabled={attendanceClaimed}
+                onClick={() => {
+                  if (attendanceClaimed || !user) return;
+                  const rew = attendanceDay * 100;
+                  saveUser({ ...user, balance: user.balance + rew });
+                  setAttendanceClaimed(true);
+                  triggerToast(`Checked in! Rs ${rew} credited to your wallet!`);
+                }}
+                className={`w-full py-2.5 rounded-xl text-xs font-bold transition ${
+                  attendanceClaimed
+                    ? "bg-[#38374B] text-[#9EA2A8]"
+                    : "text-[#15131E] shadow-lg active:scale-95"
+                }`}
+                style={{ background: attendanceClaimed ? undefined : THEME.gradient }}
+              >
+                {attendanceClaimed ? "Already Signed In Today" : "Sign In & Claim Reward"}
+              </button>
+            </div>
+
+            {/* Activity Reward Promotions List (pakvip21 exact) */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-black uppercase tracking-wider text-[#E6EBF0] px-1">
+                WinZO Official Promotions
+              </h3>
+              {[
+                { title: "FIRST DEPOSIT BIG REWARDS", desc: "Double your first deposit with 100% matching bonus up to Rs 20,000.", tag: "DEPOSIT" },
+                { title: "AVIATOR ADDITIONAL REWARDS", desc: "Get an extra 5% cash rebate on every cashout above x50.00.", tag: "SPRIBE" },
+                { title: "WINGO WIN STREAK BONUS", desc: "Win 5 rounds consecutively in Win Go 30s to claim Rs 5,000 cash.", tag: "LOTTERY" },
+                { title: "LUCKY 10 DAYS OF INTEREST", desc: "Keep balance in your wallet to receive 0.8% daily compounded interest.", tag: "PASSIVE" },
+                { title: "CREATIVE VIDEO CONTENT REWARDS", desc: "Upload gameplay video on TikTok / YouTube and claim Rs 2,000 bounty.", tag: "BOUNTY" },
+                { title: "DAILY SLOTS TREASURE CHEST CHALLENGE", desc: "Bet 100 times in JILI Slots to unlock the Golden Mystery Chest.", tag: "CHEST" },
+                { title: "INVITE & EARN REWARDS", desc: "Receive Rs 500 instantly for every friend who registers and deposits.", tag: "REFERRAL" },
+              ].map((act, i) => (
+                <div
+                  key={i}
+                  className="p-3 rounded-2xl border flex items-center justify-between transition hover:border-white/20"
+                  style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+                >
+                  <div className="space-y-1 max-w-[280px]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#21D9CC]/15 text-[#21D9CC]">
+                        {act.tag}
+                      </span>
+                      <h4 className="text-xs font-bold text-[#E6EBF0] truncate">{act.title}</h4>
+                    </div>
+                    <p className="text-[10px] text-[#9EA2A8] leading-tight">{act.desc}</p>
+                  </div>
+                  <button
+                    onClick={() => setShowDepositModal(true)}
+                    className="px-2.5 py-1 rounded-lg text-[10px] font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    Join
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 3: PROMOTION SECTION (pakvip21.com/#/promotion)            */}
+        {/* ============================================================== */}
+        {activeTab === "promo" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Header Banner */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-r from-[#21D9CC]/20 via-[#201D2B] to-[#BED921]/20 space-y-1" style={{ borderColor: THEME.border }}>
+              <span className="text-[10px] font-mono font-bold text-[#21D9CC] uppercase">
+                WinZO Agency Program
+              </span>
+              <h2 className="text-lg font-black text-[#E6EBF0]">Agency Promotion Center</h2>
+              <p className="text-[11px] text-[#9EA2A8]">
+                Invite friends and earn up to 0.7% multi-tier lifetime commission on every bet.
+              </p>
+            </div>
+
+            {/* Dashboard Overview */}
+            <div className="p-3.5 rounded-2xl border grid grid-cols-3 gap-2 text-center" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Yesterday's Total</span>
+                <span className="text-sm font-black text-[#BED921] font-mono">Rs 4,120.00</span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Direct Subordinates</span>
+                <span className="text-sm font-black text-[#21D9CC] font-mono">42</span>
+              </div>
+              <div className="p-2 rounded-xl bg-[#282537]">
+                <span className="text-[9px] text-[#9EA2A8] block">Team Members</span>
+                <span className="text-sm font-black text-[#E6EBF0] font-mono">198</span>
+              </div>
+            </div>
+
+            {/* Invite Links & Code Box */}
+            <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Your Exclusive Invitation</h3>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border text-xs" style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}>
+                  <div>
+                    <span className="text-[9px] text-[#9EA2A8] block">Invitation Code</span>
+                    <span className="font-mono font-black text-[#21D9CC] text-sm tracking-wider">WINZO7788</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText("WINZO7788");
+                      triggerToast("Invitation Code copied to clipboard!");
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Code</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 rounded-xl border text-xs" style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}>
+                  <div className="truncate max-w-[200px]">
+                    <span className="text-[9px] text-[#9EA2A8] block">Invitation Link</span>
+                    <span className="font-mono text-[#E6EBF0] text-[11px] truncate">https://pakvip21.com/register?r=WINZO7788</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText("https://pakvip21.com/register?r=WINZO7788");
+                      triggerToast("Invitation Link copied to clipboard!");
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-[#15131E]"
+                    style={{ background: THEME.gradient }}
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Copy Link</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 6 Subordinate Levels Commission Table */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="text-xs font-black uppercase text-[#E6EBF0]">
+                【Promotion Partner】Commission Tier Rates
+              </h3>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { tier: "Tier 1 (Direct)", rate: "0.7% Rebate" },
+                  { tier: "Tier 2", rate: "0.4% Rebate" },
+                  { tier: "Tier 3", rate: "0.2% Rebate" },
+                  { tier: "Tier 4", rate: "0.1% Rebate" },
+                  { tier: "Tier 5", rate: "0.05% Rebate" },
+                  { tier: "Tier 6", rate: "0.02% Rebate" },
+                ].map((item, i) => (
+                  <div key={i} className="p-2 rounded-xl bg-[#282537] flex justify-between items-center border border-white/5">
+                    <span className="text-[#9EA2A8] text-[11px]">{item.tier}</span>
+                    <span className="font-mono font-bold text-[#BED921]">{item.rate}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Rules (pakvip21 exact) */}
+            <div className="p-3.5 rounded-2xl border space-y-2 text-xs text-[#9EA2A8]" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <h3 className="font-bold text-[#E6EBF0] uppercase text-[11px]">WinZO Promotion Rules</h3>
+              <p><strong>01.</strong> There are 6 subordinate levels in inviting friends. If A invites B, B is level 1 of A. If B invites C, C is level 2 of A.</p>
+              <p><strong>02.</strong> When inviting friends to register, you must send the invitation link provided or enter the invitation code manually.</p>
+              <p><strong>03.</strong> The commission is calculated automatically every night at 00:00 and credited directly to your withdrawable wallet.</p>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 4: WALLET SECTION (pakvip21.com/#/wallet)                  */}
+        {/* ============================================================== */}
+        {activeTab === "wallet" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* Balance Overview Card */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-br from-[#201D2B] via-[#282537] to-[#15131E] space-y-3" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#9EA2A8] font-semibold">Total Balance</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#17B15E]/20 text-[#17B15E] font-bold">
+                  ACTIVE
+                </span>
+              </div>
+              <div className="text-3xl font-black text-[#E6EBF0] font-mono">
+                Rs {user?.balance.toLocaleString() || "0.00"}
+              </div>
+
+              {/* Main Wallet vs 3rd Party Wallet */}
+              <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
+                <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5">
+                  <span className="text-[10px] text-[#9EA2A8] block">Main Wallet (100%)</span>
+                  <span className="font-mono font-bold text-[#21D9CC]">
+                    Rs {user?.balance.toLocaleString() || "0.00"}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5">
+                  <span className="text-[10px] text-[#9EA2A8] block">3rd Party Wallet (0%)</span>
+                  <span className="font-mono font-bold text-[#9EA2A8]">Rs 0.00</span>
+                </div>
+              </div>
+
+              {/* Main Wallet Transfer Button */}
+              <button
+                onClick={() => triggerToast("All 3rd party game balances have been recycled to your Main Wallet!")}
+                className="w-full py-2 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 text-[#21D9CC] border-[#21D9CC]/30 hover:bg-[#21D9CC]/10 transition"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Main Wallet Transfer (Recycle)</span>
+              </button>
+            </div>
+
+            {/* Quick Actions (Deposit & Withdraw) */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  setWalletSubTab("deposit");
+                  setShowDepositModal(true);
+                }}
+                className="p-3 rounded-2xl font-black text-sm text-[#15131E] flex items-center justify-center gap-2 shadow-lg active:scale-95 transition"
+                style={{ background: THEME.gradient }}
+              >
+                <ArrowDownCircle className="w-5 h-5" />
+                <span>Deposit</span>
+              </button>
+              <button
+                onClick={() => setWalletSubTab("withdraw")}
+                className="p-3 rounded-2xl font-black text-sm text-[#E6EBF0] border flex items-center justify-center gap-2 active:scale-95 transition"
+                style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+              >
+                <ArrowUpCircle className="w-5 h-5 text-[#BED921]" />
+                <span>Withdraw</span>
+              </button>
+            </div>
+
+            {/* Withdraw Section (if selected) */}
+            {walletSubTab === "withdraw" && (
+              <div className="p-3.5 rounded-2xl border space-y-3" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Withdrawal Request</h3>
+                  <button onClick={() => setWalletSubTab("deposit")} className="text-xs text-[#9EA2A8]">Cancel</button>
+                </div>
+
+                {withdrawMsg ? (
+                  <div className="p-3 rounded-xl bg-[#17B15E]/20 text-[#17B15E] text-xs font-bold text-center">
+                    {withdrawMsg}
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!user || user.balance < withdrawAmount) return alert("Insufficient balance");
+                      if (withdrawAmount < 500) return alert("Minimum withdrawal is Rs 500");
+                      saveUser({ ...user, balance: user.balance - withdrawAmount });
+                      setTransactions((prev) => [
+                        { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Withdraw", amount: withdrawAmount, time: "Just now", status: "Processing" },
+                        ...prev,
+                      ]);
+                      setWithdrawMsg(`Withdrawal of Rs ${withdrawAmount.toLocaleString()} submitted to ${withdrawMethod.toUpperCase()}!`);
+                      setTimeout(() => {
+                        setWithdrawMsg("");
+                        setWalletSubTab("deposit");
+                      }, 2500);
+                    }}
+                    className="space-y-3"
+                  >
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Withdrawal Method</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setWithdrawMethod("jazzcash")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold ${
+                            withdrawMethod === "jazzcash" ? "border-[#21D9CC] bg-[#21D9CC]/15 text-[#E6EBF0]" : "border-white/5 text-[#9EA2A8]"
+                          }`}
+                        >
+                          JazzCash
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setWithdrawMethod("easypaisa")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold ${
+                            withdrawMethod === "easypaisa" ? "border-[#BED921] bg-[#BED921]/15 text-[#E6EBF0]" : "border-white/5 text-[#9EA2A8]"
+                          }`}
+                        >
+                          EasyPaisa
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Account Title</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Account Holder Name"
+                        value={withdrawAccountTitle}
+                        onChange={(e) => setWithdrawAccountTitle(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Mobile Account Number</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 03001234567"
+                        value={withdrawPhone}
+                        onChange={(e) => setWithdrawPhone(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border text-xs text-[#E6EBF0] outline-none"
+                        style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] text-[#9EA2A8] block mb-1">Amount (Rs) - Min Rs 500</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[500, 1000, 2000, 5000, 10000, 20000].map((amt) => (
+                          <button
+                            type="button"
+                            key={amt}
+                            onClick={() => setWithdrawAmount(amt)}
+                            className={`py-1.5 rounded-xl border text-xs font-mono font-bold ${
+                              withdrawAmount === amt ? "bg-[#BED921] text-[#15131E] border-transparent" : "bg-[#282537] text-[#9EA2A8] border-white/5"
+                            }`}
+                          >
+                            Rs {amt.toLocaleString()}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-2.5 rounded-xl font-bold text-xs text-[#15131E]"
+                      style={{ background: THEME.gradient }}
+                    >
+                      Submit Withdrawal (Rs {withdrawAmount.toLocaleString()})
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* Transaction Records List */}
+            <div className="p-3.5 rounded-2xl border space-y-2.5" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+                <h3 className="text-xs font-black uppercase text-[#E6EBF0]">Transaction History</h3>
+                <span className="text-[10px] text-[#9EA2A8]">Recent entries</span>
+              </div>
+
+              <div className="space-y-1.5">
+                {transactions.map((tx) => (
+                  <div key={tx.id} className="p-2.5 rounded-xl bg-[#282537] flex items-center justify-between text-xs border border-white/5">
+                    <div>
+                      <div className="font-bold text-[#E6EBF0]">{tx.type} ({tx.id})</div>
+                      <div className="text-[10px] text-[#9EA2A8]">{tx.time}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`font-mono font-bold ${tx.type === "Withdraw" ? "text-[#D23838]" : "text-[#17B15E]"}`}>
+                        {tx.type === "Withdraw" ? `-${tx.amount}` : `+${tx.amount}`} Rs
+                      </div>
+                      <span className="text-[9px] text-[#21D9CC]">{tx.status}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* TAB 5: ACCOUNT SECTION (pakvip21.com/#/main)                   */}
+        {/* ============================================================== */}
+        {activeTab === "account" && (
+          <div className="space-y-3.5 animate-in fade-in duration-200">
+            {/* User Profile Card */}
+            <div className="p-4 rounded-2xl border bg-gradient-to-br from-[#201D2B] via-[#282537] to-[#15131E] space-y-3" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-3">
+                <div className="w-13 h-13 rounded-full flex items-center justify-center p-0.5 bg-gradient-to-tr from-[#21D9CC] to-[#BED921]">
+                  <div className="w-full h-full rounded-full bg-[#15131E] flex items-center justify-center text-[#21D9CC]">
+                    <User className="w-7 h-7" />
+                  </div>
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-sm text-[#E6EBF0]">{user?.phone || "03001234567"}</span>
+                    <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#BED921] text-[#15131E]">
+                      VIP {user?.vip || 1}
+                    </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-[#9EA2A8]">UID: PAK954821</div>
+                </div>
+              </div>
+
+              {/* VIP Progress Bar */}
+              <div className="p-2.5 rounded-xl bg-[#15131E]/60 border border-white/5 space-y-1.5">
+                <div className="flex justify-between text-[10px]">
+                  <span className="text-[#9EA2A8]">VIP 1 Privilege Level</span>
+                  <span className="font-mono text-[#21D9CC] font-bold">VIP 2 (65%)</span>
+                </div>
+                <div className="w-full h-1.5 bg-[#282537] rounded-full overflow-hidden">
+                  <div className="h-full rounded-full w-[65%]" style={{ background: THEME.gradient }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Feature Menu List (pakvip21 exact) */}
+            <div className="p-2 rounded-2xl border space-y-1" style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}>
+              {[
+                { label: "VIP Center", icon: Trophy, color: "#BED921", action: () => alert("VIP Center: Level-up bonus Rs 1,000 available at VIP 2!") },
+                { label: "Safe Center (Security)", icon: Lock, color: "#21D9CC", action: () => alert("Safe Center: 2FA & Withdrawal PIN active.") },
+                { label: "Bank Card / E-Wallet Binding", icon: CreditCard, color: "#17B15E", action: () => alert("Bound: JazzCash (0300***1234) & EasyPaisa.") },
+                { label: "Transaction Records", icon: Clock, color: "#9EA2A8", action: () => setActiveTab("wallet") },
+                { label: "Notifications & Messages", icon: Bell, color: "#BED921", action: () => setShowNoticeModal(true) },
+                { label: "24/7 VIP Customer Service", icon: Headphones, color: "#21D9CC", action: () => setShowSupportModal(true) },
+                { label: "About WinZO", icon: HelpCircle, color: "#9EA2A8", action: () => alert("WinZO v3.8.2 Official Pakistani Gaming Platform") },
+              ].map((item, i) => (
+                <button
+                  key={i}
+                  onClick={item.action}
+                  className="w-full p-3 rounded-xl flex items-center justify-between text-xs text-[#E6EBF0] hover:bg-[#282537] transition"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <item.icon className="w-4 h-4" style={{ color: item.color }} />
+                    <span className="font-semibold">{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+                </button>
+              ))}
+            </div>
+
+            {/* Log Out Button */}
+            <button
+              onClick={() => {
+                if (confirm("Are you sure you want to log out?")) {
+                  localStorage.removeItem("winzo_user"); localStorage.removeItem("pakvip_user");
+                  localStorage.removeItem("winzo_play_user");
+                  setUser(null);
+                  triggerToast("Logged out successfully.");
+                }
+              }}
+              className="w-full py-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold text-[#D23838] border-[#D23838]/30 hover:bg-[#D23838]/10 transition"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Log Out</span>
+            </button>
+          </div>
+        )}
       </main>
-      <nav className="bottom-nav">{[{ label: "Home", icon: Home }, { label: "Activity", icon: RotateCw }, { label: "Promotion", icon: Gift }, { label: "Wallet", icon: Wallet }, { label: "Account", icon: User }].map(({ label, icon: Icon }) => <button key={label} className={activeTab === label ? "active" : ""} onClick={() => { setActiveTab(label); if (label !== "Home") showModal(label); else window.scrollTo({ top: 0, behavior: "smooth" }); }}><Icon size={19}/><span>{label}</span></button>)}</nav>
-      {modal && <div className="modal-backdrop" role="presentation" onClick={() => setModal("")}><div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setModal("")} aria-label="Close"><X size={19}/></button><div className="modal-symbol"><Info size={22}/></div><h2 id="modal-title">{modal}</h2><p>This is a visual demonstration. Live accounts, games, deposits, withdrawals, promotions and customer support are not connected.</p><div className="modal-warning"><AlertTriangle size={15}/><span>Do not submit personal, payment or account information here.</span></div><button className="btn-primary modal-action" onClick={() => setModal("")}>Got it</button></div></div>}
-      <style>{styles}</style>
+
+      {/* ============================================================== */}
+      {/* 3. FLOATING LUCKY TREASURE CHEST & TURNTABLE                   */}
+      {/* ============================================================== */}
+      <div className="fixed bottom-20 right-3 z-30 flex flex-col items-center gap-2">
+        {/* Lucky Turntable Floating Button */}
+        <button
+          onClick={() => setShowTurntableModal(true)}
+          className="w-12 h-12 rounded-full flex items-center justify-center p-1 bg-gradient-to-br from-[#BED921] to-[#21D9CC] shadow-[0_0_15px_rgba(190,217,33,0.5)] animate-pulse hover:scale-110 transition-transform"
+          title="Lucky Spin Wheel"
+        >
+          <div className="w-full h-full rounded-full bg-[#15131E] flex items-center justify-center text-[#BED921]">
+            <Sparkles className="w-6 h-6 fill-current" />
+          </div>
+        </button>
+
+        {/* Lucky Treasure Chest */}
+        <button
+          onClick={() => {
+            setChestOpened(false);
+            setShowChestModal(true);
+          }}
+          className="w-14 h-14 relative flex items-center justify-center animate-bounce hover:scale-110 transition-transform"
+          title="Daily Treasure Chest"
+        >
+          <img
+            src="/pakvip/images/box_closed-CHcnurtG.png"
+            alt="Chest"
+            className="w-13 h-13 object-contain drop-shadow-[0_0_15px_rgba(33,217,204,0.6)]"
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = "none";
+            }}
+          />
+          <Gift className="w-8 h-8 text-[#BED921] block [img:not([style*='display: none'])~&]:hidden" />
+        </button>
+      </div>
+
+      {/* ============================================================== */}
+      {/* 4. AUTHENTIC 5-TAB BOTTOM NAVIGATION BAR (pakvip21 exact)     */}
+      {/* ============================================================== */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-40 border-t backdrop-blur-lg"
+        style={{ backgroundColor: `${THEME.bgL2}F8`, borderColor: THEME.border }}
+      >
+        <div className="max-w-md mx-auto px-4 py-1.5 flex items-center justify-between relative">
+          {/* Tab 1: Home */}
+          <button
+            onClick={() => {
+              setActiveTab("home");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "home" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <Gamepad2 className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Home</span>
+            {activeTab === "home" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+
+          {/* Tab 2: Activity */}
+          <button
+            onClick={() => setActiveTab("activity")}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "activity" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <Gift className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Activity</span>
+            {activeTab === "activity" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+
+          {/* Center Elevated Win Go Gamepad */}
+          <div className="relative -top-4">
+            <button
+              onClick={() => {
+                const wg = LOTTERY_GAMES.find((g) => g.id === "wingo-30s");
+                if (wg) setActiveGame(wg);
+              }}
+              className="w-12 h-12 rounded-full flex items-center justify-center text-[#15131E] shadow-[0_0_20px_rgba(33,217,204,0.6)] border-4 border-[#15131E] active:scale-95 transition-transform"
+              style={{ background: THEME.gradient }}
+            >
+              <Zap className="w-6 h-6 fill-current" />
+            </button>
+            <span className="block text-center text-[9px] font-black text-[#21D9CC] mt-0.5">
+              WIN GO
+            </span>
+          </div>
+
+          {/* Tab 3: Promotion */}
+          <button
+            onClick={() => setActiveTab("promo")}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "promo" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Promotion</span>
+            {activeTab === "promo" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+
+          {/* Tab 4: Wallet */}
+          <button
+            onClick={() => setActiveTab("wallet")}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "wallet" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <Wallet className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Wallet</span>
+            {activeTab === "wallet" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+
+          {/* Tab 5: Account */}
+          <button
+            onClick={() => setActiveTab("account")}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              activeTab === "account" ? "text-[#21D9CC]" : "text-[#9EA2A8]"
+            }`}
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px] font-semibold">Account</span>
+            {activeTab === "account" && <div className="w-1 h-1 rounded-full bg-[#21D9CC]" />}
+          </button>
+        </div>
+      </nav>
+
+      {/* ============================================================== */}
+      {/* 5. DEPOSIT MODAL (JazzCash & EasyPaisa & Bank & USDT)           */}
+      {/* ============================================================== */}
+      {showDepositModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div
+            className="w-full max-w-md rounded-t-3xl sm:rounded-3xl border p-5 space-y-4 max-h-[90vh] overflow-y-auto"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-2">
+                <Wallet className="w-5 h-5 text-[#21D9CC]" />
+                <h3 className="font-black text-base text-[#E6EBF0]">Deposit Funds (WinZO Official)</h3>
+              </div>
+              <button
+                onClick={() => setShowDepositModal(false)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]"
+                style={{ backgroundColor: THEME.bgPill }}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {depositSuccessMsg ? (
+              <div className="p-4 rounded-2xl bg-[#17B15E]/20 border border-[#17B15E] text-center space-y-2">
+                <CheckCircle2 className="w-10 h-10 text-[#17B15E] mx-auto" />
+                <p className="font-bold text-[#E6EBF0] text-sm">{depositSuccessMsg}</p>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!user) return;
+                  saveUser({ ...user, balance: user.balance + Number(depositAmount) });
+                  setTransactions((prev) => [
+                    { id: `TX${Math.floor(Math.random() * 900000)}`, type: "Deposit", amount: depositAmount, time: "Just now", status: "Success" },
+                    ...prev,
+                  ]);
+                  setDepositSuccessMsg(`Successfully credited Rs ${depositAmount.toLocaleString()} to your balance!`);
+                  setTimeout(() => {
+                    setDepositSuccessMsg("");
+                    setShowDepositModal(false);
+                  }, 1500);
+                }}
+                className="space-y-3.5"
+              >
+                <div>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Payment Gateway (Pakistan)</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setDepositMethod("jazzcash")}
+                      className={`p-3 rounded-xl border flex items-center gap-2 transition ${
+                        depositMethod === "jazzcash"
+                          ? "border-[#21D9CC] bg-[#21D9CC]/10 text-[#E6EBF0]"
+                          : "border-white/10 text-[#9EA2A8]"
+                      }`}
+                    >
+                      <div className="w-3 h-3 rounded-full border border-current flex items-center justify-center">
+                        {depositMethod === "jazzcash" && <div className="w-1.5 h-1.5 rounded-full bg-[#21D9CC]" />}
+                      </div>
+                      <span className="font-bold text-xs">JazzCash</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDepositMethod("easypaisa")}
+                      className={`p-3 rounded-xl border flex items-center gap-2 transition ${
+                        depositMethod === "easypaisa"
+                          ? "border-[#BED921] bg-[#BED921]/10 text-[#E6EBF0]"
+                          : "border-white/10 text-[#9EA2A8]"
+                      }`}
+                    >
+                      <div className="w-3 h-3 rounded-full border border-current flex items-center justify-center">
+                        {depositMethod === "easypaisa" && <div className="w-1.5 h-1.5 rounded-full bg-[#BED921]" />}
+                      </div>
+                      <span className="font-bold text-xs">EasyPaisa</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Deposit Amount (PKR)</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[300, 500, 1000, 2000, 5000, 10000, 25000, 50000].map((amt) => (
+                      <button
+                        type="button"
+                        key={amt}
+                        onClick={() => setDepositAmount(amt)}
+                        className={`py-2 rounded-xl border text-xs font-mono font-bold transition ${
+                          depositAmount === amt
+                            ? "bg-[#21D9CC] text-[#15131E] border-transparent"
+                            : "bg-[#282537] text-[#E6EBF0] border-white/5"
+                        }`}
+                      >
+                        Rs {amt.toLocaleString()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl border space-y-1 text-xs" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
+                  <div className="flex justify-between items-center text-[#9EA2A8]">
+                    <span>Official Merchant Account:</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-[#E6EBF0] font-mono font-bold">0300-9876543</span>
+                      <Copy
+                        onClick={() => {
+                          navigator.clipboard.writeText("03009876543");
+                          triggerToast("Merchant number copied!");
+                        }}
+                        className="w-3.5 h-3.5 text-[#21D9CC] cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-between text-[#9EA2A8]">
+                    <span>Account Name:</span>
+                    <span className="text-[#BED921] font-bold">WINZO OFFICIAL</span>
+                  </div>
+                  <div className="flex justify-between text-[#9EA2A8]">
+                    <span>Bonus:</span>
+                    <span className="text-[#17B15E] font-bold">+10% Extra on first deposit</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs text-[#9EA2A8] block mb-1 font-semibold">Transaction ID (TID)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter 11-digit TID from SMS"
+                    value={depositTid}
+                    onChange={(e) => setDepositTid(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border text-sm text-[#E6EBF0] outline-none"
+                    style={{ backgroundColor: THEME.bgPill, borderColor: THEME.border }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-xl font-bold text-sm text-[#15131E] shadow-lg active:scale-95 transition"
+                  style={{ background: THEME.gradient }}
+                >
+                  Confirm & Credit Rs {depositAmount.toLocaleString()}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 6. PLAYABLE WIN GO 30S LOTTERY                                 */}
+      {/* ============================================================== */}
+      {activeGame?.id === "wingo-30s" && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3">
+          <div
+            className="w-full max-w-md rounded-3xl border p-4 space-y-3.5"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-black text-base text-[#E6EBF0]">Win Go 30s</h3>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#FFDE30]/20 text-[#FFDE30]">WINZO</span>
+                </div>
+                <span className="text-[10px] text-[#9EA2A8]">Period #{wingoPeriod}</span>
+              </div>
+              <button onClick={() => setActiveGame(null)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3.5 rounded-2xl text-center border" style={{ backgroundColor: THEME.bgL3, borderColor: THEME.border }}>
+              <span className="text-xs text-[#9EA2A8] uppercase font-bold">Time Remaining</span>
+              <div className="text-4xl font-black text-[#BED921] font-mono tracking-widest mt-1">
+                00:{wingoTimer < 10 ? `0${wingoTimer}` : wingoTimer}
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-[#9EA2A8]">Color Bet (x2.0 Payout)</label>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => {
+                    setWingoBetColor("green");
+                    setWingoBetNum(null);
+                  }}
+                  className={`py-2.5 rounded-xl font-bold text-xs uppercase border ${
+                    wingoBetColor === "green" ? "bg-[#17B15E] text-white border-white" : "bg-[#17B15E]/20 text-[#17B15E] border-[#17B15E]/40"
+                  }`}
+                >
+                  Green
+                </button>
+                <button
+                  onClick={() => {
+                    setWingoBetColor("violet");
+                    setWingoBetNum(null);
+                  }}
+                  className={`py-2.5 rounded-xl font-bold text-xs uppercase border ${
+                    wingoBetColor === "violet" ? "bg-[#9B48DB] text-white border-white" : "bg-[#9B48DB]/20 text-[#9B48DB] border-[#9B48DB]/40"
+                  }`}
+                >
+                  Violet
+                </button>
+                <button
+                  onClick={() => {
+                    setWingoBetColor("red");
+                    setWingoBetNum(null);
+                  }}
+                  className={`py-2.5 rounded-xl font-bold text-xs uppercase border ${
+                    wingoBetColor === "red" ? "bg-[#D23838] text-white border-white" : "bg-[#D23838]/20 text-[#D23838] border-[#D23838]/40"
+                  }`}
+                >
+                  Red
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-[#9EA2A8]">Number Bet (x9.0 Payout)</label>
+              <div className="grid grid-cols-5 gap-1.5">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => {
+                      setWingoBetNum(num);
+                      setWingoBetColor(null);
+                    }}
+                    className={`py-2 rounded-xl font-mono font-black text-sm border ${
+                      wingoBetNum === num ? "bg-[#21D9CC] text-[#15131E] border-transparent" : "bg-[#38374B] text-[#E6EBF0] border-white/5"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                if (!user || user.balance < wingoAmount) return alert("Insufficient balance");
+                saveUser({ ...user, balance: user.balance - wingoAmount });
+                alert(`Bet of Rs ${wingoAmount} placed on Round #${wingoPeriod}! Good luck!`);
+              }}
+              className="w-full py-3 rounded-xl font-bold text-sm text-[#15131E] shadow-lg active:scale-95 transition"
+              style={{ background: THEME.gradient }}
+            >
+              Place Bet of Rs {wingoAmount}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 7. PLAYABLE AVIATOR CRASH                                      */}
+      {/* ============================================================== */}
+      {activeGame?.id === "aviator-spribe" && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3">
+          <div
+            className="w-full max-w-md rounded-3xl border p-4 space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <h3 className="font-black text-base text-[#E6EBF0]">Aviator</h3>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#D23838] text-white">SPRIBE</span>
+              </div>
+              <button onClick={() => setActiveGame(null)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="relative h-44 rounded-2xl overflow-hidden border flex flex-col items-center justify-center bg-[#0d0b14]" style={{ borderColor: THEME.border }}>
+              <div
+                className={`text-5xl font-black font-mono tracking-tight ${
+                  aviatorCrashed ? "text-[#D23838]" : aviatorCashedOut ? "text-[#17B15E]" : "text-[#E6EBF0]"
+                }`}
+              >
+                {aviatorMultiplier.toFixed(2)}x
+              </div>
+              {aviatorCrashed && <span className="text-xs font-bold text-[#D23838] uppercase mt-1">FLEW AWAY!</span>}
+              {aviatorCashedOut && <span className="text-xs font-bold text-[#17B15E] uppercase mt-1">CASHED OUT!</span>}
+            </div>
+
+            <div className="space-y-2">
+              {!aviatorRunning ? (
+                <button
+                  onClick={() => {
+                    if (!user || user.balance < 200) return alert("Insufficient balance");
+                    saveUser({ ...user, balance: user.balance - 200 });
+                    setAviatorMultiplier(1.0);
+                    setAviatorCashedOut(false);
+                    setAviatorCrashed(false);
+                    setAviatorRunning(true);
+                  }}
+                  className="w-full py-3.5 rounded-xl font-black text-sm text-[#15131E] shadow-lg active:scale-95 transition"
+                  style={{ background: THEME.gradient }}
+                >
+                  START FLIGHT (Rs 200)
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (!aviatorRunning || aviatorCrashed || !user) return;
+                    const win = Math.floor(200 * aviatorMultiplier);
+                    saveUser({ ...user, balance: user.balance + win });
+                    setAviatorCashedOut(true);
+                    setAviatorRunning(false);
+                  }}
+                  disabled={aviatorCrashed || aviatorCashedOut}
+                  className="w-full py-3.5 rounded-xl font-black text-base text-white bg-[#17B15E] hover:bg-[#159f54] shadow-lg active:scale-95 transition"
+                >
+                  CASH OUT Rs {Math.floor(200 * aviatorMultiplier).toLocaleString()}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 8. LUCKY TREASURE CHEST MODAL                                  */}
+      {/* ============================================================== */}
+      {showChestModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 text-center space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex justify-end">
+              <button onClick={() => setShowChestModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <h3 className="text-xl font-black text-[#E6EBF0]">
+              {chestOpened ? "CONGRATULATIONS!" : "DAILY LUCKY CHEST"}
+            </h3>
+            <div className="w-32 h-32 mx-auto flex items-center justify-center">
+              <img
+                src={chestOpened ? "/pakvip/images/box_open-9_JHXIXH.png" : "/pakvip/images/box_closed-CHcnurtG.png"}
+                alt="Chest"
+                className="w-28 h-28 object-contain drop-shadow-[0_0_20px_rgba(33,217,204,0.5)]"
+              />
+            </div>
+            {chestOpened ? (
+              <div className="text-2xl font-black text-[#BED921] font-mono">
+                +Rs {chestReward.toLocaleString()}
+              </div>
+            ) : (
+              <p className="text-xs text-[#9EA2A8]">
+                Open your daily WinZO mystery chest and receive up to Rs 1,000 instantly!
+              </p>
+            )}
+            {!chestOpened ? (
+              <button
+                onClick={() => {
+                  if (chestOpened || !user) return;
+                  const rew = Math.floor(Math.random() * 800) + 200;
+                  setChestReward(rew);
+                  setChestOpened(true);
+                  saveUser({ ...user, balance: user.balance + rew });
+                }}
+                className="w-full py-3 rounded-xl font-bold text-sm text-[#15131E]"
+                style={{ background: THEME.gradient }}
+              >
+                OPEN CHEST NOW
+              </button>
+            ) : (
+              <button onClick={() => setShowChestModal(false)} className="w-full py-3 rounded-xl font-bold text-sm text-[#15131E]" style={{ background: THEME.gradient }}>
+                DONE
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 9. LUCKY TURNTABLE WHEEL MODAL                                 */}
+      {/* ============================================================== */}
+      {showTurntableModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 text-center space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#BED921]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO Lucky Turntable</h3>
+              </div>
+              <button onClick={() => setShowTurntableModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Turntable Wheel */}
+            <div className="relative w-56 h-56 mx-auto my-2 flex items-center justify-center">
+              {/* Pointer */}
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-x-8 border-x-transparent border-t-[18px] border-t-[#D23838] drop-shadow-lg" />
+              {/* Wheel Body */}
+              <div
+                className="w-full h-full rounded-full border-4 border-[#21D9CC] shadow-[0_0_25px_rgba(33,217,204,0.4)] flex items-center justify-center overflow-hidden transition-transform duration-[3800ms] cubic-bezier(0.17, 0.67, 0.12, 0.99)"
+                style={{
+                  transform: `rotate(${turntableAngle}deg)`,
+                  background: "conic-gradient(#201D2B 0deg 45deg, #282537 45deg 90deg, #201D2B 90deg 135deg, #282537 135deg 180deg, #201D2B 180deg 225deg, #282537 225deg 270deg, #201D2B 270deg 315deg, #282537 315deg 360deg)",
+                }}
+              >
+                {/* Visual Segments */}
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-[#BED921]">
+                  <span className="absolute top-2">Rs 100</span>
+                  <span className="absolute right-3">Rs 200</span>
+                  <span className="absolute bottom-2">Rs 500</span>
+                  <span className="absolute left-3">Rs 1,000</span>
+                </div>
+              </div>
+              {/* Center Hub */}
+              <div
+                onClick={spinTurntable}
+                className="absolute z-10 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer font-black text-xs text-[#15131E] shadow-xl active:scale-95 border-2 border-white/20"
+                style={{ background: THEME.gradient }}
+              >
+                SPIN
+              </div>
+            </div>
+
+            {turntablePrize ? (
+              <div className="p-3 rounded-2xl bg-[#17B15E]/20 border border-[#17B15E] text-[#17B15E] font-black text-sm">
+                🎉 Won {turntablePrize}! Credited to your wallet!
+              </div>
+            ) : (
+              <p className="text-[11px] text-[#9EA2A8]">
+                Tap SPIN to rotate the lucky wheel. Free daily spin for VIP players!
+              </p>
+            )}
+
+            <button
+              onClick={spinTurntable}
+              disabled={turntableSpinning}
+              className={`w-full py-3 rounded-xl font-black text-sm transition ${
+                turntableSpinning ? "bg-[#38374B] text-[#9EA2A8]" : "text-[#15131E] shadow-lg active:scale-95"
+              }`}
+              style={{ background: turntableSpinning ? undefined : THEME.gradient }}
+            >
+              {turntableSpinning ? "Spinning..." : "SPIN THE WHEEL NOW"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 10. 24/7 CUSTOMER SUPPORT MODAL                                */}
+      {/* ============================================================== */}
+      {showSupportModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 space-y-4"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Headphones className="w-4 h-4 text-[#21D9CC]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO 24/7 Customer Care</h3>
+              </div>
+              <button onClick={() => setShowSupportModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <a
+                href="https://t.me/prediction_officials"
+                target="_blank"
+                rel="noreferrer"
+                className="p-3 rounded-xl bg-[#282537] hover:bg-[#38374B] flex items-center justify-between border border-white/5 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#21D9CC]/20 text-[#21D9CC] flex items-center justify-center font-bold">
+                    TG
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-xs font-bold text-[#E6EBF0]">Official Telegram Channel</span>
+                    <span className="text-[10px] text-[#9EA2A8]">@prediction_officials</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+              </a>
+
+              <a
+                href="https://wa.me/923001234567"
+                target="_blank"
+                rel="noreferrer"
+                className="p-3 rounded-xl bg-[#282537] hover:bg-[#38374B] flex items-center justify-between border border-white/5 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#17B15E]/20 text-[#17B15E] flex items-center justify-center font-bold">
+                    WA
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-xs font-bold text-[#E6EBF0]">WhatsApp VIP Support</span>
+                    <span className="text-[10px] text-[#9EA2A8]">+92 300 1234567</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#9EA2A8]" />
+              </a>
+
+              <button
+                onClick={() => {
+                  setShowSupportModal(false);
+                  triggerToast("Connecting to live agent in Pakistan...");
+                }}
+                className="w-full p-3 rounded-xl bg-[#21D9CC]/15 text-[#21D9CC] border border-[#21D9CC]/30 font-bold text-xs flex items-center justify-center gap-1.5"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Start Live Chat Support</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 11. OFFICIAL NOTICE MODAL                                      */}
+      {/* ============================================================== */}
+      {showNoticeModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className="w-full max-w-sm rounded-3xl border p-5 space-y-3.5"
+            style={{ backgroundColor: THEME.bgL2, borderColor: THEME.border }}
+          >
+            <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: THEME.border }}>
+              <div className="flex items-center gap-1.5">
+                <Bell className="w-4 h-4 text-[#BED921]" />
+                <h3 className="font-black text-sm text-[#E6EBF0]">WinZO Official Announcement</h3>
+              </div>
+              <button onClick={() => setShowNoticeModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#9EA2A8]" style={{ backgroundColor: THEME.bgPill }}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3 rounded-xl bg-[#282537] text-xs text-[#9EA2A8] space-y-2 leading-relaxed">
+              <p className="font-bold text-[#E6EBF0]">Dear WinZO Members,</p>
+              <p>
+                1. JazzCash and EasyPaisa automatic deposit and withdrawal channels are running at 100% capacity with 0% fee.
+              </p>
+              <p>
+                2. First recharge players receive an instant 100% matching cash bonus up to Rs 20,000.
+              </p>
+              <p>
+                3. Download the official WinZO Android APK from the homepage for faster loading and exclusive daily check-in gifts.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowNoticeModal(false)}
+              className="w-full py-2.5 rounded-xl font-bold text-xs text-[#15131E]"
+              style={{ background: THEME.gradient }}
+            >
+              I Understand
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-const styles = `
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap');
-*{box-sizing:border-box}body{margin:0;background:#0e0d14;color:#f3f2f7;font-family:'DM Sans',Arial,sans-serif}.winzo-app{min-height:100vh;background:var(--bg);color:var(--txt);max-width:540px;margin:0 auto;padding-bottom:88px;position:relative;overflow:hidden}.topbar{height:62px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:#181620;border-bottom:1px solid #ffffff0b;position:sticky;top:0;z-index:20}.brand{display:flex;align-items:center;gap:9px}.brand-mark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#1ed9ca,#afd938);color:#16212a;font-family:Manrope,sans-serif;font-weight:900;font-size:22px;font-style:italic;box-shadow:0 4px 16px #16d4c633}.brand-mark.small{width:31px;height:31px;font-size:19px;border-radius:9px}.brand-word{font-family:Manrope,sans-serif;font-size:21px;letter-spacing:-1px;font-weight:800}.brand-word span{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:1.1px;color:#152326;background:linear-gradient(90deg,var(--teal),var(--lime));border-radius:4px;padding:3px 5px;margin-left:6px;vertical-align:4px}.top-actions{display:flex;gap:8px}.icon-button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;color:#dedce5;background:#25232e;border:1px solid #35323e;width:37px;height:37px;border-radius:12px;cursor:pointer}.icon-button.language{width:auto;padding:0 10px;font-size:11px;font-weight:700}.notification-dot{position:absolute;right:7px;top:7px;width:6px;height:6px;background:#ff6c74;border-radius:50%;border:1px solid #25232e}.page-content{padding:14px 15px 28px}.auth-row{display:flex;align-items:center;justify-content:space-between;margin:0 1px 14px}.welcome-copy{display:flex;flex-direction:column;gap:2px}.eyebrow{font-size:9px;letter-spacing:1.15px;color:#9895a2;font-weight:700}.welcome-copy strong{font:700 16px Manrope,sans-serif}.welcome-copy small{font-size:10px;color:#8f8d98}.auth-actions{display:flex;gap:7px}.btn-quiet,.btn-primary{height:34px;padding:0 15px;border:1px solid #41404a;border-radius:9px;background:#25232e;color:#e5e3eb;font-size:11px;font-weight:700;cursor:pointer}.btn-primary{border:0;background:linear-gradient(100deg,var(--teal),var(--lime));color:#172324;box-shadow:0 5px 17px #16d4c625}.hero-card{height:174px;border-radius:18px;position:relative;overflow:hidden;padding:20px 19px;background:radial-gradient(ellipse at 85% 30%,color-mix(in srgb,var(--accent) 31%, transparent),transparent 45%),linear-gradient(120deg,#272535,#211e2c 56%,#23202d);border:1px solid #ffffff12}.hero-card:before{content:"";position:absolute;inset:auto -35px -110px auto;width:260px;height:230px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 19%,transparent),transparent 65%)}.hero-copy{position:relative;z-index:2;max-width:68%}.hero-tag{display:inline-flex;align-items:center;gap:5px;color:var(--accent);font-size:8px;font-weight:800;letter-spacing:1px}.hero-card h1{font:800 22px/1.12 Manrope,sans-serif;letter-spacing:-.7px;margin:9px 0 5px;max-width:230px}.hero-card p{font-size:10px;color:#b3b0bc;margin:0;line-height:1.5}.hero-cta{display:flex;align-items:center;gap:3px;margin-top:12px;border:0;border-radius:7px;background:var(--accent);color:#191923;font-size:9px;font-weight:800;padding:7px 10px;cursor:pointer}.hero-art{position:absolute;right:9px;top:16px;width:140px;height:140px;display:grid;place-items:center}.hero-art>span{font-size:75px;position:relative;z-index:2;color:var(--accent);text-shadow:0 5px 30px color-mix(in srgb,var(--accent) 65%,transparent);transform:rotate(-9deg)}.hero-orbit{position:absolute;border:1px solid color-mix(in srgb,var(--accent) 48%,transparent);border-radius:50%;width:118px;height:58px;transform:rotate(-35deg)}.orbit-b{transform:rotate(48deg);width:105px;height:95px;border-color:#ffffff18}.hero-arrows{position:absolute;right:11px;bottom:9px;display:flex;gap:5px}.hero-arrows button{width:25px;height:25px;display:grid;place-items:center;background:#ffffff14;border:1px solid #ffffff18;border-radius:7px;color:#e5e3eb;cursor:pointer}.hero-dots{position:absolute;left:20px;bottom:12px;display:flex;gap:4px}.hero-dots button{width:5px;height:5px;border:0;padding:0;border-radius:5px;background:#ffffff48;cursor:pointer}.hero-dots button.active{width:17px;background:var(--accent)}.notice-strip{margin-top:11px;min-height:47px;padding:8px 10px;display:flex;align-items:center;gap:9px;border-radius:11px;background:#201d29;border:1px solid #302d39;color:var(--teal)}.notice-text{min-width:0;flex:1;display:flex;align-items:center;gap:8px}.notice-text span{white-space:nowrap;font-size:9px;font-weight:800;color:#edeaf2;padding-right:8px;border-right:1px solid #484551}.notice-text p{margin:0;font-size:9px;line-height:1.4;color:#a5a2ae;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.notice-strip>button{border:0;background:transparent;color:#87848f;padding:4px;cursor:pointer}.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0 20px}.quick-actions button{background:var(--panel);border:1px solid #ffffff08;border-radius:13px;padding:10px 4px 9px;display:flex;align-items:center;gap:7px;flex-direction:column;color:#d8d6df;font-size:9px;font-weight:600;cursor:pointer}.quick-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center}.quick-icon.promo{background:#4a302e;color:#ff967b}.quick-icon.reward{background:#41352a;color:#ffc764}.quick-icon.invite{background:#273c44;color:#59d7d0}.quick-icon.service{background:#37304a;color:#bba2ff}.section-title{display:flex;align-items:center;justify-content:space-between;margin:0 1px 11px}.section-heading{display:flex;align-items:center;gap:8px;color:var(--teal)}.section-heading h2{font:700 14px Manrope,sans-serif;color:#eeeef3;margin:0;letter-spacing:-.2px}.see-all{display:flex;align-items:center;gap:1px;border:0;background:transparent;color:#a8a5b0;font-size:9px;font-weight:600;padding:4px 0;cursor:pointer}.search-box{height:35px;border:1px solid #302d39;background:#201d29;border-radius:9px;display:flex;align-items:center;gap:7px;padding:0 10px;color:#898694;margin-bottom:10px}.search-box input{background:transparent;border:0;outline:0;color:#f1eff5;font:500 10px 'DM Sans',sans-serif;flex:1;min-width:0}.search-box input::placeholder{color:#787581}.search-box button{border:0;background:transparent;color:#aaa7b1;padding:3px;cursor:pointer}.category-tabs{display:flex;gap:7px;overflow:auto;scrollbar-width:none;margin-bottom:12px}.category-tabs::-webkit-scrollbar{display:none}.category-tabs button{flex:none;padding:7px 13px;border:1px solid #373440;background:#211e2b;border-radius:8px;color:#a9a6b0;font-size:9px;font-weight:700;cursor:pointer}.category-tabs button.selected{background:linear-gradient(90deg,#1bd4c6,#bddb38);border-color:transparent;color:#172322}.games-section{margin-bottom:21px}.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.game-card{background:transparent;padding:0;border:0;text-align:left;color:var(--txt);cursor:pointer;min-width:0}.game-art{height:107px;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(ellipse at 50% 76%,color-mix(in srgb,var(--game) 83%,#fff 5%),transparent 63%),linear-gradient(145deg,color-mix(in srgb,var(--game) 73%,#13121b),#262331 79%);border:1px solid #ffffff12;transition:transform .18s ease}.game-card:hover .game-art{transform:translateY(-2px)}.game-art:after{content:"";position:absolute;width:110px;height:110px;border:1px solid #ffffff16;border-radius:50%;top:25px;left:50%;transform:translateX(-50%)}.game-stamp{position:absolute;top:7px;left:7px;z-index:1;display:flex;align-items:center;gap:3px;color:#ffc654;font-size:6px;font-weight:800;letter-spacing:.4px}.game-emoji{z-index:1;font-size:35px;filter:drop-shadow(0 6px 8px #0008);margin-top:8px}.game-title{z-index:1;font:700 9px Manrope,sans-serif;text-shadow:0 2px 5px #0009;margin-top:1px}.game-meta{display:flex;align-items:center;justify-content:space-between;padding:6px 3px 0;color:#96939f;font-size:8px}.game-meta svg{color:#23d6c8}.empty-state{padding:22px;text-align:center;color:#9d9aa6;font-size:11px;background:var(--panel);border-radius:11px}.jackpot-panel{padding:15px;border-radius:15px;background:radial-gradient(ellipse at 90% 20%,#7b572933,transparent 38%),linear-gradient(125deg,#29232e,#211d2a);border:1px solid #ffc45c2e;margin-bottom:22px}.jackpot-top{display:flex;align-items:center;gap:10px}.jackpot-emblem{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;color:#ffce70;background:linear-gradient(145deg,#795327,#3c2d31);border:1px solid #ffcf7045}.jackpot-top>div:nth-child(2){flex:1}.jackpot-top h2{font:800 16px Manrope,sans-serif;margin:3px 0 2px}.jackpot-top p{font-size:9px;color:#aaa5b1;margin:0}.jackpot-top>button{background:#ffffff10;border:1px solid #ffffff12;border-radius:8px;width:30px;height:30px;color:#d3d0da;display:grid;place-items:center;cursor:pointer}.jackpot-bottom{display:flex;align-items:end;justify-content:space-between;border-top:1px solid #ffffff12;margin-top:13px;padding-top:12px}.jackpot-amount small{display:block;font-size:7px;color:#99939f;letter-spacing:.8px;font-weight:700}.jackpot-amount strong{display:block;margin-top:3px;font:800 21px Manrope,sans-serif;color:#ffd17a}.jackpot-badge{display:flex;align-items:center;gap:4px;padding:6px 8px;border-radius:7px;background:#ffc45c1b;color:#ffcd73;font-size:7px;font-weight:800;letter-spacing:.4px}.jackpot-disclaimer{display:flex;align-items:center;gap:5px;color:#aaa5b1;font-size:8px;margin-top:10px}.winners-section,.ranking-section{margin-bottom:22px}.winner-card{background:var(--panel);border:1px solid #ffffff08;border-radius:13px;overflow:hidden}.winner-row{display:flex;align-items:center;gap:9px;padding:9px 10px;border-bottom:1px solid #ffffff0b}.winner-avatar{flex:none;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#278d8b,#355663);color:#e4fffa;font-size:11px;font-weight:800;border:1px solid #ffffff24}.avatar-1{background:linear-gradient(145deg,#a64c6c,#553c65)}.avatar-2{background:linear-gradient(145deg,#be7839,#573d32)}.avatar-3{background:linear-gradient(145deg,#487bb4,#394868)}.avatar-4{background:linear-gradient(145deg,#72733f,#43503e)}.winner-info{display:flex;flex-direction:column;gap:3px;flex:1}.winner-info strong{font-size:10px}.winner-info span{font-size:8px;color:#97939f}.winner-amount{font:700 10px Manrope,sans-serif;color:#67dab8}.simulation-note{display:flex;align-items:center;gap:5px;color:#85818e;padding:8px 10px;font-size:8px}.rank-podium{min-height:143px;border-radius:13px 13px 0 0;padding:10px 14px 0;background:url('/pakvip/png/DailyProfitRankStage-Dj5L7gPp.png') center bottom/100% 100% no-repeat,#201d2b;display:grid;grid-template-columns:1fr 1.08fr 1fr;align-items:end;justify-items:center}.podium-person{position:relative;display:flex;align-items:center;flex-direction:column;gap:4px;width:100%;padding-bottom:30px}.podium-person strong{font-size:8px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.podium-person>span:not(.podium-crown){font-size:7px;color:#ffd174}.podium-crown{height:16px;color:#f5bb55;font-size:17px;line-height:16px}.podium-avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#c78747,#705046);border:2px solid #ffd47a;color:#fff;font-weight:800;font-size:13px;box-shadow:0 0 12px #ffc45c34}.podium-2 .podium-avatar{border-color:#c6d4df;background:linear-gradient(145deg,#7995a5,#485665)}.podium-3 .podium-avatar{border-color:#d79c70;background:linear-gradient(145deg,#a97551,#573f43)}.podium-1{padding-bottom:35px}.podium-1 .podium-avatar{width:47px;height:47px}.podium-step{position:absolute;bottom:0;width:68%;height:21px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#a87236,#584231);color:#ffdf9c;display:grid;place-items:center;font:800 10px Manrope,sans-serif}.podium-1 .podium-step{height:28px;background:linear-gradient(180deg,#cf9b42,#745232)}.podium-2 .podium-step{background:linear-gradient(180deg,#6d8996,#46525a)}.rank-list{padding:0 10px;background:var(--panel)}.rank-row{height:35px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #ffffff0c;font-size:9px}.rank-number{width:18px;height:18px;border-radius:6px;background:#33313d;display:grid;place-items:center;color:#c5c2cc;font-weight:700}.rank-user{flex:1;color:#d5d2dc}.rank-row strong{font:700 9px Manrope,sans-serif;color:#d5d2dc}.tools-section{margin-bottom:18px}.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:11px;background:var(--panel);border:1px solid #ffffff09;border-radius:13px}.tools-grid button{display:flex;align-items:center;flex-direction:column;gap:6px;padding:7px 3px;border:0;background:transparent;color:#c5c2cc;font-size:8px;cursor:pointer}.tool-icon{width:35px;height:35px;display:grid;place-items:center;background:#302d39;color:#59d6ca;border-radius:11px}.tools-grid button:nth-child(2n) .tool-icon{color:#c49aff}.invite-panel{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:14px 15px;border-radius:13px;background:linear-gradient(110deg,#293136,#24222e);border:1px solid #ffffff0c;margin-bottom:19px}.invite-copy{position:relative;z-index:1}.invite-copy h2{font:800 15px Manrope,sans-serif;margin:4px 0}.invite-copy p{font-size:9px;color:#aaa7b2;margin:0 0 9px}.invite-code{display:flex;align-items:center;gap:7px}.invite-code>span{font:700 10px Manrope,sans-serif;letter-spacing:1px;color:#d7d4dd;background:#17151e;padding:6px 9px;border-radius:6px}.invite-code button{display:flex;align-items:center;gap:4px;background:linear-gradient(90deg,var(--teal),var(--lime));border:0;border-radius:6px;padding:6px 8px;color:#182322;font-size:8px;font-weight:800;cursor:pointer}.invite-art{position:absolute;right:18px;top:17px;width:82px;height:82px;border-radius:50%;display:grid;place-items:center;color:#42d7c4;background:radial-gradient(circle,#31c5b32a,transparent 68%)}.invite-art svg:last-child{position:absolute;top:7px;right:4px;color:#f7c75e}.site-footer{padding:14px 11px 0;border-top:1px solid #ffffff12;color:#92909b}.footer-brand{display:flex;align-items:center;gap:8px;margin-bottom:15px}.footer-brand>div:last-child{display:flex;flex-direction:column;gap:2px}.footer-brand strong{font:700 11px Manrope,sans-serif;color:#e5e2eb}.footer-brand span{font-size:8px;color:#898692}.payment-row{padding:10px;border:1px solid #ffffff0b;border-radius:9px;background:#1c1a24}.payment-row>span{font-size:7px;letter-spacing:.8px;font-weight:800;color:#85818e}.payment-row>div{display:flex;gap:7px;margin-top:8px}.payment-row b{padding:5px 7px;background:#282631;border-radius:5px;color:#c4c0cb;font:700 8px 'DM Sans',sans-serif}.footer-links{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;margin:14px 0 11px}.footer-links button{border:0;background:transparent;padding:2px;color:#aaa7b0;font-size:8px;cursor:pointer}.footer-links i{color:#57545f;font-size:9px}.responsible-note{display:flex;align-items:center;justify-content:center;gap:5px;color:#84b9a4;font-size:8px;text-align:center}.copyright{text-align:center;font-size:8px;color:#74717d;margin:10px 0 5px}.site-note{text-align:center;font-size:7px;line-height:1.5;color:#676470;max-width:360px;margin:0 auto 4px}.bottom-nav{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(540px,100%);height:67px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:#1d1b25f5;backdrop-filter:blur(14px);border-top:1px solid #ffffff13;padding:3px 7px max(4px,env(safe-area-inset-bottom))}.bottom-nav button{height:51px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;border:0;background:transparent;color:#8c8995;font-size:8px;font-weight:600;cursor:pointer}.bottom-nav button.active{color:var(--teal)}.bottom-nav button.active svg{filter:drop-shadow(0 0 6px #20d8c966)}.modal-backdrop{position:fixed;z-index:50;inset:0;background:#05040acc;display:grid;place-items:center;padding:20px}.modal-card{width:min(100%,345px);position:relative;padding:23px 20px 18px;border-radius:18px;background:#25222f;border:1px solid #ffffff16;box-shadow:0 18px 70px #0009;text-align:center}.modal-close{position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:9px;border:0;background:#ffffff0c;color:#c9c6d0;display:grid;place-items:center;cursor:pointer}.modal-symbol{width:43px;height:43px;margin:2px auto 10px;border-radius:14px;display:grid;place-items:center;color:var(--teal);background:#20d8c91a}.modal-card h2{font:800 17px Manrope,sans-serif;margin:0 0 8px}.modal-card>p{font-size:10px;color:#b0adba;line-height:1.65;margin:0 auto 13px;max-width:270px}.modal-warning{display:flex;gap:7px;align-items:center;text-align:left;padding:9px;background:#c6852a18;border:1px solid #d9963c29;border-radius:9px;color:#f2c37a;font-size:8px;line-height:1.45}.modal-action{width:100%;height:36px;margin-top:13px;font-size:10px}@media(min-width:700px){.winzo-app{box-shadow:0 0 60px #0007;min-height:100vh}.topbar{padding-inline:23px}.page-content{padding:17px 20px 32px}.hero-card{height:190px}.game-grid{gap:11px}.game-art{height:117px}}@media(max-width:360px){.page-content{padding-inline:11px}.hero-card{padding-left:15px}.hero-card h1{font-size:19px}.hero-art{right:-12px}.quick-actions{gap:6px}.game-art{height:96px}.game-title{font-size:8px}}
-`;
